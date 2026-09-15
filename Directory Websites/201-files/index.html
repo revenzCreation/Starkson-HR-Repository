@@ -1,0 +1,82 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <meta name="description" content="Starkson employee 201 files directory">
+  <title>201 Files | Starkson Paper and Plastic Corporation</title>
+  <link rel="icon" type="image/png" href="../referral-portal/images/logo.png">
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=DM+Sans:wght@400;500;600;700&family=Manrope:wght@600;700;800&display=swap" rel="stylesheet">
+  <link rel="stylesheet" href="css/style.css">
+</head>
+<body>
+  <div class="page-shell">
+    <header class="site-header">
+      <a class="brand" href="../../index.html" aria-label="Starkson HR Portal home">
+        <img src="../referral-portal/images/logo.png" alt="Starkson logo">
+        <span><strong>STARKSON</strong><small>Paper &amp; Plastic Corporation</small></span>
+      </a>
+      <a class="back-link" href="../../tools.html">&larr; Back to Tools</a>
+    </header>
+
+    <main class="directory-page">
+      <div class="page-heading">
+        <div>
+          <p class="eyebrow"><span class="eyebrow-dot"></span> Personnel records</p>
+          <h1>201 <em>Files</em></h1>
+        </div>
+        <div class="page-intro">
+          <p>Employee information directory for authorized HR personnel.</p>
+          <span class="secure-label"><i></i> Protected directory</span>
+        </div>
+      </div>
+
+      <section class="directory-panel" aria-label="Employee 201 files">
+        <div class="directory-toolbar">
+          <label class="search-field">
+            <span class="search-icon" aria-hidden="true">⌕</span>
+            <span class="sr-only">Search employee files</span>
+            <input id="searchInput" type="search" placeholder="Search by surname or first name" autocomplete="off">
+          </label>
+          <span class="record-count" id="recordCount">0 records</span>
+        </div>
+
+        <div class="pagination" aria-label="Employee list pagination">
+          <button class="page-nav" id="prevPageBtn" type="button" aria-label="Previous page">Previous</button>
+          <span class="page-indicator" id="pageInfo">Page 1 of 1</span>
+          <button class="page-nav next" id="nextPageBtn" type="button" aria-label="Next page">Next</button>
+        </div>
+
+        <div class="table-wrap">
+          <table>
+            <thead>
+              <tr>
+                <th scope="col">Employee name</th>
+                <th scope="col">Date hired</th>
+                <th scope="col">201 file</th>
+              </tr>
+            </thead>
+            <tbody id="employeeRows"></tbody>
+          </table>
+          <div class="empty-state" id="emptyState">
+            <span class="empty-mark" aria-hidden="true">201</span>
+            <h2>No employee files listed yet</h2>
+            <p>Records will appear here after the secure directory connection is loaded.</p>
+          </div>
+        </div>
+      </section>
+
+      <p class="directory-note"><span aria-hidden="true">i</span> Date hired is currently read-only. Editing will be available to authenticated HR Staff / Personnel in a future update.</p>
+    </main>
+
+    <footer class="site-footer">
+      <span>&copy; 2026 Starkson Paper and Plastic Corporation</span>
+      <span>People &amp; Culture &middot; Authorized use only</span>
+    </footer>
+  </div>
+  <script src="../shared/api-config.js"></script>
+  <script src="js/app.js?v=20260910-1"></script>
+</body>
+</html>

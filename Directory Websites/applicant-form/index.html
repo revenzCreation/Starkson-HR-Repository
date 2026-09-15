@@ -1,0 +1,129 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Applicant Intake | Starkson HR Portal</title>
+  <link rel="icon" type="image/png" href="images/logo.png">
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=DM+Sans:wght@400;500;600;700&family=Manrope:wght@600;700;800&display=swap" rel="stylesheet">
+  <link rel="stylesheet" href="css/style.css">
+</head>
+<body>
+  <div class="page-shell">
+    <header class="site-header">
+      <a class="brand" href="../../index.html" aria-label="Starkson HR Portal home">
+        <img src="images/logo.png" alt="Starkson logo">
+        <span><strong>STARKSON</strong><small>Paper &amp; Plastic Corporation</small></span>
+      </a>
+      <a class="portal-home-link" href="../../tools.html">← Back to Tools</a>
+    </header>
+
+    <main class="page-view">
+      <div class="page-topline">
+        <div>
+          <span class="eyebrow"><span class="eyebrow-dot"></span> Applicant intake</span>
+          <h1 class="page-title">Join the <em>next wave</em> of talent.</h1>
+        </div>
+      </div>
+
+      <div class="form-layout">
+        <section class="panel form-panel">
+          <div class="form-header">
+            <h2>Applicant Intake</h2>
+          </div>
+          <p class="form-subtitle">Submit your profile and supporting details. This form is accessible to both applicants and HR and records to the shared Applicants tab.</p>
+
+          <form id="applicantForm" novalidate>
+            <div class="field-grid">
+              <div class="field">
+                <label for="fullName">Full name</label>
+                <input id="fullName" name="fullName" type="text" placeholder="e.g. Jane Doe" required>
+              </div>
+              <div class="field">
+                <label for="email">Email address</label>
+                <input id="email" name="email" type="email" placeholder="name@example.com" required>
+              </div>
+              <div class="field">
+                <label for="phone">Phone number</label>
+                <input id="phone" name="phone" type="tel" placeholder="09XXXXXXXXX" required>
+              </div>
+              <div class="field">
+                <label for="positionApplied">Position applied for</label>
+                <input id="positionApplied" name="positionApplied" type="text" placeholder="e.g. Production Operator" required>
+              </div>
+              <div class="field">
+                <label for="department">Department</label>
+                <input id="department" name="department" type="text" placeholder="e.g. Production" required>
+              </div>
+              <div class="field">
+                <label for="source">Source</label>
+                <select id="source" name="source" required>
+                  <option value="">Select source</option>
+                  <option>Walk-in</option>
+                  <option>Referral</option>
+                  <option>Facebook</option>
+                  <option>LinkedIn</option>
+                  <option>Job Fair</option>
+                  <option>Website</option>
+                  <option>Other</option>
+                </select>
+              </div>
+              <div class="field">
+                <label for="availabilityDate">Available date</label>
+                <input id="availabilityDate" name="availabilityDate" type="date">
+              </div>
+              <div class="field">
+                <label for="status">Application status</label>
+                <select id="status" name="status">
+                  <option>New</option>
+                  <option>Screening</option>
+                  <option>Interview</option>
+                  <option>Hired</option>
+                  <option>Rejected</option>
+                </select>
+              </div>
+            </div>
+
+            <div class="field">
+              <label for="remarks">Remarks</label>
+              <textarea id="remarks" name="remarks" placeholder="Share anything you would like HR to know..."></textarea>
+            </div>
+
+            <div class="field">
+              <label>Resume / supporting file</label>
+              <div class="uploader" id="resumeUploadBox">
+                <input id="resumeInput" type="file" accept=".pdf,.doc,.docx,.jpg,.jpeg,.png">
+                <div><strong>Click to upload</strong> or drag a file here.</div>
+                <small>PDF, DOC, DOCX, JPG, PNG (optional)</small>
+                <div class="uploader-preview" id="resumePreview">Uploaded: <span id="resumeName"></span></div>
+              </div>
+            </div>
+
+            <div class="actions">
+              <button type="reset" class="btn secondary">Clear</button>
+              <button type="submit" class="btn primary">Submit application</button>
+            </div>
+          </form>
+
+          <div id="statusBox" class="status-box" aria-live="polite"></div>
+        </section>
+
+        <aside class="panel side-panel">
+          <h3>Recent applicants</h3>
+          <ul class="side-list" id="applicantList"></ul>
+        </aside>
+      </div>
+    </main>
+
+    <footer class="site-footer">
+      <span>© 2026 Starkson Paper and Plastic Corporation</span>
+      <span>People &amp; Culture · Internal use</span>
+    </footer>
+  </div>
+
+  <script src="../shared/api-config.js"></script>
+  <script src="js/app.js"></script>
+</body>
+</html>

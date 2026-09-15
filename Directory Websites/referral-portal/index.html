@@ -1,0 +1,284 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Referral Form | Starkson Paper and Plastic Corporation</title>
+  <link rel="icon" type="image/png" href="images/logo.png">
+  <link rel="stylesheet" href="css/style.css">
+</head>
+<body>
+
+  <!-- VIEW 1: LANDING PAGE HERO -->
+  <main id="landingView" class="view active">
+    <div class="landing-card">
+      <a class="portal-home-link" href="../../tools.html">&larr; Back to Tools</a>
+      <div class="logo-wrapper">
+        <img src="images/logo.png" alt="Company Logo" class="starkson-logo">
+        <div class="brand-title">STARKSON</div>
+        <div class="brand-subtitle">PAPER AND PLASTIC CORPORATION</div>
+      </div>
+
+      <div class="hero-content">
+        <span class="badge">INTERNAL MOBILITY & RECRUITING</span>
+        <h2>Help us grow the team with people you trust.</h2>
+        
+        <div class="perks-row">
+          <div class="perk-chip">Priority HR Review</div>
+          <div class="perk-chip">Referral Bonus Program</div>
+          <div class="perk-chip">Strict Confidentiality</div>
+        </div>
+
+        <p>Submit your recommendation below. Our recruitment team will review the profile and reach out directly within five business days.</p>
+        
+        <button id="startReferralBtn" class="primary-btn">
+          Start a Referral
+        </button>
+      </div>
+    </div>
+  </main>
+
+  <!-- VIEW 2: INTERACTIVE FORM PORTAL -->
+  <main id="formView" class="view hidden">
+    <div class="form-card">
+      <header class="form-header">
+        <button id="backBtn" class="back-link">&larr; Return to Overview</button>
+        <div class="brand-mini">
+          <span class="brand-name">STARKSON</span> HR PORTAL
+        </div>
+        <h1>Employee Referral Form</h1>
+      </header>
+
+      <!-- FORM PROGRESS BAR -->
+      <div class="progress-bar-wrapper">
+        <div id="progressBar" class="progress-bar-fill"></div>
+      </div>
+
+      <form id="referralForm" novalidate>
+        
+        <!-- STEP 1: ABOUT YOU -->
+        <div class="form-step active" id="step1">
+          <div class="section-title">Step 1: About you</div>
+          <p class="section-desc">So we know who to credit and where to send updates.</p>
+
+          <div class="form-group">
+            <label for="referrerName">Your full name <span class="req">*</span></label>
+            <input type="text" id="referrerName" name="referrerName" placeholder="e.g. Alex Smith" required>
+            <span class="error-msg">Please enter your name.</span>
+          </div>
+
+          <div class="form-group">
+            <label for="referrerEmail">Your email <span class="req">*</span></label>
+            <input type="email" id="referrerEmail" name="referrerEmail" placeholder="e.g. alex.smith@gmail.com" required>
+            <span class="error-msg">Please enter a valid Gmail address (e.g., name@gmail.com).</span>
+          </div>
+
+          <div class="form-group">
+            <label for="referrerDepartment">Your department <span class="req">*</span></label>
+            <select id="referrerDepartment" name="referrerDepartment" required>
+              <option value="" disabled selected>Select department</option>
+              <option value="Engineering">Engineering</option>
+              <option value="Product">Product</option>
+              <option value="Design">Design</option>
+              <option value="Sales">Sales</option>
+              <option value="Marketing">Marketing</option>
+              <option value="Operations">Operations</option>
+              <option value="People & Talent">People & Talent</option>
+              <option value="Finance">Finance</option>
+              <option value="Other">Other</option>
+            </select>
+            <span class="error-msg">Select your department.</span>
+          </div>
+
+          <!-- HIDDEN OTHER DEPARTMENT BOX -->
+          <div class="form-group hidden-dept" id="otherDeptGroup">
+            <label for="otherDepartment">Specify your department <span class="req">*</span></label>
+            <input type="text" id="otherDepartment" name="otherDepartment" placeholder="e.g. Legal, R&D">
+            <span class="error-msg">Please specify your department.</span>
+          </div>
+
+          <button type="button" class="primary-btn next-btn" data-next="step2">Next: Candidate Details &rarr;</button>
+        </div>
+
+        <!-- STEP 2: ABOUT YOUR REFERRAL -->
+        <div class="form-step hidden" id="step2">
+          <div class="section-title">Step 2: About your referral</div>
+          <p class="section-desc">Everything you know about their background and fit.</p>
+
+          <div class="form-group">
+            <label for="candidateName">Their full name <span class="req">*</span></label>
+            <input type="text" id="candidateName" name="candidateName" placeholder="e.g. Jane Doe" required>
+            <span class="error-msg">Please enter candidate name.</span>
+          </div>
+
+          <div class="form-group">
+            <label for="candidateEmail">Their Gmail <span class="req">*</span></label>
+            <input type="email" id="candidateEmail" name="candidateEmail" placeholder="jane.doe@gmail.com" required>
+            <span class="error-msg">Please enter a valid Gmail address (e.g., name@gmail.com).</span>
+          </div>
+
+          <div class="form-row">
+            <div class="form-group">
+              <label for="candidatePhone">Their phone (PH) <span class="req">*</span></label>
+              <input type="tel" id="candidatePhone" name="candidatePhone" placeholder="09XX XXX XXXX" required>
+              <span class="error-msg">Must be a valid 11-digit number (09XX).</span>
+            </div>
+
+            <div class="form-group">
+              <label for="candidatePortfolio">LinkedIn or portfolio <span class="optional">(optional)</span></label>
+              <input type="url" id="candidatePortfolio" name="candidatePortfolio" placeholder="https://linkedin.com/in/username">
+            </div>
+          </div>
+
+          <div class="form-group">
+            <label for="targetRole">Role or team they'd fit <span class="req">*</span></label>
+            <input type="text" id="targetRole" name="targetRole" placeholder="e.g. Senior Operator" required>
+            <span class="error-msg">Specify the role or team.</span>
+          </div>
+
+          <div class="form-row step-actions">
+            <button type="button" class="secondary-btn prev-btn" data-prev="step1">&larr; Back</button>
+            <button type="button" class="primary-btn next-btn" data-next="step3">Next: Review & Upload &rarr;</button>
+          </div>
+        </div>
+
+        <!-- STEP 3: REVIEW & UPLOAD -->
+        <div class="form-step hidden" id="step3">
+          <div class="section-title">Step 3: Review & Upload</div>
+          <p class="section-desc">Final details and resume attachment.</p>
+
+          <div class="form-group">
+            <label for="relationship">How do you know them? <span class="req">*</span></label>
+            <select id="relationship" name="relationship" required>
+              <option value="" disabled selected>Select relationship</option>
+              <option value="Former colleague">Former colleague</option>
+              <option value="Friend">Friend</option>
+              <option value="Family">Family</option>
+              <option value="School connection">School connection</option>
+              <option value="Industry contact">Industry contact</option>
+              <option value="Other">Other</option>
+            </select>
+            <span class="error-msg">Select how you know them.</span>
+          </div>
+
+          <!-- HIDDEN OTHER RELATIONSHIP BOX -->
+          <div class="form-group hidden-dept" id="otherRelationshipGroup">
+            <label for="otherRelationship">Specify your relationship <span class="req">*</span></label>
+            <input type="text" id="otherRelationship" name="otherRelationship" placeholder="e.g. Mentor, Ex-business partner">
+            <span class="error-msg">Please specify your relationship.</span>
+          </div>
+
+          <div class="form-group">
+            <div class="label-header">
+              <label for="notes">Additional message for HR <span class="optional">(optional)</span></label>
+              <span class="counter"><span id="charCount">0</span>/500</span>
+            </div>
+            <textarea id="notes" name="notes" rows="3" maxlength="500" placeholder="Share any extra context or notes for the hiring team..."></textarea>
+          </div>
+
+          <!-- RESUME UPLOAD -->
+          <div class="form-group" id="resumeGroup">
+            <label>Resume <span class="req">*</span> <span class="optional">(Max 5MB: PDF, DOC, DOCX)</span></label>
+            <div class="drop-zone" id="dropZone">
+              <input type="file" id="resume" name="resume" accept=".pdf,.doc,.docx,application/pdf,application/msword,application/vnd.openxmlformats-officedocument.wordprocessingml.document" class="file-input" required>
+              <div class="drop-zone-content" id="dropZoneContent">
+                <svg class="upload-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5">
+                  <path d="M21 15v4a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2v-4"></path>
+                  <polyline points="17 8 12 3 7 8"></polyline>
+                  <line x1="12" y1="3" x2="12" y2="15"></line>
+                </svg>
+                <p>Drag and drop your file here, or <span>browse files</span></p>
+                <span class="subtext">Required: Max 5MB (.pdf, .doc, .docx).</span>
+              </div>
+              <div id="filePreview" class="file-preview hidden">
+                <span class="file-name" id="fileName">resume.pdf</span>
+                <button type="button" id="removeFileBtn" class="remove-btn">&times;</button>
+              </div>
+            </div>
+            <span class="error-msg" id="fileError">Please upload a valid resume file under 5MB.</span>
+          </div>
+
+          <div class="form-row step-actions">
+            <button type="button" class="secondary-btn prev-btn" data-prev="step2">&larr; Back</button>
+            <button type="submit" id="submitBtn" class="primary-btn">
+              <span id="btnText">Submit referral</span>
+              <span id="loadingSpinner" class="spinner hidden"></span>
+            </button>
+          </div>
+          <p class="submit-note">A confirmation email will be sent to your email.</p>
+        </div>
+
+      </form>
+
+      <div id="statusMessage" class="status-box hidden" aria-live="polite"></div>
+    </div>
+  </main>
+
+  <main id="applicantView" class="view hidden">
+    <div class="form-card">
+      <header class="form-header">
+        <button id="applicantBackBtn" class="back-link" type="button">&larr; Return to Overview</button>
+        <div class="brand-mini">
+          <span class="brand-name">STARKSON</span> HR PORTAL
+        </div>
+        <h1>Applicant Information Form</h1>
+      </header>
+
+      <form id="applicantForm" novalidate>
+        <div class="form-group">
+          <label for="applicantName">Full name <span class="req">*</span></label>
+          <input type="text" id="applicantName" name="applicantName" placeholder="e.g. Maria Santos" required>
+        </div>
+
+        <div class="form-row">
+          <div class="form-group">
+            <label for="applicantEmail">Email <span class="req">*</span></label>
+            <input type="email" id="applicantEmail" name="applicantEmail" placeholder="name@gmail.com" required>
+          </div>
+          <div class="form-group">
+            <label for="applicantPhone">Phone <span class="req">*</span></label>
+            <input type="tel" id="applicantPhone" name="applicantPhone" placeholder="09XX XXX XXXX" required>
+          </div>
+        </div>
+
+        <div class="form-row">
+          <div class="form-group">
+            <label for="applicantPosition">Position applying for <span class="req">*</span></label>
+            <input type="text" id="applicantPosition" name="applicantPosition" placeholder="e.g. Production Operator" required>
+          </div>
+          <div class="form-group">
+            <label for="applicantDepartment">Department <span class="req">*</span></label>
+            <input type="text" id="applicantDepartment" name="applicantDepartment" placeholder="e.g. Operations" required>
+          </div>
+        </div>
+
+        <div class="form-row">
+          <div class="form-group">
+            <label for="applicantSource">How did you hear about this opportunity? <span class="optional">(optional)</span></label>
+            <input type="text" id="applicantSource" name="applicantSource" placeholder="e.g. Facebook, Referral, Job Fair">
+          </div>
+          <div class="form-group">
+            <label for="applicantLinkedIn">LinkedIn / portfolio <span class="optional">(optional)</span></label>
+            <input type="url" id="applicantLinkedIn" name="applicantLinkedIn" placeholder="https://linkedin.com/in/yourprofile">
+          </div>
+        </div>
+
+        <div class="form-group">
+          <label for="applicantNotes">Tell us a little about yourself <span class="optional">(optional)</span></label>
+          <textarea id="applicantNotes" name="applicantNotes" rows="4" placeholder="Share your background, strengths, or relevant experience..."></textarea>
+        </div>
+
+        <div class="form-row step-actions">
+          <button type="button" class="secondary-btn" id="applicantResetBtn">Clear</button>
+          <button type="submit" class="primary-btn">Submit Application</button>
+        </div>
+      </form>
+
+      <div id="applicantStatusMessage" class="status-box hidden" aria-live="polite"></div>
+    </div>
+  </main>
+
+  <script src="../shared/api-config.js"></script>
+  <script src="js/app.js"></script>
+</body>
+</html>

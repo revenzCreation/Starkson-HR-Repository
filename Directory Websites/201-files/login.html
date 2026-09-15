@@ -1,0 +1,49 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <meta name="description" content="HR Staff authentication for Starkson 201 Files">
+  <title>HR Staff Login | Starkson Paper and Plastic Corporation</title>
+  <link rel="icon" type="image/png" href="../../referral-portal/images/logo.png">
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=DM+Sans:wght@400;500;600;700&family=Manrope:wght@600;700;800&display=swap" rel="stylesheet">
+  <link rel="stylesheet" href="css/style.css">
+</head>
+<body>
+  <div class="page-shell login-shell">
+    <header class="site-header">
+      <a class="brand" href="../../index.html" aria-label="Starkson HR Portal home">
+        <img src="../../referral-portal/images/logo.png" alt="Starkson logo">
+        <span><strong>STARKSON</strong><small>Paper &amp; Plastic Corporation</small></span>
+      </a>
+      <a class="back-link" href="../../tools.html">&larr; Back to Tools</a>
+    </header>
+
+    <main class="login-page">
+      <section class="login-card" aria-labelledby="loginTitle">
+        <span class="login-mark" aria-hidden="true">201</span>
+        <p class="eyebrow"><span class="eyebrow-dot"></span> Restricted access</p>
+        <h1 id="loginTitle">HR Staff <em>sign in.</em></h1>
+        <p class="login-intro">Authenticate to open the protected employee 201 Files directory.</p>
+        <form id="loginForm">
+          <label for="user">HR Staff username</label>
+          <input id="user" name="user" type="text" autocomplete="username" required>
+          <label for="password">Password</label>
+          <input id="password" name="password" type="password" autocomplete="current-password" required>
+          <button class="login-button" type="submit">Continue to 201 Files <span aria-hidden="true">→</span></button>
+          <p class="login-status" id="loginStatus" role="alert"></p>
+        </form>
+        <p class="login-note"><span>i</span> Access is logged and limited to authorized HR Staff / Personnel.</p>
+      </section>
+    </main>
+
+    <footer class="site-footer">
+      <span>&copy; 2026 Starkson Paper and Plastic Corporation</span>
+      <span>People &amp; Culture &middot; Authorized use only</span>
+    </footer>
+  </div>
+  <script src="js/login.js?v=20260907-2"></script>
+</body>
+</html>
