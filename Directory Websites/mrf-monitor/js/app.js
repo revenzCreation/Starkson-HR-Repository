@@ -199,6 +199,37 @@ if (modalBg) {
 if (saveModalBtn) saveModalBtn.addEventListener('click', saveModalChanges);
 if (deleteBtn) deleteBtn.addEventListener('click', deleteCurrentModalRecord);
 
+const exportCsvBtn = document.getElementById('exportCsvBtn');
+if (exportCsvBtn) {
+  exportCsvBtn.addEventListener('click', () => {
+    if (!records || !records.length) {
+      toast('No records to export');
+      return;
+    }
+    const headers = ['MRF #', 'Department', 'Position', 'Headcount', 'Date Requested', 'Date Needed', 'Requested By', 'Status', 'Remarks'];
+    const rows = records.map(r => [
+      `"${r.mrfNumber || ''}"`,
+      `"${r.department || ''}"`,
+      `"${r.position || ''}"`,
+      r.headcount || 1,
+      `"${r.dateRequested || ''}"`,
+      `"${r.dateNeeded || ''}"`,
+      `"${r.requestedBy || ''}"`,
+      `"${r.status || ''}"`,
+      `"${(r.remarks || '').replace(/"/g, '""')}"`
+    ]);
+    const csvContent = 'data:text/csv;charset=utf-8,' + [headers.join(','), ...rows.map(e => e.join(','))].join('\n');
+    const encodedUri = encodeURI(csvContent);
+    const link = document.createElement('a');
+    link.setAttribute('href', encodedUri);
+    link.setAttribute('download', `Starkson_MRF_Report_${new Date().toISOString().slice(0, 10)}.csv`);
+    document.body.appendChild(link);
+    link.click();
+    document.body.removeChild(link);
+    toast('MRF Report exported as CSV');
+  });
+}
+
 (async function init() {
   try {
     const loaded = await loadAllRecords();

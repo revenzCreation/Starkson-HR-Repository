@@ -3,8 +3,13 @@
 <head>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <title>Referral Form | Starkson Paper and Plastic Corporation</title>
+  <title>Referral Portal | Starkson Paper and Plastic Corporation</title>
   <link rel="icon" type="image/png" href="images/logo.png">
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=DM+Sans:wght@400;500;600;700&family=IBM+Plex+Mono:wght@500;600&family=Manrope:wght@600;700;800&display=swap" rel="stylesheet">
+  <link rel="stylesheet" href="../../css/tokens.css">
+  <link rel="stylesheet" href="../../css/components.css">
   <link rel="stylesheet" href="css/style.css">
 </head>
 <body>
@@ -13,6 +18,7 @@
   <main id="landingView" class="view active">
     <div class="landing-card">
       <a class="portal-home-link" href="../../tools.html">&larr; Back to Tools</a>
+      
       <div class="logo-wrapper">
         <img src="images/logo.png" alt="Company Logo" class="starkson-logo">
         <div class="brand-title">STARKSON</div>
@@ -20,19 +26,50 @@
       </div>
 
       <div class="hero-content">
-        <span class="badge">INTERNAL MOBILITY & RECRUITING</span>
+        <span class="badge">INTERNAL MOBILITY &amp; TALENT SOURCING</span>
         <h2>Help us grow the team with people you trust.</h2>
         
         <div class="perks-row">
-          <div class="perk-chip">Priority HR Review</div>
-          <div class="perk-chip">Referral Bonus Program</div>
-          <div class="perk-chip">Strict Confidentiality</div>
+          <div class="perk-chip">⚡ Priority HR Review</div>
+          <div class="perk-chip">🎁 Referral Bonus Program</div>
+          <div class="perk-chip">🔒 Strict Confidentiality</div>
         </div>
 
-        <p>Submit your recommendation below. Our recruitment team will review the profile and reach out directly within five business days.</p>
+        <p>Recommend qualified professionals or manufacturing operators. Our recruitment team reviews every profile within five business days.</p>
+
+        <!-- Referral Bonus Milestone Guide -->
+        <div class="bonus-guide-card">
+          <div class="bonus-guide-title">REFERRAL REWARDS JOURNEY</div>
+          <div class="bonus-steps">
+            <div class="bonus-step">
+              <span class="bonus-num">01</span>
+              <div>
+                <strong>Submit Profile</strong>
+                <small>HR screens within 5 days</small>
+              </div>
+            </div>
+            <div class="bonus-arrow">&rarr;</div>
+            <div class="bonus-step">
+              <span class="bonus-num">02</span>
+              <div>
+                <strong>Interview &amp; Hire</strong>
+                <small>Passes plant assessment</small>
+              </div>
+            </div>
+            <div class="bonus-arrow">&rarr;</div>
+            <div class="bonus-step">
+              <span class="bonus-num">03</span>
+              <div>
+                <strong>Regularization</strong>
+                <small>Bonus released on Day 90</small>
+              </div>
+            </div>
+          </div>
+        </div>
         
-        <button id="startReferralBtn" class="primary-btn">
+        <button id="startReferralBtn" class="primary-btn" style="margin-top: 20px;">
           Start a Referral
+          <svg class="hr-icon hr-icon--sm" viewBox="0 0 24 24" aria-hidden="true" style="margin-left: 6px;"><path d="M5 12h14"/><path d="m13 6 6 6-6 6"/></svg>
         </button>
       </div>
     </div>
@@ -49,7 +86,25 @@
         <h1>Employee Referral Form</h1>
       </header>
 
-      <!-- FORM PROGRESS BAR -->
+      <!-- VISUAL 3-STEP PROGRESS INDICATOR -->
+      <div class="wizard-stepper">
+        <div class="wizard-step active" id="wizardStep1">
+          <div class="wizard-circle">1</div>
+          <span class="wizard-label">About You</span>
+        </div>
+        <div class="wizard-line" id="wizardLine1"></div>
+        <div class="wizard-step" id="wizardStep2">
+          <div class="wizard-circle">2</div>
+          <span class="wizard-label">Candidate</span>
+        </div>
+        <div class="wizard-line" id="wizardLine2"></div>
+        <div class="wizard-step" id="wizardStep3">
+          <div class="wizard-circle">3</div>
+          <span class="wizard-label">Resume</span>
+        </div>
+      </div>
+
+      <!-- PROGRESS BAR -->
       <div class="progress-bar-wrapper">
         <div id="progressBar" class="progress-bar-fill"></div>
       </div>
@@ -59,7 +114,7 @@
         <!-- STEP 1: ABOUT YOU -->
         <div class="form-step active" id="step1">
           <div class="section-title">Step 1: About you</div>
-          <p class="section-desc">So we know who to credit and where to send updates.</p>
+          <p class="section-desc">So we know who to credit for the referral and where to send status updates.</p>
 
           <div class="form-group">
             <label for="referrerName">Your full name <span class="req">*</span></label>
@@ -68,7 +123,7 @@
           </div>
 
           <div class="form-group">
-            <label for="referrerEmail">Your email <span class="req">*</span></label>
+            <label for="referrerEmail">Your Gmail address <span class="req">*</span></label>
             <input type="email" id="referrerEmail" name="referrerEmail" placeholder="e.g. alex.smith@gmail.com" required>
             <span class="error-msg">Please enter a valid Gmail address (e.g., name@gmail.com).</span>
           </div>
@@ -78,13 +133,13 @@
             <select id="referrerDepartment" name="referrerDepartment" required>
               <option value="" disabled selected>Select department</option>
               <option value="Engineering">Engineering</option>
-              <option value="Product">Product</option>
-              <option value="Design">Design</option>
-              <option value="Sales">Sales</option>
-              <option value="Marketing">Marketing</option>
-              <option value="Operations">Operations</option>
-              <option value="People & Talent">People & Talent</option>
-              <option value="Finance">Finance</option>
+              <option value="Production / Plant Ops">Production / Plant Ops</option>
+              <option value="Warehousing & Logistics">Warehousing &amp; Logistics</option>
+              <option value="Quality Assurance">Quality Assurance</option>
+              <option value="Maintenance">Maintenance</option>
+              <option value="Sales & Marketing">Sales &amp; Marketing</option>
+              <option value="Finance & Accounting">Finance &amp; Accounting</option>
+              <option value="People & Talent">People &amp; Talent</option>
               <option value="Other">Other</option>
             </select>
             <span class="error-msg">Select your department.</span>
@@ -93,7 +148,7 @@
           <!-- HIDDEN OTHER DEPARTMENT BOX -->
           <div class="form-group hidden-dept" id="otherDeptGroup">
             <label for="otherDepartment">Specify your department <span class="req">*</span></label>
-            <input type="text" id="otherDepartment" name="otherDepartment" placeholder="e.g. Legal, R&D">
+            <input type="text" id="otherDepartment" name="otherDepartment" placeholder="e.g. Legal, Safety, R&D">
             <span class="error-msg">Please specify your department.</span>
           </div>
 
@@ -103,48 +158,48 @@
         <!-- STEP 2: ABOUT YOUR REFERRAL -->
         <div class="form-step hidden" id="step2">
           <div class="section-title">Step 2: About your referral</div>
-          <p class="section-desc">Everything you know about their background and fit.</p>
+          <p class="section-desc">Details regarding the candidate's background and target role.</p>
 
           <div class="form-group">
-            <label for="candidateName">Their full name <span class="req">*</span></label>
+            <label for="candidateName">Candidate's full name <span class="req">*</span></label>
             <input type="text" id="candidateName" name="candidateName" placeholder="e.g. Jane Doe" required>
             <span class="error-msg">Please enter candidate name.</span>
           </div>
 
           <div class="form-group">
-            <label for="candidateEmail">Their Gmail <span class="req">*</span></label>
+            <label for="candidateEmail">Candidate's Gmail <span class="req">*</span></label>
             <input type="email" id="candidateEmail" name="candidateEmail" placeholder="jane.doe@gmail.com" required>
             <span class="error-msg">Please enter a valid Gmail address (e.g., name@gmail.com).</span>
           </div>
 
           <div class="form-row">
             <div class="form-group">
-              <label for="candidatePhone">Their phone (PH) <span class="req">*</span></label>
+              <label for="candidatePhone">Philippine mobile number <span class="req">*</span></label>
               <input type="tel" id="candidatePhone" name="candidatePhone" placeholder="09XX XXX XXXX" required>
-              <span class="error-msg">Must be a valid 11-digit number (09XX).</span>
+              <span class="error-msg">Must be a valid 11-digit number starting with 09.</span>
             </div>
 
             <div class="form-group">
-              <label for="candidatePortfolio">LinkedIn or portfolio <span class="optional">(optional)</span></label>
+              <label for="candidatePortfolio">LinkedIn / Portfolio <span class="optional">(optional)</span></label>
               <input type="url" id="candidatePortfolio" name="candidatePortfolio" placeholder="https://linkedin.com/in/username">
             </div>
           </div>
 
           <div class="form-group">
-            <label for="targetRole">Role or team they'd fit <span class="req">*</span></label>
-            <input type="text" id="targetRole" name="targetRole" placeholder="e.g. Senior Operator" required>
+            <label for="targetRole">Role or department they'd fit <span class="req">*</span></label>
+            <input type="text" id="targetRole" name="targetRole" placeholder="e.g. Senior Machine Operator, QA Inspector" required>
             <span class="error-msg">Specify the role or team.</span>
           </div>
 
           <div class="form-row step-actions">
             <button type="button" class="secondary-btn prev-btn" data-prev="step1">&larr; Back</button>
-            <button type="button" class="primary-btn next-btn" data-next="step3">Next: Review & Upload &rarr;</button>
+            <button type="button" class="primary-btn next-btn" data-next="step3">Next: Review &amp; Upload &rarr;</button>
           </div>
         </div>
 
         <!-- STEP 3: REVIEW & UPLOAD -->
         <div class="form-step hidden" id="step3">
-          <div class="section-title">Step 3: Review & Upload</div>
+          <div class="section-title">Step 3: Review &amp; Upload</div>
           <p class="section-desc">Final details and resume attachment.</p>
 
           <div class="form-group">
@@ -164,21 +219,21 @@
           <!-- HIDDEN OTHER RELATIONSHIP BOX -->
           <div class="form-group hidden-dept" id="otherRelationshipGroup">
             <label for="otherRelationship">Specify your relationship <span class="req">*</span></label>
-            <input type="text" id="otherRelationship" name="otherRelationship" placeholder="e.g. Mentor, Ex-business partner">
+            <input type="text" id="otherRelationship" name="otherRelationship" placeholder="e.g. Mentor, Former Supervisor">
             <span class="error-msg">Please specify your relationship.</span>
           </div>
 
           <div class="form-group">
             <div class="label-header">
-              <label for="notes">Additional message for HR <span class="optional">(optional)</span></label>
+              <label for="notes">Additional notes for HR <span class="optional">(optional)</span></label>
               <span class="counter"><span id="charCount">0</span>/500</span>
             </div>
-            <textarea id="notes" name="notes" rows="3" maxlength="500" placeholder="Share any extra context or notes for the hiring team..."></textarea>
+            <textarea id="notes" name="notes" rows="3" maxlength="500" placeholder="Share why you believe this candidate is a strong fit for Starkson..."></textarea>
           </div>
 
           <!-- RESUME UPLOAD -->
           <div class="form-group" id="resumeGroup">
-            <label>Resume <span class="req">*</span> <span class="optional">(Max 5MB: PDF, DOC, DOCX)</span></label>
+            <label>Resume / CV <span class="req">*</span> <span class="optional">(Max 5MB: PDF, DOC, DOCX)</span></label>
             <div class="drop-zone" id="dropZone">
               <input type="file" id="resume" name="resume" accept=".pdf,.doc,.docx,application/pdf,application/msword,application/vnd.openxmlformats-officedocument.wordprocessingml.document" class="file-input" required>
               <div class="drop-zone-content" id="dropZoneContent">
@@ -187,8 +242,8 @@
                   <polyline points="17 8 12 3 7 8"></polyline>
                   <line x1="12" y1="3" x2="12" y2="15"></line>
                 </svg>
-                <p>Drag and drop your file here, or <span>browse files</span></p>
-                <span class="subtext">Required: Max 5MB (.pdf, .doc, .docx).</span>
+                <p>Drag &amp; drop resume file here, or <span>browse files</span></p>
+                <span class="subtext">Supported: PDF, DOC, DOCX up to 5 MB. Automatically synced to Google Drive.</span>
               </div>
               <div id="filePreview" class="file-preview hidden">
                 <span class="file-name" id="fileName">resume.pdf</span>
@@ -201,11 +256,11 @@
           <div class="form-row step-actions">
             <button type="button" class="secondary-btn prev-btn" data-prev="step2">&larr; Back</button>
             <button type="submit" id="submitBtn" class="primary-btn">
-              <span id="btnText">Submit referral</span>
+              <span id="btnText">Submit Referral</span>
               <span id="loadingSpinner" class="spinner hidden"></span>
             </button>
           </div>
-          <p class="submit-note">A confirmation email will be sent to your email.</p>
+          <p class="submit-note">A confirmation record will be sent to the recruitment queue.</p>
         </div>
 
       </form>
@@ -214,6 +269,7 @@
     </div>
   </main>
 
+  <!-- VIEW 3: APPLICANT FORM -->
   <main id="applicantView" class="view hidden">
     <div class="form-card">
       <header class="form-header">

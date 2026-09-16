@@ -3,30 +3,80 @@
 <head>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <meta name="description" content="HR support for Starkson Paper and Plastic Corporation">
-  <title>HR Support | Starkson Paper and Plastic Corporation</title>
-  <link rel="icon" type="image/png" href="Directory Websites/referral-portal/images/logo.png">
+  <meta name="description" content="HR Support & Contact Hub for Starkson Paper and Plastic Corporation">
+  <meta name="theme-color" content="#10191a">
+  <title>Support Desk | Starkson Paper and Plastic Corporation</title>
+  <link rel="icon" href="favicon.svg" type="image/svg+xml">
+  <link rel="alternate icon" href="favicon.ico" sizes="any">
+  <link rel="apple-touch-icon" href="Directory Websites/referral-portal/images/logo.png">
   <link rel="preconnect" href="https://fonts.googleapis.com">
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-  <link href="https://fonts.googleapis.com/css2?family=DM+Sans:wght@400;500;600;700&family=Manrope:wght@600;700;800&display=swap" rel="stylesheet">
+  <link href="https://fonts.googleapis.com/css2?family=DM+Sans:wght@400;500;600;700&family=IBM+Plex+Mono:wght@500;600&family=Manrope:wght@600;700;800&display=swap" rel="stylesheet">
+  <link rel="stylesheet" href="css/tokens.css">
+  <link rel="stylesheet" href="css/components.css">
   <link rel="stylesheet" href="css/style.css">
   <script src="js/portal.js" defer></script>
 </head>
 <body>
+  <a class="hr-skip-link" href="#main-content">Skip to content</a>
+
   <div class="page-shell page-support">
+    <!-- Top Operations Bar -->
+    <div style="padding: 16px var(--gutter) 0;">
+      <div class="hr-ops-bar">
+        <div class="hr-ops-bar__group">
+          <span data-office-status><span class="hr-pulse-dot hr-pulse-dot--live"></span> HR Office Open (until 5:00 PM)</span>
+          <span style="opacity: 0.35;">|</span>
+          <span>HR Support Desk: <strong style="color: var(--status-sage-bright);">Online</strong></span>
+        </div>
+        <div class="hr-ops-bar__group">
+          <span class="hr-ops-bar__clock" data-pht-clock>--:--:-- PHT</span>
+          <button class="hr-theme-toggle" type="button" data-theme-toggle aria-label="Toggle theme">
+            <svg class="hr-theme-toggle__icon hr-theme-toggle__sun" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+              <circle cx="12" cy="12" r="5"></circle>
+              <line x1="12" y1="1" x2="12" y2="3"></line>
+              <line x1="12" y1="21" x2="12" y2="23"></line>
+              <line x1="4.22" y1="4.22" x2="5.64" y2="5.64"></line>
+              <line x1="18.36" y1="18.36" x2="19.78" y2="19.78"></line>
+              <line x1="1" y1="12" x2="3" y2="12"></line>
+              <line x1="21" y1="12" x2="23" y2="12"></line>
+              <line x1="4.22" y1="19.78" x2="5.64" y2="18.36"></line>
+              <line x1="18.36" y1="5.64" x2="19.78" y2="4.22"></line>
+            </svg>
+            <svg class="hr-theme-toggle__icon hr-theme-toggle__moon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+              <path d="M21 12.79A9 9 0 1 1 11.21 3 7 7 0 0 0 21 12.79z"></path>
+            </svg>
+            <span>Theme</span>
+          </button>
+        </div>
+      </div>
+    </div>
+
+    <!-- Header -->
     <header class="site-header">
       <a class="brand" href="index.html" aria-label="Starkson HR Portal home">
-        <img src="Directory Websites/referral-portal/images/logo.png" alt="Starkson logo">
-        <span><strong>STARKSON</strong><small>Paper &amp; Plastic Corporation</small></span>
+        <img src="Directory Websites/referral-portal/images/logo.png" alt="Starkson Logo">
+        <span><strong>STARKSON</strong><small>Paper & Plastic Corporation</small></span>
       </a>
-      <nav class="main-nav" aria-label="Main navigation">
+
+      <button class="nav-toggle" type="button" data-nav-toggle aria-expanded="false" aria-controls="primary-nav">
+        <span class="hr-visually-hidden">Menu</span>
+        <svg class="nav-toggle__open hr-icon hr-icon--lg" viewBox="0 0 24 24" aria-hidden="true">
+          <path d="M4 7h16"/><path d="M4 12h16"/><path d="M4 17h16"/>
+        </svg>
+        <svg class="nav-toggle__close hr-icon hr-icon--lg" viewBox="0 0 24 24" aria-hidden="true">
+          <path d="M6 6l12 12"/><path d="M18 6L6 18"/>
+        </svg>
+      </button>
+
+      <nav class="main-nav" id="primary-nav" aria-label="Main navigation">
         <a href="index.html">Home</a>
-        <a href="tools.html">HR tools</a>
-        <a class="active" href="support.html">Support</a>
+        <a href="tools.html">HR Tools</a>
+        <a class="active" href="support.html" aria-current="page">Support Desk</a>
       </nav>
     </header>
 
-    <main class="page-view support-view">
+    <main class="page-view support-view" id="main-content">
       <div class="page-motion" aria-hidden="true">
         <span class="page-signal page-signal-one"></span>
         <span class="page-signal page-signal-two"></span>
@@ -34,33 +84,179 @@
         <span class="page-orbit page-orbit-two"><i></i></span>
         <span class="page-coordinate">HR / 03 <b>●</b> SUPPORT DESK</span>
       </div>
+
       <div class="page-heading">
         <div>
-          <p class="eyebrow"><span class="eyebrow-dot"></span> People &amp; Culture</p>
+          <p class="eyebrow"><span class="eyebrow-dot"></span> People & Culture Helpdesk</p>
           <h1>HR is here<br><em>to help.</em></h1>
         </div>
-        <p class="page-summary">For questions about hiring, referrals, requests, or employee support, reach out to the People &amp; Culture team.</p>
+        <p class="page-summary">For questions about hiring, referrals, manpower requests, certificates of employment, or benefits, reach out directly to the People & Culture team.</p>
       </div>
 
-      <section class="support-panel" aria-label="HR contact information">
+      <!-- Quick Support Overview Panel -->
+      <section class="support-panel" aria-label="HR contact overview" style="margin-bottom: 36px;">
         <div class="support-panel-main">
-          <p class="note-label">Start a conversation</p>
+          <p class="note-label">START A CONVERSATION</p>
           <h2>Let’s solve it together.</h2>
-          <p>Whether you need guidance on a form or want to talk through a people matter, the HR team is ready to help you find the next step.</p>
-          <a class="button button-primary" href="mailto:starksonpackaginginc@gmail.com">Email the HR team <span aria-hidden="true">↗</span></a>
+          <p>Whether you need guidance on an employee referral, manpower requisition, or certificate request, our team is ready to assist you.</p>
+          <a class="hr-btn hr-btn--primary" href="mailto:starksonpackaginginc@gmail.com">
+            Email the HR Team Directly
+            <svg class="hr-icon hr-icon--sm" viewBox="0 0 24 24" aria-hidden="true">
+              <path d="M7 17 17 7"/><path d="M8 7h9v9"/>
+            </svg>
+          </a>
         </div>
+
         <div class="support-details">
-          <div><span class="detail-label">Email HR</span><strong>starksonpackaginginc@gmail.com</strong></div>
-          <div><span class="detail-label">Office hours</span><strong>Monday–Friday<br>8:00 AM–5:00 PM</strong></div>
-          <div><span class="detail-label">Team</span><strong>People &amp; Culture</strong></div>
+          <div>
+            <span class="detail-label">Direct Email</span>
+            <strong>starksonpackaginginc@gmail.com</strong>
+          </div>
+          <div>
+            <span class="detail-label">Office Schedule</span>
+            <strong>Monday–Friday<br>8:00 AM–5:00 PM (PHT)</strong>
+          </div>
+          <div>
+            <span class="detail-label">Department</span>
+            <strong>People Operations & Talent</strong>
+          </div>
+          <div>
+            <span class="detail-label">Plant Location</span>
+            <strong>Dasmariñas, Cavite, Philippines</strong>
+          </div>
         </div>
       </section>
+
+      <!-- Interactive Inquiry Dispatcher & Plant Guide -->
+      <div style="display: grid; grid-template-columns: minmax(0, 1.4fr) minmax(300px, 0.8fr); gap: 24px; position: relative; z-index: var(--z-content);">
+        <!-- Interactive Form Card -->
+        <div class="hr-card" style="padding: 32px 28px;">
+          <span class="section-eyebrow"><span class="eyebrow-dot"></span> Quick Inquiry Builder</span>
+          <h2 style="font-size: var(--step-3); font-weight: var(--weight-black); margin: 8px 0 16px;">Send an HR Request</h2>
+          <p style="color: var(--ink-soft); font-size: var(--step-0); line-height: var(--leading-body); margin-bottom: 24px;">
+            Fill out the form below. It will format your inquiry and prepare a structured email directly to the People & Culture team.
+          </p>
+
+          <form id="supportInquiryForm" onsubmit="handleInquirySubmit(event)">
+            <div style="display: grid; grid-template-columns: 1fr 1fr; gap: 16px; margin-bottom: 16px;">
+              <div class="hr-field">
+                <label for="inqName">Your Full Name</label>
+                <input id="inqName" type="text" placeholder="e.g. Juan Dela Cruz" required
+                       style="padding: 11px 14px; border: var(--border-glass); border-radius: var(--radius-sm); background: var(--surface-2); color: var(--ink);">
+              </div>
+              <div class="hr-field">
+                <label for="inqCategory">Inquiry Type</label>
+                <select id="inqCategory" required
+                        style="padding: 11px 14px; border: var(--border-glass); border-radius: var(--radius-sm); background: var(--surface-2); color: var(--ink);">
+                  <option value="" disabled selected>Select category</option>
+                  <option value="Referral Status">Referral Follow-up / Bonus</option>
+                  <option value="Certificate of Employment">Certificate of Employment (COE)</option>
+                  <option value="Manpower Request Inquiry">Manpower Request (MRF) Status</option>
+                  <option value="Government Benefits">SSS / PhilHealth / Pag-IBIG</option>
+                  <option value="General Question">General HR / Employee Matter</option>
+                </select>
+              </div>
+            </div>
+
+            <div style="display: grid; grid-template-columns: 1fr 1fr; gap: 16px; margin-bottom: 16px;">
+              <div class="hr-field">
+                <label for="inqDept">Your Department</label>
+                <input id="inqDept" type="text" placeholder="e.g. Production / Warehouse" required
+                       style="padding: 11px 14px; border: var(--border-glass); border-radius: var(--radius-sm); background: var(--surface-2); color: var(--ink);">
+              </div>
+              <div class="hr-field">
+                <label for="inqPhone">Contact Number</label>
+                <input id="inqPhone" type="tel" placeholder="09XX XXX XXXX"
+                       style="padding: 11px 14px; border: var(--border-glass); border-radius: var(--radius-sm); background: var(--surface-2); color: var(--ink);">
+              </div>
+            </div>
+
+            <div class="hr-field" style="margin-bottom: 22px;">
+              <label for="inqMessage">Message / Request Details</label>
+              <textarea id="inqMessage" rows="4" placeholder="Describe your question or request..." required
+                        style="padding: 12px 14px; border: var(--border-glass); border-radius: var(--radius-sm); background: var(--surface-2); color: var(--ink); resize: vertical; min-height: 90px;"></textarea>
+            </div>
+
+            <button type="submit" class="hr-btn hr-btn--primary" style="width: 100%;">
+              Send Inquiry to HR
+              <svg class="hr-icon hr-icon--sm" viewBox="0 0 24 24" aria-hidden="true">
+                <line x1="22" y1="2" x2="11" y2="13"></line>
+                <polygon points="22 2 15 22 11 13 2 9 22 2"></polygon>
+              </svg>
+            </button>
+          </form>
+        </div>
+
+        <!-- Plant & Visitor Information Card -->
+        <div style="display: flex; flex-direction: column; gap: 20px;">
+          <div class="hr-card" style="padding: 26px 24px;">
+            <div style="display: flex; align-items: center; justify-content: space-between; margin-bottom: 14px;">
+              <span class="section-eyebrow" style="margin-bottom: 0;"><span class="eyebrow-dot"></span> Plant Facility</span>
+              <span class="hr-badge hr-badge--sage" style="font-size: 10px;">Cavite Plant</span>
+            </div>
+            <h3 style="font-size: var(--step-2); font-weight: var(--weight-bold); margin-bottom: 8px;">Manufacturing Plant</h3>
+            <p style="color: var(--ink-soft); font-size: var(--step--1); line-height: 1.6; margin-bottom: 16px;">
+              Starkson Paper and Plastic Corporation manufacturing operations and HR administration are housed within our main Cavite industrial facility.
+            </p>
+            <div style="border-top: var(--border-glass); padding-top: 14px; font-size: var(--step--1); color: var(--muted); display: grid; gap: 8px;">
+              <div>📍 <strong>Address:</strong> Dasmariñas, Cavite, Philippines</div>
+              <div>🕒 <strong>Shift Schedules:</strong> Day & Night Manufacturing Cycles</div>
+              <div>🛡️ <strong>Safety Requirement:</strong> PPE and ID required for entry</div>
+            </div>
+          </div>
+
+          <div class="hr-card" style="padding: 24px;">
+            <h3 style="font-size: var(--step-1); font-weight: var(--weight-bold); margin-bottom: 8px;">Need Immediate Verification?</h3>
+            <p style="color: var(--ink-soft); font-size: var(--step--1); line-height: 1.5; margin-bottom: 14px;">
+              For urgent employment verification from banking institutions or government agencies, please flag your email subject with <strong>[URGENT VERIFICATION]</strong>.
+            </p>
+            <a href="mailto:starksonpackaginginc@gmail.com?subject=[URGENT%20VERIFICATION]" class="text-link" style="font-size: var(--step--1);">
+              Draft Urgent Email &rarr;
+            </a>
+          </div>
+        </div>
+      </div>
     </main>
 
     <footer class="site-footer">
-      <span>© 2026 Starkson Paper and Plastic Corporation</span>
-      <span>People &amp; Culture · Internal use</span>
+      <nav class="footer-nav" aria-label="Footer navigation">
+        <a href="index.html">Home</a>
+        <a href="tools.html">HR Tools</a>
+        <a href="support.html">Support</a>
+        <a href="mailto:starksonpackaginginc@gmail.com">Contact HR</a>
+      </nav>
+      <div class="footer-meta">
+        <span>© 2026 Starkson Paper and Plastic Corporation</span>
+        <span>·</span>
+        <span>People & Culture · Internal Operations Hub</span>
+        <span>·</span>
+        <span>Dasmariñas, Cavite, Philippines</span>
+      </div>
     </footer>
   </div>
+
+  <script>
+    function handleInquirySubmit(event) {
+      event.preventDefault();
+      const name = document.getElementById("inqName").value;
+      const cat = document.getElementById("inqCategory").value;
+      const dept = document.getElementById("inqDept").value;
+      const phone = document.getElementById("inqPhone").value;
+      const msg = document.getElementById("inqMessage").value;
+
+      const subject = encodeURIComponent(`[HR Inquiry - ${cat}] ${name} (${dept})`);
+      const body = encodeURIComponent(
+        `Dear People & Culture Team,\n\n` +
+        `Employee Name: ${name}\n` +
+        `Department: ${dept}\n` +
+        `Contact Phone: ${phone || 'N/A'}\n` +
+        `Inquiry Category: ${cat}\n\n` +
+        `Message / Request Details:\n${msg}\n\n` +
+        `--\nSent via Starkson HR Portal Support Desk`
+      );
+
+      window.location.href = `mailto:starksonpackaginginc@gmail.com?subject=${subject}&body=${body}`;
+    }
+  </script>
 </body>
 </html>

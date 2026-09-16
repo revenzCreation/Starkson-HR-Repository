@@ -3,33 +3,84 @@
 <head>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <meta name="description" content="Starkson Paper and Plastic Corporation HR Portal">
+  <meta name="description" content="Starkson Paper and Plastic Corporation HR Portal — People & Culture Command Center">
+  <meta name="theme-color" content="#10191a">
   <title>HR Portal | Starkson Paper and Plastic Corporation</title>
-  <link rel="icon" type="image/png" href="Directory Websites/referral-portal/images/logo.png">
+  <link rel="icon" href="favicon.svg" type="image/svg+xml">
+  <link rel="alternate icon" href="favicon.ico" sizes="any">
+  <link rel="apple-touch-icon" href="Directory Websites/referral-portal/images/logo.png">
   <link rel="preconnect" href="https://fonts.googleapis.com">
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-  <link href="https://fonts.googleapis.com/css2?family=DM+Sans:wght@400;500;600;700&family=Manrope:wght@600;700;800&display=swap" rel="stylesheet">
+  <link href="https://fonts.googleapis.com/css2?family=DM+Sans:wght@400;500;600;700&family=IBM+Plex+Mono:wght@500;600&family=Manrope:wght@600;700;800&display=swap" rel="stylesheet">
+  <link rel="stylesheet" href="css/tokens.css">
+  <link rel="stylesheet" href="css/components.css">
   <link rel="stylesheet" href="css/style.css">
   <script src="js/portal.js" defer></script>
 </head>
 <body>
+  <a class="hr-skip-link" href="#main-content">Skip to content</a>
+
   <div class="page-shell">
+    <!-- Top Operations Bar -->
+    <div style="padding: 16px var(--gutter) 0;">
+      <div class="hr-ops-bar">
+        <div class="hr-ops-bar__group">
+          <span data-office-status><span class="hr-pulse-dot hr-pulse-dot--live"></span> HR Office Open (until 5:00 PM)</span>
+          <span style="opacity: 0.35;">|</span>
+          <span>Plant Ops: <strong style="color: var(--status-sage-bright);">Normal</strong></span>
+        </div>
+        <div class="hr-ops-bar__group">
+          <span class="hr-ops-bar__clock" data-pht-clock>--:--:-- PHT</span>
+          <button class="hr-theme-toggle" type="button" data-theme-toggle aria-label="Toggle theme">
+            <svg class="hr-theme-toggle__icon hr-theme-toggle__sun" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+              <circle cx="12" cy="12" r="5"></circle>
+              <line x1="12" y1="1" x2="12" y2="3"></line>
+              <line x1="12" y1="21" x2="12" y2="23"></line>
+              <line x1="4.22" y1="4.22" x2="5.64" y2="5.64"></line>
+              <line x1="18.36" y1="18.36" x2="19.78" y2="19.78"></line>
+              <line x1="1" y1="12" x2="3" y2="12"></line>
+              <line x1="21" y1="12" x2="23" y2="12"></line>
+              <line x1="4.22" y1="19.78" x2="5.64" y2="18.36"></line>
+              <line x1="18.36" y1="5.64" x2="19.78" y2="4.22"></line>
+            </svg>
+            <svg class="hr-theme-toggle__icon hr-theme-toggle__moon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+              <path d="M21 12.79A9 9 0 1 1 11.21 3 7 7 0 0 0 21 12.79z"></path>
+            </svg>
+            <span>Theme</span>
+          </button>
+        </div>
+      </div>
+    </div>
+
+    <!-- Header -->
     <header class="site-header">
       <a class="brand" href="index.html" aria-label="Starkson HR Portal home">
-        <img src="Directory Websites/referral-portal/images/logo.png" alt="Starkson logo">
+        <img src="Directory Websites/referral-portal/images/logo.png" alt="Starkson Logo">
         <span>
           <strong>STARKSON</strong>
-          <small>Paper &amp; Plastic Corporation</small>
+          <small>Paper & Plastic Corporation</small>
         </span>
       </a>
-      <nav class="main-nav" aria-label="Main navigation">
-        <a class="active" href="index.html">Home</a>
-        <a href="tools.html">HR tools</a>
-        <a href="support.html">Support</a>
+
+      <button class="nav-toggle" type="button" data-nav-toggle aria-expanded="false" aria-controls="primary-nav">
+        <span class="hr-visually-hidden">Menu</span>
+        <svg class="nav-toggle__open hr-icon hr-icon--lg" viewBox="0 0 24 24" aria-hidden="true">
+          <path d="M4 7h16"/><path d="M4 12h16"/><path d="M4 17h16"/>
+        </svg>
+        <svg class="nav-toggle__close hr-icon hr-icon--lg" viewBox="0 0 24 24" aria-hidden="true">
+          <path d="M6 6l12 12"/><path d="M18 6L6 18"/>
+        </svg>
+      </button>
+
+      <nav class="main-nav" id="primary-nav" aria-label="Main navigation">
+        <a class="active" href="index.html" aria-current="page">Home</a>
+        <a href="tools.html">HR Tools</a>
+        <a href="support.html">Support Desk</a>
       </nav>
     </header>
 
-    <main>
+    <main id="main-content">
+      <!-- HERO -->
       <section class="hero" id="home">
         <div class="hero-decor" aria-hidden="true">
           <span class="float-label float-label-one"><b>01</b> PEOPLE</span>
@@ -45,27 +96,225 @@
           <span class="red-signal red-signal-two"></span>
           <span class="red-signal red-signal-three"></span>
         </div>
+
         <div class="hero-copy">
-          <p class="eyebrow"><span class="eyebrow-dot"></span> Starkson People &amp; Culture</p>
+          <p class="eyebrow"><span class="eyebrow-dot"></span> Starkson People & Culture</p>
           <h1>Good work starts with <em>great people.</em></h1>
-          <p class="hero-intro">Your central place for the forms, resources, and support that keep our people moving forward.</p>
+          <p class="hero-intro">Your central operations hub for recruitment, manpower requests, verified employee records, and internal talent support.</p>
           <div class="hero-actions">
-            <a class="button button-primary" href="tools.html">Explore HR tools <span aria-hidden="true">→</span></a>
-            <a class="text-link" href="mailto:starksonpackaginginc@gmail.com">Talk to the HR team <span aria-hidden="true">→</span></a>
+            <a class="hr-btn hr-btn--primary" href="tools.html">
+              Explore HR Tools
+              <svg class="hr-icon" viewBox="0 0 24 24" aria-hidden="true">
+                <path d="M5 12h14"/><path d="m13 6 6 6-6 6"/>
+              </svg>
+            </a>
+            <a class="text-link" href="support.html">
+              Talk to the HR Team
+              <svg class="hr-icon hr-icon--sm" viewBox="0 0 24 24" aria-hidden="true">
+                <path d="M7 17 17 7"/><path d="M8 7h9v9"/>
+              </svg>
+            </a>
           </div>
         </div>
+
         <div class="hero-note" aria-label="HR Portal update">
-          <span class="note-label">THIS WEEK IN HR</span>
+          <span class="note-label">PEOPLE & CULTURE 2026</span>
           <p>Building a workplace where every role has room to grow.</p>
           <span class="note-rule"></span>
-          <span class="note-meta">Starkson Paper &amp; Plastic Corporation</span>
+          <span class="note-meta">Plant Operations · Dasmariñas, Cavite</span>
         </div>
       </section>
+
+      <!-- HOME EXPANDED SECTIONS -->
+      <div class="home-sections">
+        <!-- 1. Operational Metrics Pulse -->
+        <div class="hr-stats-grid">
+          <div class="hr-stat-card">
+            <div class="hr-stat-num">
+              <span data-counter-target="48">0</span>
+              <span class="hr-stat-unit">+</span>
+            </div>
+            <div class="hr-stat-label">Active Roles</div>
+            <div class="hr-stat-sub">Across Plant, Warehousing & Admin</div>
+          </div>
+          <div class="hr-stat-card">
+            <div class="hr-stat-num">
+              <span data-counter-target="100">0</span>
+              <span class="hr-stat-unit">%</span>
+            </div>
+            <div class="hr-stat-label">Compliance Rate</div>
+            <div class="hr-stat-sub">DOLE & Plant Safety Standards</div>
+          </div>
+          <div class="hr-stat-card">
+            <div class="hr-stat-num">
+              <span data-counter-target="5">0</span>
+              <span class="hr-stat-unit">Days</span>
+            </div>
+            <div class="hr-stat-label">Referral Review</div>
+            <div class="hr-stat-sub">Fast HR candidate intake turnaround</div>
+          </div>
+          <div class="hr-stat-card">
+            <div class="hr-stat-num">
+              <span data-counter-target="4">0</span>
+              <span class="hr-stat-unit">Tools</span>
+            </div>
+            <div class="hr-stat-label">Integrated Workflows</div>
+            <div class="hr-stat-sub">Cloudflare & Google Sheets Sync</div>
+          </div>
+        </div>
+
+        <!-- 2. Quick Workflow Launcher -->
+        <div class="section-head" style="margin-top: 50px;">
+          <span class="section-eyebrow"><span class="eyebrow-dot"></span> Quick Action Launcher</span>
+          <h2 class="section-title">Jump directly into your <em>workflow.</em></h2>
+          <p class="section-lead">Select the task you need to complete today. All entries sync directly to our secure company sheets.</p>
+        </div>
+
+        <div class="hr-launcher-grid">
+          <a class="hr-launcher-card" href="Directory Websites/referral-portal/index.html">
+            <div class="hr-launcher-card__top">
+              <div class="hr-launcher-card__icon">👥</div>
+              <span class="hr-badge hr-badge--red">Bonus Tier</span>
+            </div>
+            <div class="hr-launcher-card__title">Employee Referrals</div>
+            <div class="hr-launcher-card__desc">Recommend talented colleagues or friends and earn referral incentives.</div>
+            <span class="hr-launcher-card__link">Start a Referral &rarr;</span>
+          </a>
+
+          <a class="hr-launcher-card" href="Directory Websites/mrf-monitor/index.html">
+            <div class="hr-launcher-card__top">
+              <div class="hr-launcher-card__icon">📋</div>
+              <span class="hr-badge hr-badge--sage">Live Tracker</span>
+            </div>
+            <div class="hr-launcher-card__title">Manpower Requests</div>
+            <div class="hr-launcher-card__desc">Log new headcount requests or check department approval progress.</div>
+            <span class="hr-launcher-card__link">Open MRF Monitor &rarr;</span>
+          </a>
+
+          <a class="hr-launcher-card" href="Directory Websites/applicant-form/index.html">
+            <div class="hr-launcher-card__top">
+              <div class="hr-launcher-card__icon">📝</div>
+              <span class="hr-badge hr-badge--neutral">Open Intake</span>
+            </div>
+            <div class="hr-launcher-card__title">Applicant Intake</div>
+            <div class="hr-launcher-card__desc">Submit candidate details and resumes directly into the applicant pool.</div>
+            <span class="hr-launcher-card__link">Submit Profile &rarr;</span>
+          </a>
+
+          <a class="hr-launcher-card" href="Directory Websites/201-files/login.html">
+            <div class="hr-launcher-card__top">
+              <div class="hr-launcher-card__icon">🔒</div>
+              <span class="hr-badge hr-badge--neutral">Auth Required</span>
+            </div>
+            <div class="hr-launcher-card__title">201 Personnel Files</div>
+            <div class="hr-launcher-card__desc">Secure employee document directory for authorized HR personnel.</div>
+            <span class="hr-launcher-card__link">Sign in to Files &rarr;</span>
+          </a>
+        </div>
+
+        <!-- 3. Company Pillars -->
+        <div class="section-head" style="margin-top: 60px;">
+          <span class="section-eyebrow"><span class="eyebrow-dot"></span> Starkson Principles</span>
+          <h2 class="section-title">Built on craftsmanship, <em>driven by people.</em></h2>
+          <p class="section-lead">Starkson Paper and Plastic Corporation has grown on the strength of our manufacturing operators, technical leads, and dedicated teams.</p>
+        </div>
+
+        <div class="hr-pillars-grid">
+          <div class="hr-pillar-card">
+            <div class="hr-pillar-card__num">PILLAR // 01</div>
+            <h3>Safety & Integrity</h3>
+            <p>We believe every shift must begin and end safely. Our plant adheres to the highest manufacturing and labor standards.</p>
+          </div>
+          <div class="hr-pillar-card">
+            <div class="hr-pillar-card__num">PILLAR // 02</div>
+            <h3>Manufacturing Craft</h3>
+            <p>From corrugated packaging to precision plastic containers, our quality is a direct reflection of our people's diligence.</p>
+          </div>
+          <div class="hr-pillar-card">
+            <div class="hr-pillar-card__num">PILLAR // 03</div>
+            <h3>Internal Mobility</h3>
+            <p>We prioritize hiring and promoting from within. Our referral programs and skills training ensure paths for advancement.</p>
+          </div>
+          <div class="hr-pillar-card">
+            <div class="hr-pillar-card__num">PILLAR // 04</div>
+            <h3>Community First</h3>
+            <p>We provide comprehensive benefits, transparent compensation, and a respectful workplace for every member of the family.</p>
+          </div>
+        </div>
+
+        <!-- 4. Interactive FAQ -->
+        <div class="section-head" style="margin-top: 60px;">
+          <span class="section-eyebrow"><span class="eyebrow-dot"></span> Helpdesk & FAQs</span>
+          <h2 class="section-title">Frequently asked <em>questions.</em></h2>
+          <p class="section-lead">Quick answers to common questions regarding forms, referrals, and HR support.</p>
+        </div>
+
+        <div class="hr-accordion">
+          <div class="hr-accordion__item" data-open="true">
+            <button class="hr-accordion__trigger" type="button" data-accordion-trigger>
+              <span>How does the Starkson Employee Referral program work?</span>
+              <svg class="hr-accordion__chevron hr-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                <polyline points="6 9 12 15 18 9"></polyline>
+              </svg>
+            </button>
+            <div class="hr-accordion__content">
+              Any current regular Starkson employee can refer a candidate using our online Referral Portal. After submission, the HR recruitment team reviews the candidate within 5 business days. When your referral passes screening and completes their 90-day regularization milestone, you receive the corporate referral incentive.
+            </div>
+          </div>
+
+          <div class="hr-accordion__item" data-open="false">
+            <button class="hr-accordion__trigger" type="button" data-accordion-trigger>
+              <span>Who can log a Manpower Request Form (MRF)?</span>
+              <svg class="hr-accordion__chevron hr-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                <polyline points="6 9 12 15 18 9"></polyline>
+              </svg>
+            </button>
+            <div class="hr-accordion__content">
+              Department supervisors, plant managers, and department heads may log new headcount requests through the MRF Monitor. Scanned hard-copy request slips can be uploaded directly to the tracker for review by People Operations and General Management.
+            </div>
+          </div>
+
+          <div class="hr-accordion__item" data-open="false">
+            <button class="hr-accordion__trigger" type="button" data-accordion-trigger>
+              <span>Who has access to the 201 Files directory?</span>
+              <svg class="hr-accordion__chevron hr-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                <polyline points="6 9 12 15 18 9"></polyline>
+              </svg>
+            </button>
+            <div class="hr-accordion__content">
+              The 201 Files directory contains confidential employee records and personnel files. Access is restricted exclusively to authorized HR Staff and Personnel with designated corporate credentials.
+            </div>
+          </div>
+
+          <div class="hr-accordion__item" data-open="false">
+            <button class="hr-accordion__trigger" type="button" data-accordion-trigger>
+              <span>How do I contact the People & Culture team for general inquiries?</span>
+              <svg class="hr-accordion__chevron hr-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                <polyline points="6 9 12 15 18 9"></polyline>
+              </svg>
+            </button>
+            <div class="hr-accordion__content">
+              You can visit the <a href="support.html" style="color: var(--brand-red-bright); text-decoration: underline;">Support Desk</a> page, email us directly at <strong>starksonpackaginginc@gmail.com</strong>, or visit the HR office in person Monday through Friday between 8:00 AM and 5:00 PM.
+            </div>
+          </div>
+        </div>
+      </div>
     </main>
 
     <footer class="site-footer">
-      <span>© 2026 Starkson Paper and Plastic Corporation</span>
-      <span>People &amp; Culture · Internal use</span>
+      <nav class="footer-nav" aria-label="Footer navigation">
+        <a href="index.html">Home</a>
+        <a href="tools.html">HR Tools</a>
+        <a href="support.html">Support</a>
+        <a href="mailto:starksonpackaginginc@gmail.com">Contact HR</a>
+      </nav>
+      <div class="footer-meta">
+        <span>© 2026 Starkson Paper and Plastic Corporation</span>
+        <span>·</span>
+        <span>People & Culture · Internal Operations Hub</span>
+        <span>·</span>
+        <span>Dasmariñas, Cavite, Philippines</span>
+      </div>
     </footer>
   </div>
 </body>

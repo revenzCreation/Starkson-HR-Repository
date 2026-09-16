@@ -8,7 +8,9 @@
   <link rel="icon" type="image/png" href="../../referral-portal/images/logo.png">
   <link rel="preconnect" href="https://fonts.googleapis.com">
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-  <link href="https://fonts.googleapis.com/css2?family=DM+Sans:wght@400;500;600;700&family=Manrope:wght@600;700;800&display=swap" rel="stylesheet">
+  <link href="https://fonts.googleapis.com/css2?family=DM+Sans:wght@400;500;600;700&family=IBM+Plex+Mono:wght@500;600&family=Manrope:wght@600;700;800&display=swap" rel="stylesheet">
+  <link rel="stylesheet" href="../../css/tokens.css">
+  <link rel="stylesheet" href="../../css/components.css">
   <link rel="stylesheet" href="css/style.css">
 </head>
 <body>
@@ -23,27 +25,56 @@
 
     <main class="login-page">
       <section class="login-card" aria-labelledby="loginTitle">
-        <span class="login-mark" aria-hidden="true">201</span>
-        <p class="eyebrow"><span class="eyebrow-dot"></span> Restricted access</p>
+        <div style="display: flex; align-items: center; justify-content: space-between; margin-bottom: 20px;">
+          <span class="login-mark" aria-hidden="true">201</span>
+          <span class="hr-badge hr-badge--neutral" style="font-size: 10px;">Restricted Access</span>
+        </div>
+
+        <p class="eyebrow"><span class="eyebrow-dot"></span> Confidential Personnel Directory</p>
         <h1 id="loginTitle">HR Staff <em>sign in.</em></h1>
-        <p class="login-intro">Authenticate to open the protected employee 201 Files directory.</p>
+        <p class="login-intro">Authenticate to open the protected employee 201 Files directory and Google Drive records.</p>
+
         <form id="loginForm">
-          <label for="user">HR Staff username</label>
-          <input id="user" name="user" type="text" autocomplete="username" required>
+          <label for="user">HR Staff Username</label>
+          <input id="user" name="user" type="text" autocomplete="username" placeholder="Enter authorized username" required>
+          
           <label for="password">Password</label>
-          <input id="password" name="password" type="password" autocomplete="current-password" required>
-          <button class="login-button" type="submit">Continue to 201 Files <span aria-hidden="true">→</span></button>
+          <div style="position: relative;">
+            <input id="password" name="password" type="password" autocomplete="current-password" placeholder="••••••••" required style="padding-right: 44px;">
+            <button type="button" id="togglePasswordBtn" aria-label="Toggle password visibility"
+                    style="position: absolute; right: 10px; top: 50%; transform: translateY(-50%); background: none; border: none; color: var(--muted); cursor: pointer; font-size: 13px; font-weight: 700; padding: 4px;">
+              👁️
+            </button>
+          </div>
+
+          <button class="login-button" type="submit">
+            <span>Continue to 201 Files</span>
+            <span aria-hidden="true">&rarr;</span>
+          </button>
           <p class="login-status" id="loginStatus" role="alert"></p>
         </form>
-        <p class="login-note"><span>i</span> Access is logged and limited to authorized HR Staff / Personnel.</p>
+
+        <p class="login-note"><span>i</span> Access is logged and limited strictly to authorized Starkson HR Staff.</p>
       </section>
     </main>
 
     <footer class="site-footer">
       <span>&copy; 2026 Starkson Paper and Plastic Corporation</span>
-      <span>People &amp; Culture &middot; Authorized use only</span>
+      <span>People &amp; Culture &middot; Authorized personnel only</span>
     </footer>
   </div>
+
+  <script>
+    const toggleBtn = document.getElementById('togglePasswordBtn');
+    const pwdInput = document.getElementById('password');
+    if (toggleBtn && pwdInput) {
+      toggleBtn.addEventListener('click', () => {
+        const isPwd = pwdInput.type === 'password';
+        pwdInput.type = isPwd ? 'text' : 'password';
+        toggleBtn.textContent = isPwd ? '🔒' : '👁️';
+      });
+    }
+  </script>
   <script src="js/login.js?v=20260907-2"></script>
 </body>
 </html>

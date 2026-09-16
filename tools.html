@@ -3,84 +3,237 @@
 <head>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <meta name="description" content="HR tools for Starkson Paper and Plastic Corporation">
+  <meta name="description" content="HR Tools & Operational Workspaces for Starkson Paper and Plastic Corporation">
+  <meta name="theme-color" content="#10191a">
   <title>HR Tools | Starkson Paper and Plastic Corporation</title>
-  <link rel="icon" type="image/png" href="Directory Websites/referral-portal/images/logo.png">
+  <link rel="icon" href="favicon.svg" type="image/svg+xml">
+  <link rel="alternate icon" href="favicon.ico" sizes="any">
+  <link rel="apple-touch-icon" href="Directory Websites/referral-portal/images/logo.png">
   <link rel="preconnect" href="https://fonts.googleapis.com">
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-  <link href="https://fonts.googleapis.com/css2?family=DM+Sans:wght@400;500;600;700&family=Manrope:wght@600;700;800&display=swap" rel="stylesheet">
+  <link href="https://fonts.googleapis.com/css2?family=DM+Sans:wght@400;500;600;700&family=IBM+Plex+Mono:wght@500;600&family=Manrope:wght@600;700;800&display=swap" rel="stylesheet">
+  <link rel="stylesheet" href="css/tokens.css">
+  <link rel="stylesheet" href="css/components.css">
   <link rel="stylesheet" href="css/style.css">
   <script src="js/portal.js" defer></script>
 </head>
 <body>
+  <a class="hr-skip-link" href="#main-content">Skip to content</a>
+
   <div class="page-shell page-tools">
+    <!-- Top Operations Bar -->
+    <div style="padding: 16px var(--gutter) 0;">
+      <div class="hr-ops-bar">
+        <div class="hr-ops-bar__group">
+          <span data-office-status><span class="hr-pulse-dot hr-pulse-dot--live"></span> HR Office Open (until 5:00 PM)</span>
+          <span style="opacity: 0.35;">|</span>
+          <span>Google Apps Script Deployments: <strong style="color: var(--status-sage-bright);">Active</strong></span>
+        </div>
+        <div class="hr-ops-bar__group">
+          <span class="hr-ops-bar__clock" data-pht-clock>--:--:-- PHT</span>
+          <button class="hr-theme-toggle" type="button" data-theme-toggle aria-label="Toggle theme">
+            <svg class="hr-theme-toggle__icon hr-theme-toggle__sun" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+              <circle cx="12" cy="12" r="5"></circle>
+              <line x1="12" y1="1" x2="12" y2="3"></line>
+              <line x1="12" y1="21" x2="12" y2="23"></line>
+              <line x1="4.22" y1="4.22" x2="5.64" y2="5.64"></line>
+              <line x1="18.36" y1="18.36" x2="19.78" y2="19.78"></line>
+              <line x1="1" y1="12" x2="3" y2="12"></line>
+              <line x1="21" y1="12" x2="23" y2="12"></line>
+              <line x1="4.22" y1="19.78" x2="5.64" y2="18.36"></line>
+              <line x1="18.36" y1="5.64" x2="19.78" y2="4.22"></line>
+            </svg>
+            <svg class="hr-theme-toggle__icon hr-theme-toggle__moon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+              <path d="M21 12.79A9 9 0 1 1 11.21 3 7 7 0 0 0 21 12.79z"></path>
+            </svg>
+            <span>Theme</span>
+          </button>
+        </div>
+      </div>
+    </div>
+
+    <!-- Header -->
     <header class="site-header">
       <a class="brand" href="index.html" aria-label="Starkson HR Portal home">
-        <img src="Directory Websites/referral-portal/images/logo.png" alt="Starkson logo">
-        <span><strong>STARKSON</strong><small>Paper &amp; Plastic Corporation</small></span>
+        <img src="Directory Websites/referral-portal/images/logo.png" alt="Starkson Logo">
+        <span><strong>STARKSON</strong><small>Paper & Plastic Corporation</small></span>
       </a>
-      <nav class="main-nav" aria-label="Main navigation">
+
+      <button class="nav-toggle" type="button" data-nav-toggle aria-expanded="false" aria-controls="primary-nav">
+        <span class="hr-visually-hidden">Menu</span>
+        <svg class="nav-toggle__open hr-icon hr-icon--lg" viewBox="0 0 24 24" aria-hidden="true">
+          <path d="M4 7h16"/><path d="M4 12h16"/><path d="M4 17h16"/>
+        </svg>
+        <svg class="nav-toggle__close hr-icon hr-icon--lg" viewBox="0 0 24 24" aria-hidden="true">
+          <path d="M6 6l12 12"/><path d="M18 6L6 18"/>
+        </svg>
+      </button>
+
+      <nav class="main-nav" id="primary-nav" aria-label="Main navigation">
         <a href="index.html">Home</a>
-        <a class="active" href="tools.html">HR tools</a>
-        <a href="support.html">Support</a>
+        <a class="active" href="tools.html" aria-current="page">HR Tools</a>
+        <a href="support.html">Support Desk</a>
       </nav>
     </header>
 
-    <main class="page-view">
+    <main class="page-view" id="main-content">
       <div class="page-motion" aria-hidden="true">
         <span class="page-signal page-signal-one"></span>
         <span class="page-signal page-signal-two"></span>
         <span class="page-orbit page-orbit-one"><i></i></span>
         <span class="page-orbit page-orbit-two"><i></i></span>
-        <span class="page-coordinate">HR / 02 <b>●</b> WORKSPACE</span>
+        <span class="page-coordinate">HR / 02 <b>●</b> WORKSPACE DIRECTORY</span>
       </div>
+
       <div class="page-heading">
         <div>
-          <p class="eyebrow"><span class="eyebrow-dot"></span> Your HR workspace</p>
+          <p class="eyebrow"><span class="eyebrow-dot"></span> Integrated Workspaces</p>
           <h1>Tools for the work<br><em>behind the work.</em></h1>
         </div>
-        <p class="page-summary">Quick access to the workflows HR and department leads use most. Choose a tool to continue.</p>
+        <p class="page-summary">Centralized access to the operations tools, request monitors, and personnel records used by department heads and People & Culture.</p>
       </div>
 
+      <!-- Filter Controls & Real-Time Search -->
+      <div style="display: flex; justify-content: space-between; align-items: center; flex-wrap: wrap; gap: 16px; margin-bottom: 24px; position: relative; z-index: var(--z-content);">
+        <div class="hr-filter-nav" style="margin-bottom: 0;">
+          <button class="hr-filter-btn active" type="button" data-filter-category="all">All Tools</button>
+          <button class="hr-filter-btn" type="button" data-filter-category="recruitment">Recruitment</button>
+          <button class="hr-filter-btn" type="button" data-filter-category="operations">Plant Operations</button>
+          <button class="hr-filter-btn" type="button" data-filter-category="records">Personnel Records</button>
+        </div>
+
+        <div style="position: relative; width: min(320px, 100%);">
+          <input type="search" placeholder="Search tool by name or keyword..." data-tool-search
+                 style="width: 100%; padding: 9px 14px 9px 36px; border: var(--border-glass); border-radius: var(--radius-pill); background: var(--surface-card); color: var(--ink); font-size: var(--step--1); outline: none;">
+          <svg class="hr-icon hr-icon--sm" viewBox="0 0 24 24" aria-hidden="true" style="position: absolute; left: 14px; top: 50%; transform: translateY(-50%); color: var(--muted); pointer-events: none;">
+            <circle cx="11" cy="11" r="8"></circle>
+            <line x1="21" y1="21" x2="16.65" y2="16.65"></line>
+          </svg>
+        </div>
+      </div>
+
+      <!-- Tool Grid with Live Badges, Sub-actions and 3D Specular Tilt -->
       <div class="tool-grid">
-        <a class="tool-card featured" href="Directory Websites/referral-portal/index.html">
-          <div class="card-topline"><span class="tool-number">01</span><span class="card-arrow" aria-hidden="true">↗</span></div>
+        <!-- 01: Employee Referrals -->
+        <a class="tool-card featured" href="Directory Websites/referral-portal/index.html" data-tool-item data-category="recruitment">
+          <div class="card-topline">
+            <div style="display: flex; align-items: center; gap: 8px;">
+              <span class="tool-number">01</span>
+              <span class="hr-badge hr-badge--sage" style="font-size: 10px; padding: 2px 7px;">Sheet 1 Connected</span>
+            </div>
+            <svg class="card-arrow hr-icon hr-icon--lg" viewBox="0 0 24 24" aria-hidden="true">
+              <path d="M7 17 17 7"/><path d="M8 7h9v9"/>
+            </svg>
+          </div>
           <div class="tool-icon icon-people" aria-hidden="true"><span></span><span></span><span></span></div>
           <h2>Employee Referrals</h2>
-          <p>Recommend someone you trust and help us find the next great addition to the Starkson team.</p>
-          <span class="card-link">Submit a referral <span aria-hidden="true">→</span></span>
+          <p>Recommend candidates you trust for plant and office roles. Features automated multi-step verification and bonus tracking.</p>
+          
+          <div style="display: flex; gap: 6px; flex-wrap: wrap; margin-top: 14px;">
+            <span style="font-size: 10px; padding: 3px 8px; border-radius: 4px; background: rgba(255,255,255,0.08); color: #f1deda;">Resume Base64 Upload</span>
+            <span style="font-size: 10px; padding: 3px 8px; border-radius: 4px; background: rgba(255,255,255,0.08); color: #f1deda;">Drive Sync</span>
+            <span style="font-size: 10px; padding: 3px 8px; border-radius: 4px; background: rgba(255,255,255,0.08); color: #f1deda;">Bonus Tracker</span>
+          </div>
+
+          <span class="card-link">Submit a referral
+            <svg class="hr-icon hr-icon--sm" viewBox="0 0 24 24" aria-hidden="true"><path d="M5 12h14"/><path d="m13 6 6 6-6 6"/></svg>
+          </span>
         </a>
 
-        <a class="tool-card" href="Directory Websites/mrf-monitor/index.html">
-          <div class="card-topline"><span class="tool-number">02</span><span class="card-arrow" aria-hidden="true">↗</span></div>
+        <!-- 02: Manpower Requests -->
+        <a class="tool-card" href="Directory Websites/mrf-monitor/index.html" data-tool-item data-category="operations">
+          <div class="card-topline">
+            <div style="display: flex; align-items: center; gap: 8px;">
+              <span class="tool-number">02</span>
+              <span class="hr-badge hr-badge--sage" style="font-size: 10px; padding: 2px 7px;">Sheet 2 Connected</span>
+            </div>
+            <svg class="card-arrow hr-icon hr-icon--lg" viewBox="0 0 24 24" aria-hidden="true">
+              <path d="M7 17 17 7"/><path d="M8 7h9v9"/>
+            </svg>
+          </div>
           <div class="tool-icon icon-clipboard" aria-hidden="true"><span></span><i></i><i></i><i></i></div>
-          <h2>Manpower Requests</h2>
-          <p>Log, monitor, and review manpower requests across departments in one shared tracker.</p>
-          <span class="card-link">Open MRF Monitor <span aria-hidden="true">→</span></span>
+          <h2>Manpower Requests (MRF)</h2>
+          <p>Log, monitor, and approve plant headcount requisitions. Includes live departmental breakdown, file attachment preview, and status updates.</p>
+          
+          <div style="display: flex; gap: 6px; flex-wrap: wrap; margin-top: 14px;">
+            <span style="font-size: 10px; padding: 3px 8px; border-radius: 4px; background: rgba(255,255,255,0.05); color: var(--ink-soft);">Department Analytics</span>
+            <span style="font-size: 10px; padding: 3px 8px; border-radius: 4px; background: rgba(255,255,255,0.05); color: var(--ink-soft);">Hard-copy Scans</span>
+            <span style="font-size: 10px; padding: 3px 8px; border-radius: 4px; background: rgba(255,255,255,0.05); color: var(--ink-soft);">Status Workflow</span>
+          </div>
+
+          <span class="card-link">Open MRF Monitor
+            <svg class="hr-icon hr-icon--sm" viewBox="0 0 24 24" aria-hidden="true"><path d="M5 12h14"/><path d="m13 6 6 6-6 6"/></svg>
+          </span>
         </a>
 
-        <a class="tool-card" href="Directory Websites/applicant-form/index.html">
-          <div class="card-topline"><span class="tool-number">03</span><span class="card-arrow" aria-hidden="true">↗</span></div>
-          <div class="tool-icon icon-people" aria-hidden="true"><span></span><span></span><span></span></div>
-          <h2>Applicant Intake</h2>
-          <p>Capture applicant details for HR and keep all submissions organized in the shared Applicants sheet.</p>
-          <span class="card-link">Open Applicant Intake <span aria-hidden="true">→</span></span>
-        </a>
-
-        <a class="tool-card" href="Directory Websites/201-files/index.html">
-          <div class="card-topline"><span class="tool-number">04</span><span class="card-arrow" aria-hidden="true">↗</span></div>
+        <!-- 03: Applicant Intake -->
+        <a class="tool-card" href="Directory Websites/applicant-form/index.html" data-tool-item data-category="recruitment">
+          <div class="card-topline">
+            <div style="display: flex; align-items: center; gap: 8px;">
+              <span class="tool-number">03</span>
+              <span class="hr-badge hr-badge--sage" style="font-size: 10px; padding: 2px 7px;">Sheet 2 Connected</span>
+            </div>
+            <svg class="card-arrow hr-icon hr-icon--lg" viewBox="0 0 24 24" aria-hidden="true">
+              <path d="M7 17 17 7"/><path d="M8 7h9v9"/>
+            </svg>
+          </div>
           <div class="tool-icon icon-doc" aria-hidden="true"><span></span><i></i><i></i></div>
-          <h2>201 Files</h2>
-          <p>Search employee records and open their documents from the shared Google Drive directory.</p>
-          <span class="card-link">Open 201 Files <span aria-hidden="true">→</span></span>
+          <h2>Applicant Intake</h2>
+          <p>Capture applicant submissions for production, warehousing, and administrative roles. Records to the shared Applicants database.</p>
+          
+          <div style="display: flex; gap: 6px; flex-wrap: wrap; margin-top: 14px;">
+            <span style="font-size: 10px; padding: 3px 8px; border-radius: 4px; background: rgba(255,255,255,0.05); color: var(--ink-soft);">Walk-in / Online Intake</span>
+            <span style="font-size: 10px; padding: 3px 8px; border-radius: 4px; background: rgba(255,255,255,0.05); color: var(--ink-soft);">Instant Sync</span>
+            <span style="font-size: 10px; padding: 3px 8px; border-radius: 4px; background: rgba(255,255,255,0.05); color: var(--ink-soft);">Resume Storage</span>
+          </div>
+
+          <span class="card-link">Open Applicant Intake
+            <svg class="hr-icon hr-icon--sm" viewBox="0 0 24 24" aria-hidden="true"><path d="M5 12h14"/><path d="m13 6 6 6-6 6"/></svg>
+          </span>
         </a>
 
+        <!-- 04: 201 Files -->
+        <a class="tool-card" href="Directory Websites/201-files/login.html" data-tool-item data-category="records">
+          <div class="card-topline">
+            <div style="display: flex; align-items: center; gap: 8px;">
+              <span class="tool-number">04</span>
+              <span class="hr-badge hr-badge--neutral" style="font-size: 10px; padding: 2px 7px;">PIN Protected</span>
+            </div>
+            <svg class="card-arrow hr-icon hr-icon--lg" viewBox="0 0 24 24" aria-hidden="true">
+              <path d="M7 17 17 7"/><path d="M8 7h9v9"/>
+            </svg>
+          </div>
+          <div class="tool-icon icon-folder" aria-hidden="true"><span></span></div>
+          <h2>201 Personnel Files</h2>
+          <p>Protected employee directory with fast search by surname/first name and direct Google Drive file linkages for HR Staff.</p>
+          
+          <div style="display: flex; gap: 6px; flex-wrap: wrap; margin-top: 14px;">
+            <span style="font-size: 10px; padding: 3px 8px; border-radius: 4px; background: rgba(255,255,255,0.05); color: var(--ink-soft);">Fast Search</span>
+            <span style="font-size: 10px; padding: 3px 8px; border-radius: 4px; background: rgba(255,255,255,0.05); color: var(--ink-soft);">Drive Linkage</span>
+            <span style="font-size: 10px; padding: 3px 8px; border-radius: 4px; background: rgba(255,255,255,0.05); color: var(--ink-soft);">Pagination</span>
+          </div>
+
+          <span class="card-link">Sign in to 201 Files
+            <svg class="hr-icon hr-icon--sm" viewBox="0 0 24 24" aria-hidden="true"><path d="M5 12h14"/><path d="m13 6 6 6-6 6"/></svg>
+          </span>
+        </a>
       </div>
     </main>
 
     <footer class="site-footer">
-      <span>© 2026 Starkson Paper and Plastic Corporation</span>
-      <span>People &amp; Culture · Internal use</span>
+      <nav class="footer-nav" aria-label="Footer navigation">
+        <a href="index.html">Home</a>
+        <a href="tools.html">HR Tools</a>
+        <a href="support.html">Support</a>
+        <a href="mailto:starksonpackaginginc@gmail.com">Contact HR</a>
+      </nav>
+      <div class="footer-meta">
+        <span>© 2026 Starkson Paper and Plastic Corporation</span>
+        <span>·</span>
+        <span>People & Culture · Internal Operations Hub</span>
+        <span>·</span>
+        <span>Dasmariñas, Cavite, Philippines</span>
+      </div>
     </footer>
   </div>
 </body>

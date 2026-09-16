@@ -1,4 +1,4 @@
-﻿const REFERRALS_KEY = 'starksonReferrals';
+const REFERRALS_KEY = 'starksonReferrals';
 const APPLICANTS_KEY = 'starksonApplicants';
 
 function getSheet1Url() {
@@ -197,6 +197,15 @@ function transitionStep(currentId, nextId) {
   nextStep.classList.replace('hidden', 'active');
   const firstInput = nextStep.querySelector('input, select, textarea');
   if (firstInput) firstInput.focus();
+
+  const stepNum = nextId === 'step1' ? 1 : nextId === 'step2' ? 2 : 3;
+  [1, 2, 3].forEach(n => {
+    const el = document.getElementById(`wizardStep${n}`);
+    if (!el) return;
+    el.classList.remove('active', 'completed');
+    if (n < stepNum) el.classList.add('completed');
+    if (n === stepNum) el.classList.add('active');
+  });
 }
 
 function validateField(input) {

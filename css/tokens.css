@@ -1,0 +1,198 @@
+/* ==========================================================================
+   Starkson HR Portal — shared design tokens
+   Single source of truth for colour, type, space, radius, motion.
+   Loaded before every surface stylesheet on every page.
+   ========================================================================== */
+
+:root {
+  /* ---- Brand ----------------------------------------------------------- */
+  --brand-red: #ed655c;
+  --brand-red-bright: #ff8a77;
+  --brand-red-deep: #4a2929;
+  --brand-red-rgb: 237 101 92;
+  --brand-sage: #a6c0ad;
+
+  /* ---- Canvas & surfaces ----------------------------------------------- */
+  --paper: #10191a;
+  --paper-deep: #0d1516;
+  --paper-raised: #152120;
+  --surface: #1a2525;
+  --surface-soft: #202d2c;
+  --surface-glass: rgb(26 37 37 / 0.94);
+  --surface-inset: rgb(16 25 26 / 0.78);
+
+  /* ---- Ink ------------------------------------------------------------- */
+  --ink: #f4f0e8;
+  --ink-soft: #c0cbc7;
+  --ink-dim: #d1d9d5;
+  --muted: #adbbb8;
+  --muted-deep: #8fa09c;
+
+  /* ---- Lines ----------------------------------------------------------- */
+  --line: rgb(244 240 232 / 0.15);
+  --line-soft: rgb(244 240 232 / 0.08);
+  --line-strong: rgb(244 240 232 / 0.3);
+  --line-red: rgb(237 101 92 / 0.45);
+  --line-red-soft: rgb(237 101 92 / 0.28);
+
+  /* ---- Effects --------------------------------------------------------- */
+  --shadow: 0 24px 70px rgb(0 0 0 / 0.35);
+  --shadow-soft: 0 14px 34px rgb(0 0 0 / 0.25);
+  --shadow-lift: 0 9px 22px rgb(237 101 92 / 0.22);
+  --glow-red: 0 0 12px rgb(237 101 92 / 0.65);
+  --glow-red-strong: 0 0 22px rgb(237 101 92 / 0.48);
+
+  /* ---- Type ------------------------------------------------------------ */
+  --font-brand-body: "DM Sans", system-ui, -apple-system, "Segoe UI", sans-serif;
+  --font-brand-display: "Manrope", "DM Sans", system-ui, sans-serif;
+  --font-mono: "IBM Plex Mono", ui-monospace, "SFMono-Regular", Menlo, monospace;
+
+  /* Active fonts — surfaces may override these to switch identity. */
+  --font-body: var(--font-brand-body);
+  --font-display: var(--font-brand-display);
+
+  --weight-regular: 400;
+  --weight-medium: 500;
+  --weight-semibold: 600;
+  --weight-bold: 700;
+  --weight-black: 800;
+
+  --step--1: 0.6875rem;                                   /* 11px  micro    */
+  --step-0: 0.8125rem;                                    /* 13px  small    */
+  --step-1: 0.875rem;                                     /* 14px  body-sm  */
+  --step-2: 1.0625rem;                                    /* 17px  body     */
+  --step-3: 1.375rem;                                     /* 22px  card     */
+  --step-4: 2.125rem;                                     /* 34px  section  */
+  --step-5: clamp(2.625rem, 5.5vw, 4.375rem);             /* 42→70 page     */
+  --step-6: clamp(3rem, 6vw, 4.875rem);                   /* 48→78 hero     */
+
+  --tracking-tight: -0.045em;
+  --tracking-hero: -0.055em;
+  --tracking-wide: 0.16em;
+  --leading-tight: 1.1;
+  --leading-snug: 1.35;
+  --leading-body: 1.65;
+
+  /* ---- Radius ---------------------------------------------------------- */
+  --radius-xs: 4px;
+  --radius-sm: 6px;
+  --radius-md: 10px;
+  --radius-lg: 16px;
+  --radius-xl: 20px;
+  --radius-pill: 999px;
+
+  /* ---- Space ----------------------------------------------------------- */
+  --space-1: 4px;
+  --space-2: 8px;
+  --space-3: 12px;
+  --space-4: 16px;
+  --space-5: 20px;
+  --space-6: 24px;
+  --space-7: 32px;
+  --space-8: 44px;
+  --space-9: 60px;
+
+  /* ---- Layout ---------------------------------------------------------- */
+  --shell-max: 1240px;
+  --gutter: 36px;
+  --gutter-sm: 20px;
+  --control-h: 44px;
+  --control-h-sm: 36px;
+
+  /* ---- Motion ---------------------------------------------------------- */
+  --ease-out: cubic-bezier(0.2, 0.8, 0.2, 1);
+  --ease-in-out: cubic-bezier(0.4, 0, 0.2, 1);
+  --dur-fast: 0.15s;
+  --dur: 0.25s;
+  --dur-slow: 0.4s;
+
+  /* ---- Focus ----------------------------------------------------------- */
+  --focus-outline: 3px solid rgb(237 101 92 / 0.55);
+  --focus-offset: 3px;
+
+  /* ---- Pointer spotlight (driven by js/portal.js) ---------------------- */
+  --pointer-x: 50vw;
+  --pointer-y: 35vh;
+  --pointer-alpha: 0.08;
+
+  /* ---- Status & Accents ------------------------------------------------ */
+  --status-amber: #f59e0b;
+  --status-amber-bright: #fbbf24;
+  --status-amber-soft: rgba(245, 158, 11, 0.14);
+  --status-sage: #10b981;
+  --status-sage-bright: #34d399;
+  --status-sage-soft: rgba(16, 185, 129, 0.14);
+  --status-cyan: #38bdf8;
+  --status-cyan-bright: #7dd3fc;
+  --status-cyan-soft: rgba(56, 189, 248, 0.14);
+  --status-purple: #a855f7;
+  --status-purple-soft: rgba(168, 85, 247, 0.14);
+
+  /* ---- Elevation & Glass ----------------------------------------------- */
+  --surface-1: #162222;
+  --surface-2: #1e2c2c;
+  --surface-3: #273838;
+  --surface-card: rgba(23, 34, 35, 0.82);
+  --surface-acrylic: rgba(19, 28, 29, 0.72);
+  --border-specular: 1px solid rgba(255, 255, 255, 0.12);
+  --border-glass: 1px solid rgba(255, 255, 255, 0.08);
+  --border-glass-hover: 1px solid rgba(237, 101, 92, 0.55);
+  --card-highlight: inset 0 1px 0 rgba(255, 255, 255, 0.12);
+  --card-highlight-glow: inset 0 1px 0 rgba(255, 255, 255, 0.2), 0 0 20px rgba(237, 101, 92, 0.15);
+
+  /* ---- Motion curves --------------------------------------------------- */
+  --ease-spring: cubic-bezier(0.34, 1.56, 0.64, 1);
+  --ease-smooth: cubic-bezier(0.16, 1, 0.3, 1);
+
+  /* ---- Layer order ----------------------------------------------------- */
+  --z-decor: 0;
+  --z-content: 1;
+  --z-header: 20;
+  --z-drawer: 40;
+  --z-modal: 50;
+  --z-toast: 100;
+}
+
+/* Shared canvas gradient used by every surface. */
+:root {
+  --canvas-gradient: linear-gradient(135deg, var(--paper) 0%, var(--paper-raised) 56%, var(--paper-deep) 100%);
+}
+
+/* ==========================================================================
+   Starkson Light Mode ("Bond Paper & Crimson")
+   Clean, tactile industrial stationery aesthetic for daytime readability.
+   ========================================================================== */
+[data-theme="light"] {
+  --paper: #f4f6f5;
+  --paper-deep: #e5ebe7;
+  --paper-raised: #ffffff;
+  --surface: #ffffff;
+  --surface-soft: #edf2ef;
+  --surface-glass: rgba(255, 255, 255, 0.88);
+  --surface-card: rgba(255, 255, 255, 0.86);
+  --surface-acrylic: rgba(255, 255, 255, 0.75);
+  --surface-inset: rgba(228, 235, 231, 0.8);
+  --surface-1: #ffffff;
+  --surface-2: #f0f4f2;
+  --surface-3: #e3ebe6;
+
+  --ink: #111a1b;
+  --ink-soft: #354748;
+  --ink-dim: #223132;
+  --muted: #5e7372;
+  --muted-deep: #475a59;
+
+  --line: rgba(17, 26, 27, 0.12);
+  --line-soft: rgba(17, 26, 27, 0.06);
+  --line-strong: rgba(17, 26, 27, 0.24);
+  --line-red: rgba(237, 101, 92, 0.55);
+  --line-red-soft: rgba(237, 101, 92, 0.22);
+
+  --shadow: 0 20px 55px rgba(17, 26, 27, 0.09);
+  --shadow-soft: 0 10px 24px rgba(17, 26, 27, 0.06);
+  --border-specular: 1px solid rgba(17, 26, 27, 0.14);
+  --border-glass: 1px solid rgba(17, 26, 27, 0.09);
+  --card-highlight: inset 0 1px 0 rgba(255, 255, 255, 0.9);
+
+  --canvas-gradient: linear-gradient(135deg, #f7f9f8 0%, #edf3f0 55%, #e3eae6 100%);
+}
