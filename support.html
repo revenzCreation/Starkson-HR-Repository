@@ -3,9 +3,9 @@
 <head>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <meta name="description" content="HR Support & Contact Hub for Starkson Paper and Plastic Corporation">
+  <meta name="description" content="HR Support & Contact Hub for Starkson Packaging Inc.">
   <meta name="theme-color" content="#10191a">
-  <title>Support Desk | Starkson Paper and Plastic Corporation</title>
+  <title>Support Desk | Starkson Packaging Inc.</title>
   <link rel="icon" href="favicon.png" type="image/png">
   <link rel="apple-touch-icon" href="Directory Websites/referral-portal/images/logo.png">
   <link rel="preconnect" href="https://fonts.googleapis.com">
@@ -14,6 +14,7 @@
   <link rel="stylesheet" href="css/tokens.css">
   <link rel="stylesheet" href="css/components.css">
   <link rel="stylesheet" href="css/style.css">
+  <script src="Directory Websites/shared/api-config.js"></script>
   <script src="js/portal.js" defer></script>
 </head>
 <body>
@@ -55,7 +56,7 @@
     <header class="site-header">
       <a class="brand" href="index.html" aria-label="Starkson HR Portal home">
         <img src="Directory Websites/referral-portal/images/logo.png" alt="Starkson Logo">
-        <span><strong>STARKSON</strong><small>Paper & Plastic Corporation</small></span>
+        <span><strong>STARKSON</strong><small>Packaging Solutions for QSR &amp; FMCG</small></span>
       </a>
 
       <button class="nav-toggle" type="button" data-nav-toggle aria-expanded="false" aria-controls="primary-nav">
@@ -121,7 +122,7 @@
           </div>
           <div>
             <span class="detail-label">Plant Location</span>
-            <strong>Dasmariñas, Cavite, Philippines</strong>
+            <strong>Silang, Cavite, Philippines</strong>
           </div>
         </div>
       </section>
@@ -160,8 +161,10 @@
             <div style="display: grid; grid-template-columns: 1fr 1fr; gap: 16px; margin-bottom: 16px;">
               <div class="hr-field">
                 <label for="inqDept">Your Department</label>
-                <input id="inqDept" type="text" placeholder="e.g. Production / Warehouse" required
-                       style="padding: 11px 14px; border: var(--border-glass); border-radius: var(--radius-sm); background: var(--surface-2); color: var(--ink);">
+                <select id="inqDept" required
+                        style="padding: 11px 14px; border: var(--border-glass); border-radius: var(--radius-sm); background: var(--surface-2); color: var(--ink);">
+                  <option value="">Select department</option>
+                </select>
               </div>
               <div class="hr-field">
                 <label for="inqPhone">Contact Number</label>
@@ -195,10 +198,10 @@
             </div>
             <h3 style="font-size: var(--step-2); font-weight: var(--weight-bold); margin-bottom: 8px;">Manufacturing Plant</h3>
             <p style="color: var(--ink-soft); font-size: var(--step--1); line-height: 1.6; margin-bottom: 16px;">
-              Starkson Paper and Plastic Corporation manufacturing operations and HR administration are housed within our main Cavite industrial facility.
+              Starkson Packaging Inc. operates its paper, paperboard, plastic injection, plastic thermoforming, and flexible converting factories from the Silang plant.
             </p>
             <div style="border-top: var(--border-glass); padding-top: 14px; font-size: var(--step--1); color: var(--muted); display: grid; gap: 8px;">
-              <div>📍 <strong>Address:</strong> Dasmariñas, Cavite, Philippines</div>
+              <div>📍 <strong>Address:</strong> Km. 45 Gen. Emilio Aguinaldo Highway, Barangay Lucsuhin, Silang, Cavite</div>
               <div>🕒 <strong>Shift Schedules:</strong> Day & Night Manufacturing Cycles</div>
               <div>🛡️ <strong>Safety Requirement:</strong> PPE and ID required for entry</div>
             </div>
@@ -225,16 +228,37 @@
         <a href="mailto:starksonpackaginginc@gmail.com">Contact HR</a>
       </nav>
       <div class="footer-meta">
-        <span>© 2026 Starkson Paper and Plastic Corporation</span>
+        <span>© 2026 Starkson Packaging Inc.</span>
         <span>·</span>
         <span>People & Culture · Internal Operations Hub</span>
         <span>·</span>
-        <span>Dasmariñas, Cavite, Philippines</span>
+        <span>Silang, Cavite, Philippines</span>
       </div>
     </footer>
   </div>
 
   <script>
+    async function loadSupportDepartments() {
+      const departmentField = document.getElementById('inqDept');
+      const apiUrl = window.HR_PORTAL_SHEETS?.connections?.companySheet2;
+      if (!departmentField || !apiUrl) return;
+      try {
+        const response = await fetch(`${apiUrl}?action=department-options`, { cache: 'no-store' });
+        const result = await response.json();
+        departmentField.innerHTML = '<option value="">Select department</option>';
+        (Array.isArray(result.departments) ? result.departments : []).forEach(department => {
+          const option = document.createElement('option');
+          option.value = department;
+          option.textContent = department;
+          departmentField.appendChild(option);
+        });
+      } catch (error) {
+        departmentField.innerHTML = '<option value="">Department list unavailable</option>';
+      }
+    }
+
+    loadSupportDepartments();
+
     function handleInquirySubmit(event) {
       event.preventDefault();
       const name = document.getElementById("inqName").value;

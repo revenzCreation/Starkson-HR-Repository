@@ -11,6 +11,11 @@ const resumeUploadBox = document.getElementById('resumeUploadBox');
 const resumeInput = document.getElementById('resumeInput');
 const resumePreview = document.getElementById('resumePreview');
 const resumeName = document.getElementById('resumeName');
+const mrfTransfer = document.getElementById('mrfTransfer');
+const statusSelect = document.getElementById('status');
+const departmentSelect = document.getElementById('department');
+let applicantOptionsLoaded = false;
+let applicantOptionsRequest = null;
 
 let uploadedResume = null;
 
@@ -22,6 +27,7 @@ function getFormRecord() {
     phone: document.getElementById('phone').value.trim(),
     positionApplied: document.getElementById('positionApplied').value.trim(),
     department: document.getElementById('department').value.trim(),
+    mrfTransfer: mrfTransfer ? mrfTransfer.value : '',
     source: document.getElementById('source').value,
     availabilityDate: document.getElementById('availabilityDate').value,
     status: document.getElementById('status').value || 'New',
@@ -138,8 +144,63 @@ async function renderApplicants() {
   }
 }
 
+async function loadApplicantOptions() {
+  if (applicantOptionsLoaded) return;
+  if (applicantOptionsRequest) return applicantOptionsRequest;
+  applicantOptionsRequest = (async () => {
+    try {
+      const result = await window.HR_PORTAL_SHEETS.request(`${getSheet2Url()}?action=applicant-options`);
+      if (departmentSelect) {
+        departmentSelect.innerHTML = '<option value="">Select department</option>';
+        (Array.isArray(result.departments) ? result.departments : []).forEach(department => {
+          const option = document.createElement('option');
+          option.value = department;
+          option.textContent = department;
+          departmentSelect.appendChild(option);
+        });
+      }
+      if (mrfTransfer) {
+        mrfTransfer.innerHTML = '<option value="">No MRF assignment</option>';
+        (Array.isArray(result.mrfNumbers) ? result.mrfNumbers : []).forEach(number => {
+          const option = document.createElement('option');
+          option.value = number;
+          option.textContent = number;
+          mrfTransfer.appendChild(option);
+        });
+      }
+      if (statusSelect) {
+        statusSelect.innerHTML = '<option value="">Select position level</option>';
+        (Array.isArray(result.positionLevels) ? result.positionLevels : []).forEach(level => {
+          const option = document.createElement('option');
+          option.value = level;
+          option.textContent = level;
+          statusSelect.appendChild(option);
+        });
+      }
+      applicantOptionsLoaded = true;
+    } catch (error) {
+      if (departmentSelect) departmentSelect.innerHTML = '<option value="">Click to retry department list</option>';
+      console.warn('Unable to load applicant options:', error);
+    } finally {
+      applicantOptionsRequest = null;
+    }
+  })();
+  return applicantOptionsRequest;
+}
+
+if (departmentSelect) {
+  departmentSelect.addEventListener('focus', () => {
+    if (!applicantOptionsLoaded) loadApplicantOptions();
+  });
+}
+
 (async function init() {
   if (form) {
+    try {
+      await loadApplicantOptions();
+    } catch (error) {
+      showStatus(error.message || 'Unable to load current MRF and position-level options.', 'error');
+    }
     await renderApplicants();
   }
 })();

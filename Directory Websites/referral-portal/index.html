@@ -3,7 +3,7 @@
 <head>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <title>Referral Portal | Starkson Paper and Plastic Corporation</title>
+  <title>Referral Portal | Starkson Packaging Inc.</title>
   <link rel="icon" href="../../favicon.png" type="image/png">
   <link rel="preconnect" href="https://fonts.googleapis.com">
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
@@ -22,7 +22,7 @@
       <div class="logo-wrapper">
         <img src="images/logo.png" alt="Company Logo" class="starkson-logo">
         <div class="brand-title">STARKSON</div>
-        <div class="brand-subtitle">PAPER AND PLASTIC CORPORATION</div>
+        <div class="brand-subtitle">PACKAGING SOLUTIONS FOR QSR &amp; FMCG</div>
       </div>
 
       <div class="hero-content">
@@ -35,7 +35,7 @@
           <div class="perk-chip">🔒 Strict Confidentiality</div>
         </div>
 
-        <p>Recommend qualified professionals or manufacturing operators. Our recruitment team reviews every profile within five business days.</p>
+        <p>Recommend qualified professionals for current Silang openings in quality control, production supervision, trainee operations, and graphic design.</p>
 
         <!-- Referral Bonus Milestone Guide -->
         <div class="bonus-guide-card">
@@ -132,24 +132,8 @@
             <label for="referrerDepartment">Your department <span class="req">*</span></label>
             <select id="referrerDepartment" name="referrerDepartment" required>
               <option value="" disabled selected>Select department</option>
-              <option value="Engineering">Engineering</option>
-              <option value="Production / Plant Ops">Production / Plant Ops</option>
-              <option value="Warehousing & Logistics">Warehousing &amp; Logistics</option>
-              <option value="Quality Assurance">Quality Assurance</option>
-              <option value="Maintenance">Maintenance</option>
-              <option value="Sales & Marketing">Sales &amp; Marketing</option>
-              <option value="Finance & Accounting">Finance &amp; Accounting</option>
-              <option value="People & Talent">People &amp; Talent</option>
-              <option value="Other">Other</option>
             </select>
             <span class="error-msg">Select your department.</span>
-          </div>
-
-          <!-- HIDDEN OTHER DEPARTMENT BOX -->
-          <div class="form-group hidden-dept" id="otherDeptGroup">
-            <label for="otherDepartment">Specify your department <span class="req">*</span></label>
-            <input type="text" id="otherDepartment" name="otherDepartment" placeholder="e.g. Legal, Safety, R&D">
-            <span class="error-msg">Please specify your department.</span>
           </div>
 
           <button type="button" class="primary-btn next-btn" data-next="step2">Next: Candidate Details &rarr;</button>
@@ -304,7 +288,9 @@
           </div>
           <div class="form-group">
             <label for="applicantDepartment">Department <span class="req">*</span></label>
-            <input type="text" id="applicantDepartment" name="applicantDepartment" placeholder="e.g. Operations" required>
+            <select id="applicantDepartment" name="applicantDepartment" required>
+              <option value="">Select department</option>
+            </select>
           </div>
         </div>
 
@@ -335,6 +321,6 @@
   </main>
 
   <script src="../shared/api-config.js"></script>
-  <script src="js/app.js"></script>
+  <script src="js/app.js?v=20260918-departments"></script>
 </body>
 </html>

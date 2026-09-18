@@ -18,7 +18,7 @@
     <header class="site-header">
       <a class="brand" href="../../index.html" aria-label="Starkson HR Portal home">
         <img src="images/logo.png" alt="Starkson logo">
-        <span><strong>STARKSON</strong><small>Paper &amp; Plastic Corporation</small></span>
+        <span><strong>STARKSON</strong><small>Packaging Solutions for QSR &amp; FMCG</small></span>
       </a>
       <a class="portal-home-link" href="../../tools.html">&larr; Back to Tools</a>
     </header>
@@ -31,7 +31,7 @@
         </div>
         <div style="display: inline-flex; align-items: center; gap: 8px;">
           <span class="hr-badge hr-badge--sage">Sheet 2 Connected</span>
-          <span class="hr-badge hr-badge--neutral">Dasmariñas Plant</span>
+          <span class="hr-badge hr-badge--neutral">Silang Plant</span>
         </div>
       </div>
 
@@ -63,7 +63,15 @@
               </div>
               <div class="field">
                 <label for="department">Target Department <span class="req" style="color: var(--brand-red);">*</span></label>
-                <input id="department" name="department" type="text" placeholder="e.g. Production / Plant Ops" required>
+                <select id="department" name="department" required>
+                  <option value="">Select department</option>
+                </select>
+              </div>
+              <div class="field">
+                <label for="mrfTransfer">MRF Transfer</label>
+                <select id="mrfTransfer" name="mrfTransfer">
+                  <option value="">No MRF assignment</option>
+                </select>
               </div>
               <div class="field">
                 <label for="source">Application Source <span class="req" style="color: var(--brand-red);">*</span></label>
@@ -85,11 +93,7 @@
               <div class="field">
                 <label for="status">Initial Status</label>
                 <select id="status" name="status">
-                  <option>New</option>
-                  <option>Screening</option>
-                  <option>Interview</option>
-                  <option>Hired</option>
-                  <option>Rejected</option>
+                  <option value="">Select position level</option>
                 </select>
               </div>
             </div>
@@ -127,15 +131,15 @@
             <div style="display: grid; gap: 12px; font-size: 13px; color: var(--ink-soft); line-height: 1.5;">
               <div style="display: flex; gap: 10px; align-items: flex-start;">
                 <span style="color: var(--brand-red-bright);">✔</span>
-                <span><strong>Stable Industrial Plant:</strong> Continuous paper and plastic manufacturing contracts.</span>
+                <span><strong>Full-Scale Manufacturing:</strong> Paper, paperboard, plastic injection, thermoforming, and flexible converting operations.</span>
               </div>
               <div style="display: flex; gap: 10px; align-items: flex-start;">
                 <span style="color: var(--brand-red-bright);">✔</span>
-                <span><strong>Comprehensive Benefits:</strong> SSS, PhilHealth, Pag-IBIG, overtime pay, and HMO.</span>
+                <span><strong>End-to-End Packaging:</strong> Concept design, consumer testing, quality engineering, and just-in-time manufacturing.</span>
               </div>
               <div style="display: flex; gap: 10px; align-items: flex-start;">
                 <span style="color: var(--brand-red-bright);">✔</span>
-                <span><strong>Skills Advancement:</strong> Heavy machinery, packaging, and QA certification training.</span>
+                <span><strong>Current Openings:</strong> Quality inspectors, production supervisors, trainee operators, and graphic artists.</span>
               </div>
             </div>
           </div>
@@ -154,7 +158,7 @@
     </main>
 
     <footer class="site-footer">
-      <span>© 2026 Starkson Paper and Plastic Corporation</span>
+      <span>© 2026 Starkson Packaging Inc.</span>
       <span>People &amp; Culture · Internal Operations &amp; Candidate Intake</span>
     </footer>
   </div>

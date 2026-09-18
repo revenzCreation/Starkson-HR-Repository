@@ -7,7 +7,10 @@
   window.HR_PORTAL_SHEETS = window.HR_PORTAL_SHEETS || {};
   window.HR_PORTAL_SHEETS.connections = CONNECTIONS;
   window.HR_PORTAL_SHEETS.request = async function request(url, options = {}) {
-    const response = await fetch(url, {
+    const requestUrl = !options.method || options.method.toUpperCase() === 'GET'
+      ? `${url}${url.includes('?') ? '&' : '?'}_ts=${Date.now()}`
+      : url;
+    const response = await fetch(requestUrl, {
       ...options,
       cache: 'no-store',
       credentials: 'omit',

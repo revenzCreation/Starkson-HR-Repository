@@ -9,10 +9,15 @@ export async function loadAllRecords() {
   return result.records || [];
 }
 
+export async function loadDepartmentOptions() {
+  const result = await window.HR_PORTAL_SHEETS.request(`${getApiUrl()}?action=department-options`);
+  return Array.isArray(result.departments) ? result.departments : [];
+}
+
 export async function saveRecord(rec) {
   const result = await window.HR_PORTAL_SHEETS.request(getApiUrl(), {
     method: 'POST',
-    body: JSON.stringify({ action: 'save', record: { ...rec, id: '' } })
+    body: JSON.stringify({ action: 'save', record: { ...rec, id: rec.id || '' } })
   });
   return result.record;
 }

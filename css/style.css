@@ -3,22 +3,6 @@
    Consumes css/tokens.css and css/components.css. No raw palette values.
    ========================================================================== */
 
-/* ---- View transitions between the three root pages --------------------- */
-@view-transition {
-  navigation: auto;
-}
-
-.brand { view-transition-name: hr-brand; }
-.site-header { view-transition-name: hr-header; }
-
-@media (prefers-reduced-motion: reduce) {
-  ::view-transition-group(*),
-  ::view-transition-old(*),
-  ::view-transition-new(*) {
-    animation: none !important;
-  }
-}
-
 /* ---- Base -------------------------------------------------------------- */
 * { box-sizing: border-box; }
 
@@ -722,9 +706,8 @@ h1 em { color: var(--brand-red-bright); font-style: normal; }
   border: 1.8px solid currentColor;
   border-radius: 50%;
 }
-.icon-people span:first-child { left: 4px; top: 2px; }
-.icon-people span:nth-child(2) { right: 3px; top: 2px; }
-.icon-people span:nth-child(3) {
+.icon-people span:first-child { left: 16px; top: 2px; }
+.icon-people span:nth-child(2) {
   left: 1px;
   bottom: 1px;
   width: 45px;

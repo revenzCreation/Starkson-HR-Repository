@@ -1,5 +1,7 @@
 const CONFIG = {
   spreadsheetId: '1utH1iEiYiGOCZjAQ4_z3Mb3KdJcSDUHDyMVMnbNbTSA',
+  employeeDataSpreadsheetId: '195-mJN-MRhswL6DQl3nIeXfYxmEAi7ufQd1ebrIXbII',
+  employeeDataSheetId: 1807874829,
   referralSheet: 'Referrals',
   employeeSheet: '201 Files',
   referralFolderId: '1kL5CK1-ZEY51BZo6_BQjY8MSSfoEzcBl',
@@ -40,6 +42,10 @@ function doGet(e) {
   } catch (error) { return json({ ok: false, error: error.message }); }
 }
 
+function onOpen() {
+  applyDepartmentValidation();
+}
+
 function doPost(e) {
   try {
     const body = parseBody(e);
@@ -63,9 +69,31 @@ function saveReferral(input) {
     };
     appendRecord(sheet, REFERRAL_FIELDS, record);
     if (fileUrl) setShortLink(sheet, sheet.getLastRow(), map.resumeLink, fileUrl, 'Open Resume');
+    applyDepartmentValidation();
     formatSheet(sheet, REFERRAL_FIELDS.length);
     return record;
   } finally { lock.releaseLock(); }
+}
+
+function getEmployeeDepartmentOptions() {
+  const spreadsheet = SpreadsheetApp.openById(CONFIG.employeeDataSpreadsheetId);
+  const sheet = spreadsheet.getSheets().find(item => item.getSheetId() === CONFIG.employeeDataSheetId)
+    || spreadsheet.getSheetByName('Employee Data');
+  if (!sheet || sheet.getLastRow() < 2) return [];
+  const values = sheet.getDataRange().getDisplayValues();
+  const headers = values[0].map(normalizeHeader);
+  const departmentIndex = headers.findIndex(header => /department|dept/.test(header));
+  if (departmentIndex < 0) return [];
+  return [...new Set(values.slice(1).map(row => String(row[departmentIndex] || '').trim()).filter(Boolean))];
+}
+
+function applyDepartmentValidation() {
+  const sheet = getSheet(CONFIG.referralSheet, REFERRAL_FIELDS);
+  const map = fieldMap(REFERRAL_FIELDS);
+  const departments = getEmployeeDepartmentOptions();
+  if (!departments.length) return;
+  const rule = SpreadsheetApp.newDataValidation().requireValueInList(departments, true).setAllowInvalid(false).build();
+  sheet.getRange(2, map.department, Math.max(sheet.getMaxRows() - 1, 1), 1).setDataValidation(rule);
 }
 
 function syncEmployeeFiles() {

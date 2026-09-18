@@ -7,6 +7,12 @@ function getSheet1Url() {
   return apiUrl;
 }
 
+function getSheet2Url() {
+  const apiUrl = window.HR_PORTAL_SHEETS?.connections?.companySheet2;
+  if (!apiUrl) throw new Error('The department connection is not configured.');
+  return apiUrl;
+}
+
 function readLocalList(key) {
   try { return JSON.parse(localStorage.getItem(key) || '[]'); } catch (error) { return []; }
 }
@@ -26,6 +32,7 @@ const startApplicantBtn = document.getElementById('startApplicantBtn');
 const backBtn = document.getElementById('backBtn');
 const applicantBackBtn = document.getElementById('applicantBackBtn');
 const deptSelect = document.getElementById('referrerDepartment');
+const applicantDepartmentSelect = document.getElementById('applicantDepartment');
 const otherDeptGroup = document.getElementById('otherDeptGroup');
 const otherDeptInput = document.getElementById('otherDepartment');
 const relationshipSelect = document.getElementById('relationship');
@@ -43,6 +50,8 @@ const dropZoneContent = document.getElementById('dropZoneContent');
 const resumeGroup = document.getElementById('resumeGroup');
 const fileError = document.getElementById('fileError');
 const statusDiv = document.getElementById('statusMessage');
+let departmentOptionsLoaded = false;
+let departmentOptionsRequest = null;
 
 function safeReadDraft() {
   try {
@@ -125,6 +134,46 @@ document.addEventListener('DOMContentLoaded', () => {
   checkOtherDeptVisibility();
   checkOtherRelationshipVisibility();
   updateProgress();
+  loadDepartmentOptions();
+});
+
+async function loadDepartmentOptions() {
+  const selects = [deptSelect, applicantDepartmentSelect].filter(Boolean);
+  if (!selects.length) return;
+  if (departmentOptionsLoaded) return;
+  if (departmentOptionsRequest) return departmentOptionsRequest;
+  departmentOptionsRequest = (async () => {
+    try {
+      const result = await window.HR_PORTAL_SHEETS.request(`${getSheet2Url()}?action=department-options`);
+      const departments = Array.isArray(result.departments) ? result.departments : [];
+      selects.forEach(select => {
+        select.disabled = false;
+        select.innerHTML = '<option value="" disabled selected>Select department</option>';
+        departments.forEach(department => {
+          const option = document.createElement('option');
+          option.value = department;
+          option.textContent = department;
+          select.appendChild(option);
+        });
+      });
+      departmentOptionsLoaded = departments.length > 0;
+    } catch (error) {
+      selects.forEach(select => {
+        select.disabled = false;
+        select.innerHTML = '<option value="">Click to retry department list</option>';
+      });
+      console.warn('Unable to load department choices:', error);
+    } finally {
+      departmentOptionsRequest = null;
+    }
+  })();
+  return departmentOptionsRequest;
+}
+
+[deptSelect, applicantDepartmentSelect].filter(Boolean).forEach(select => {
+  select.addEventListener('focus', () => {
+    if (!departmentOptionsLoaded) loadDepartmentOptions();
+  });
 });
 
 function checkOtherDeptVisibility() {

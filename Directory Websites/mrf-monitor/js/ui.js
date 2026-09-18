@@ -48,7 +48,7 @@ export function renderDashboard() {
   if (elements.statRow) {
     elements.statRow.innerHTML = `
       <div class="stat-card navy"><div class="num">${total}</div><div class="label">Total MRFs Logged</div></div>
-      <div class="stat-card amber"><div class="num">${totalHeadcount}</div><div class="label">Total Headcount Requested</div></div>
+      <div class="stat-card amber"><div class="num">${totalHeadcount}</div><div class="label">Available Headcount</div></div>
       <div class="stat-card green"><div class="num">${approved}</div><div class="label">Approved</div></div>
       <div class="stat-card red"><div class="num">${pending}</div><div class="label">Awaiting Action</div></div>
     `;
