@@ -3,13 +3,10 @@
   --bg-2: var(--paper-raised, #152120);
   --panel: var(--surface-card, rgba(26, 37, 37, 0.94));
   --panel-soft: var(--surface-soft, rgba(32, 45, 44, 0.9));
-  --line: var(--line, rgba(244, 240, 232, 0.14));
   --text: var(--ink, #f4f0e8);
-  --muted: var(--muted, #adbbb8);
   --red: var(--brand-red, #ed655c);
   --red-strong: var(--brand-red-bright, #ff8a77);
   --sage: var(--status-sage, #10b981);
-  --shadow: var(--shadow, 0 24px 70px rgba(0, 0, 0, 0.35));
 }
 
 * { box-sizing: border-box; }
@@ -324,7 +321,7 @@ textarea {
   display: block;
   background: rgba(237,101,92,0.15);
   border: 1px solid rgba(237,101,92,0.35);
-  color: #ffb5ad;
+  color: var(--status-error-bright);
 }
 
 .side-list {

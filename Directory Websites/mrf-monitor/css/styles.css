@@ -1,10 +1,7 @@
 :root {
-  --paper: var(--paper, #10191a);
   --paper-dark: var(--paper-deep, #0d1516);
   --card: var(--surface-card, rgba(26, 37, 37, 0.92));
-  --ink: var(--ink, #f4f0e8);
   --ink-soft: var(--muted, #adbbb8);
-  --line: var(--line, rgba(244, 240, 232, 0.14));
   
   --navy: var(--status-cyan, #38bdf8);
   --navy-dim: rgba(56, 189, 248, 0.14);
@@ -85,6 +82,12 @@ header {
   gap: 14px;
 }
 
+.brand img {
+  width: 46px;
+  height: 46px;
+  object-fit: contain;
+}
+
 .brand h1 {
   font-family: var(--font-display, "Manrope", sans-serif);
   font-size: 22px;
@@ -146,7 +149,7 @@ nav.tabs button {
 
 nav.tabs button.active {
   background: var(--red);
-  color: #fff;
+  color: var(--ink-on-accent);
   box-shadow: 0 4px 14px rgba(237, 101, 92, 0.35);
 }
 
@@ -418,7 +421,7 @@ nav.tabs button:not(.active):hover {
   font-size: 13px;
   border: 1px solid transparent;
   background: var(--red);
-  color: #fff;
+  color: var(--ink-on-accent);
   padding: 10px 18px;
   border-radius: 7px;
   cursor: pointer;

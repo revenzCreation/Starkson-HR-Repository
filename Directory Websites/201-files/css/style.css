@@ -1,10 +1,4 @@
 :root {
-  --ink: var(--ink, #f4f0e8);
-  --muted: var(--muted, #adbbb8);
-  --paper: var(--paper, #10191a);
-  --surface: var(--surface-card, #1a2525);
-  --surface-soft: var(--surface-soft, #202d2c);
-  --line: var(--line, rgba(244, 240, 232, .14));
   --red: var(--brand-red, #ed655c);
   --red-dark: var(--brand-red-bright, #ff8a77);
   --green: var(--status-sage, #10b981);
@@ -464,7 +458,7 @@ tbody tr:hover { background: rgba(237,101,92,.06); }
   border-radius: 8px;
   outline: 0;
   color: var(--ink);
-  background: rgba(16,25,26,.8);
+  background: var(--surface-inset);
   font: 14px "DM Sans", sans-serif;
   transition: border-color .2s, box-shadow .2s;
 }
@@ -483,7 +477,7 @@ tbody tr:hover { background: rgba(237,101,92,.06); }
   padding: 14px 18px;
   border: 1px solid var(--red);
   border-radius: 8px;
-  color: #fff;
+  color: var(--ink-on-accent);
   background: var(--red);
   font: 700 13.5px "DM Sans", sans-serif;
   cursor: pointer;
