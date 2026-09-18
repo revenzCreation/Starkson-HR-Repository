@@ -23,7 +23,7 @@
   top: var(--space-2);
   left: var(--space-2);
   padding: 10px 16px;
-  color: #fff;
+  color: var(--ink-on-accent);
   background: var(--brand-red);
   border-radius: var(--radius-sm);
   font-size: var(--step-0);
@@ -81,7 +81,7 @@
 }
 
 .hr-btn--primary {
-  color: #fff;
+  color: var(--ink-on-accent);
   background: var(--brand-red);
   box-shadow: var(--shadow-lift);
 }
@@ -98,7 +98,7 @@
 }
 
 .hr-btn--danger {
-  color: #fff;
+  color: var(--ink-on-accent);
   background: var(--brand-red);
 }
 .hr-btn--danger:hover { background: var(--brand-red-bright); }
@@ -187,7 +187,7 @@
 }
 .hr-field__error {
   display: none;
-  color: #ffb5ad;
+  color: var(--status-error-bright);
   font-size: var(--step--1);
   font-weight: var(--weight-medium);
   line-height: 1.45;
@@ -200,8 +200,8 @@
 .hr-field[data-invalid="true"] select,
 .hr-field[data-invalid="true"] textarea,
 .hr-field[data-invalid="true"] .hr-dropzone {
-  border-color: #f87171;
-  background: rgb(248 113 113 / 0.05);
+  border-color: var(--status-error);
+  background: var(--status-error-soft);
 }
 @keyframes hr-shake {
   0%, 100% { transform: translateX(0); }
@@ -334,11 +334,11 @@
 }
 .hr-toast[data-tone="error"] {
   background: var(--brand-red);
-  color: #fff;
+  color: var(--ink-on-accent);
 }
 .hr-toast[data-tone="success"] {
   background: var(--status-sage);
-  color: #fff;
+  color: var(--ink-on-accent);
 }
 
 /* ---- Pulse beacon & live indicators ------------------------------------ */

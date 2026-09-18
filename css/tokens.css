@@ -11,6 +11,7 @@
   --brand-red-deep: #4a2929;
   --brand-red-rgb: 237 101 92;
   --brand-sage: #a6c0ad;
+  --ink-on-accent: #ffffff;
 
   /* ---- Canvas & surfaces ----------------------------------------------- */
   --paper: #10191a;
@@ -125,6 +126,9 @@
   --status-cyan: #38bdf8;
   --status-cyan-bright: #7dd3fc;
   --status-cyan-soft: rgba(56, 189, 248, 0.14);
+  --status-error: #f87171;
+  --status-error-bright: #ffb5ad;
+  --status-error-soft: rgba(248, 113, 113, 0.05);
   --status-purple: #a855f7;
   --status-purple-soft: rgba(168, 85, 247, 0.14);
 
@@ -181,12 +185,16 @@
   --ink-dim: #223132;
   --muted: #4d6362;
   --muted-deep: #3e5251;
+  --ink-on-accent: #ffffff;
 
   --line: rgba(17, 26, 27, 0.12);
   --line-soft: rgba(17, 26, 27, 0.06);
   --line-strong: rgba(17, 26, 27, 0.24);
   --line-red: rgba(237, 101, 92, 0.55);
   --line-red-soft: rgba(237, 101, 92, 0.22);
+  --status-error: #dc2626;
+  --status-error-bright: #b91c1c;
+  --status-error-soft: rgba(220, 38, 38, 0.08);
 
   --shadow: 0 20px 55px rgba(17, 26, 27, 0.09);
   --shadow-soft: 0 10px 24px rgba(17, 26, 27, 0.06);

@@ -206,7 +206,7 @@ main,
   position: absolute;
   left: 0;
   bottom: 6%;
-  color: rgb(244 240 232 / 0.33);
+  color: var(--muted-deep);
   font-size: 8px;
   font-weight: var(--weight-bold);
   letter-spacing: 0.18em;

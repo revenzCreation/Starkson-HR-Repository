@@ -713,7 +713,7 @@ select.status-select {
   left: 50%;
   transform: translateX(-50%);
   background: var(--ink);
-  color: #10191a;
+  color: var(--paper-deep);
   border: none;
   padding: 12px 24px;
   border-radius: 8px;
