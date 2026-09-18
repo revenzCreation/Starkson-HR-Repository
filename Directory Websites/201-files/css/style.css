@@ -161,7 +161,7 @@ h1 em { color: var(--red-dark); font-style: normal; }
 
 .page-intro {
   max-width: 320px;
-  color: #c6d0cc;
+  color: #d5deda;
   font-size: 14px;
   line-height: 1.6;
 }
@@ -442,7 +442,7 @@ tbody tr:hover { background: rgba(237,101,92,.06); }
 .login-intro {
   max-width: 360px;
   margin-bottom: 24px;
-  color: #c6d0cc;
+  color: #d5deda;
   font-size: 13.5px;
   line-height: 1.6;
 }

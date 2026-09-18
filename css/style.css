@@ -688,7 +688,7 @@ h1 em { color: var(--brand-red-bright); font-style: normal; }
   color: var(--brand-red);
 }
 
-.featured .tool-number { color: #ef8c82; }
+.featured .tool-number { color: #f5c4be; }
 
 .card-arrow {
   color: var(--muted);
@@ -700,7 +700,7 @@ h1 em { color: var(--brand-red-bright); font-style: normal; }
   transform: translate(2px, -2px);
 }
 
-.featured .card-arrow { color: #ef8c82; }
+.featured .card-arrow { color: #f5c4be; }
 
 /* ---- Tool icons (CSS-drawn, no image requests) -------------------------- */
 .tool-icon {
@@ -713,7 +713,7 @@ h1 em { color: var(--brand-red-bright); font-style: normal; }
   color: var(--brand-red);
 }
 
-.featured .tool-icon { color: #f18b80; }
+.featured .tool-icon { color: #f5c4be; }
 
 .icon-people span {
   position: absolute;
@@ -807,7 +807,7 @@ h1 em { color: var(--brand-red-bright); font-style: normal; }
   line-height: var(--leading-body);
 }
 
-.featured p { color: #f1deda; }
+.featured p { color: #f5e4e0; }
 
 .card-link {
   display: inline-flex;
@@ -821,7 +821,7 @@ h1 em { color: var(--brand-red-bright); font-style: normal; }
 
 .card-link .hr-icon { color: var(--brand-red); transition: transform var(--dur) var(--ease-out); }
 .tool-card:hover .card-link .hr-icon { transform: translateX(3px); }
-.featured .card-link .hr-icon { color: #ef8c82; }
+.featured .card-link .hr-icon { color: #f5c4be; }
 
 .muted { color: var(--muted); }
 
@@ -850,7 +850,7 @@ h1 em { color: var(--brand-red-bright); font-style: normal; }
 .support-panel-main > p:not(.note-label) {
   max-width: 470px;
   margin-bottom: 27px;
-  color: #f1deda;
+  color: #f5e4e0;
   font-size: var(--step-1);
   line-height: var(--leading-body);
 }
