@@ -16,6 +16,7 @@ const statusSelect = document.getElementById('status');
 const departmentSelect = document.getElementById('department');
 let applicantOptionsLoaded = false;
 let applicantOptionsRequest = null;
+let applicantOptionsFailed = false;
 
 let uploadedResume = null;
 
@@ -151,13 +152,18 @@ async function loadApplicantOptions() {
     try {
       const result = await window.HR_PORTAL_SHEETS.request(`${getSheet2Url()}?action=applicant-options`);
       if (departmentSelect) {
+        const departments = Array.isArray(result.departments) ? result.departments : [];
+        if (!departments.length) throw new Error('No departments are available from the HR data service.');
+        const selectedValue = departmentSelect.value;
         departmentSelect.innerHTML = '<option value="">Select department</option>';
-        (Array.isArray(result.departments) ? result.departments : []).forEach(department => {
+        departments.forEach(department => {
           const option = document.createElement('option');
           option.value = department;
           option.textContent = department;
           departmentSelect.appendChild(option);
         });
+        if (departments.includes(selectedValue)) departmentSelect.value = selectedValue;
+        departmentSelect.disabled = false;
       }
       if (mrfTransfer) {
         mrfTransfer.innerHTML = '<option value="">No MRF assignment</option>';
@@ -178,8 +184,13 @@ async function loadApplicantOptions() {
         });
       }
       applicantOptionsLoaded = true;
+      applicantOptionsFailed = false;
     } catch (error) {
-      if (departmentSelect) departmentSelect.innerHTML = '<option value="">Click to retry department list</option>';
+      if (departmentSelect) {
+        departmentSelect.disabled = false;
+        departmentSelect.innerHTML = '<option value="">Click to retry department list</option>';
+      }
+      applicantOptionsFailed = true;
       console.warn('Unable to load applicant options:', error);
     } finally {
       applicantOptionsRequest = null;
@@ -190,7 +201,10 @@ async function loadApplicantOptions() {
 
 if (departmentSelect) {
   departmentSelect.addEventListener('focus', () => {
-    if (!applicantOptionsLoaded) loadApplicantOptions();
+    if (!applicantOptionsLoaded && !applicantOptionsRequest) loadApplicantOptions();
+  });
+  departmentSelect.addEventListener('click', () => {
+    if (applicantOptionsFailed && !applicantOptionsRequest) loadApplicantOptions();
   });
 }
 

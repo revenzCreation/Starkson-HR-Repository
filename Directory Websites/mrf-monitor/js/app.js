@@ -76,6 +76,7 @@ async function loadDepartments() {
   departmentsRequest = (async () => {
    try {
   const departments = await loadDepartmentOptions();
+  if (!departments.length) throw new Error('No departments are available from the HR data service.');
   departmentSelect.innerHTML = '<option value="">Select department</option>';
   departments.forEach(department => {
     const option = document.createElement('option');
@@ -83,8 +84,10 @@ async function loadDepartments() {
     option.textContent = department;
     departmentSelect.appendChild(option);
   });
-  departmentsLoaded = departments.length > 0;
+  departmentSelect.disabled = false;
+  departmentsLoaded = true;
    } catch (error) {
+    departmentSelect.disabled = false;
     departmentSelect.innerHTML = '<option value="">Click to retry department list</option>';
     throw error;
    } finally {
@@ -96,7 +99,10 @@ async function loadDepartments() {
 
 if (departmentSelect) {
   departmentSelect.addEventListener('focus', () => {
-    if (!departmentsLoaded) loadDepartments().catch(() => {});
+    if (!departmentsLoaded && !departmentsRequest) loadDepartments().catch(() => {});
+  });
+  departmentSelect.addEventListener('click', () => {
+    if (!departmentsLoaded && !departmentsRequest) loadDepartments().catch(() => {});
   });
 }
 
