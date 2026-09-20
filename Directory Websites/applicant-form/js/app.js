@@ -13,6 +13,7 @@ const resumePreview = document.getElementById('resumePreview');
 const resumeName = document.getElementById('resumeName');
 const mrfTransfer = document.getElementById('mrfTransfer');
 const statusSelect = document.getElementById('status');
+const positionLevelSelect = document.getElementById('positionLevel');
 const departmentSelect = document.getElementById('department');
 let applicantOptionsLoaded = false;
 let applicantOptionsRequest = null;
@@ -28,6 +29,7 @@ function getFormRecord() {
     phone: document.getElementById('phone').value.trim(),
     positionApplied: document.getElementById('positionApplied').value.trim(),
     department: document.getElementById('department').value.trim(),
+    positionLevel: positionLevelSelect ? positionLevelSelect.value : '',
     mrfTransfer: mrfTransfer ? mrfTransfer.value : '',
     source: document.getElementById('source').value,
     availabilityDate: document.getElementById('availabilityDate').value,
@@ -148,6 +150,10 @@ async function renderApplicants() {
 async function loadApplicantOptions() {
   if (applicantOptionsLoaded) return;
   if (applicantOptionsRequest) return applicantOptionsRequest;
+  if (departmentSelect && !departmentSelect.options.length) {
+    departmentSelect.innerHTML = '<option value="">Loading departments...</option>';
+  }
+  if (departmentSelect) departmentSelect.disabled = false;
   applicantOptionsRequest = (async () => {
     try {
       const result = await window.HR_PORTAL_SHEETS.request(`${getSheet2Url()}?action=applicant-options`);
@@ -175,12 +181,21 @@ async function loadApplicantOptions() {
         });
       }
       if (statusSelect) {
-        statusSelect.innerHTML = '<option value="">Select position level</option>';
+        statusSelect.innerHTML = '<option value="">Select application status</option>';
+        (Array.isArray(result.applicantStatuses) ? result.applicantStatuses : []).forEach(status => {
+          const option = document.createElement('option');
+          option.value = status;
+          option.textContent = status;
+          statusSelect.appendChild(option);
+        });
+      }
+      if (positionLevelSelect) {
+        positionLevelSelect.innerHTML = '<option value="">Select position level</option>';
         (Array.isArray(result.positionLevels) ? result.positionLevels : []).forEach(level => {
           const option = document.createElement('option');
           option.value = level;
           option.textContent = level;
-          statusSelect.appendChild(option);
+          positionLevelSelect.appendChild(option);
         });
       }
       applicantOptionsLoaded = true;

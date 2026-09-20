@@ -26,6 +26,8 @@ On the first request after deployment, the script migrates both the `MRF`/`MRF R
 
 This project handles MRF Monitor and Applicant Intake. It uses `MRF_MONITORING_DATABASE` for MRF uploads and `CANDIDATE_RESUMES` for applicant resumes.
 
+MRF headcount is derived from the Applicants tab: only applicants with an `MRF Transfer` whose application `Status` is `Hired` are counted as assigned. Available headcount is `Original Headcount - Hired assignments`, never below zero; an MRF becomes `Fulfilled` at zero and becomes available again if a hire is changed to another status. A linked applicant must use the same department and position as the selected MRF.
+
 ## Required permissions
 
 The owner account must have edit access to both spreadsheets and editor access to all four Drive folders. When ownership moves to the company account, transfer or recreate the Apps Script deployments under that account and update the website URLs only if the deployment IDs change.

@@ -63,8 +63,8 @@
               </div>
               <div class="field">
                 <label for="department">Target Department <span class="req" style="color: var(--brand-red);">*</span></label>
-                <select id="department" name="department" required disabled>
-                  <option value="">Select department</option>
+                <select id="department" name="department" required>
+                  <option value="">Loading departments...</option>
                 </select>
               </div>
               <div class="field">
@@ -91,9 +91,15 @@
                 <input id="availabilityDate" name="availabilityDate" type="date">
               </div>
               <div class="field">
-                <label for="status">Initial Status</label>
-                <select id="status" name="status">
+                <label for="positionLevel">Position Level</label>
+                <select id="positionLevel" name="positionLevel">
                   <option value="">Select position level</option>
+                </select>
+              </div>
+              <div class="field">
+                <label for="status">Application Status</label>
+                <select id="status" name="status">
+                  <option value="">Select application status</option>
                 </select>
               </div>
             </div>
