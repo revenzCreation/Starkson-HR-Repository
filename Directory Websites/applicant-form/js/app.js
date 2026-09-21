@@ -11,30 +11,41 @@ const resumeUploadBox = document.getElementById('resumeUploadBox');
 const resumeInput = document.getElementById('resumeInput');
 const resumePreview = document.getElementById('resumePreview');
 const resumeName = document.getElementById('resumeName');
-const mrfTransfer = document.getElementById('mrfTransfer');
-const statusSelect = document.getElementById('status');
-const positionLevelSelect = document.getElementById('positionLevel');
 const departmentSelect = document.getElementById('department');
 let applicantOptionsLoaded = false;
 let applicantOptionsRequest = null;
-let applicantOptionsFailed = false;
-
 let uploadedResume = null;
 
 function getFormRecord() {
+  const fullName = [
+    document.getElementById('firstName')?.value.trim(),
+    document.getElementById('middleInitial')?.value.trim(),
+    document.getElementById('lastName')?.value.trim()
+  ].filter(Boolean).join(' ');
+
+  const selectedPosition = document.getElementById('positionApplied')?.value.trim() || '';
+
   return {
-    id: 'APP-' + Date.now(),
-    fullName: document.getElementById('fullName').value.trim(),
+    id: '',
+    fullName,
+    firstName: document.getElementById('firstName')?.value.trim() || '',
+    middleInitial: document.getElementById('middleInitial')?.value.trim() || '',
+    lastName: document.getElementById('lastName')?.value.trim() || '',
     email: document.getElementById('email').value.trim(),
     phone: document.getElementById('phone').value.trim(),
-    positionApplied: document.getElementById('positionApplied').value.trim(),
-    department: document.getElementById('department').value.trim(),
-    positionLevel: positionLevelSelect ? positionLevelSelect.value : '',
-    mrfTransfer: mrfTransfer ? mrfTransfer.value : '',
-    source: document.getElementById('source').value,
-    availabilityDate: document.getElementById('availabilityDate').value,
-    status: document.getElementById('status').value || 'New',
-    remarks: document.getElementById('remarks').value.trim(),
+    gender: document.getElementById('gender')?.value || '',
+    age: document.getElementById('age')?.value || '',
+    positionApplied: selectedPosition,
+    positionLevel: '',
+    mrfTransfer: '',
+    source: 'Applicant Form',
+    availabilityDate: '',
+    status: 'Applied',
+    remarks: [
+      `Gender: ${document.getElementById('gender')?.value || ''}`,
+      `Age: ${document.getElementById('age')?.value || ''}`,
+      document.getElementById('remarks')?.value.trim() || ''
+    ].filter(Boolean).join(' | '),
     createdAt: Date.now(),
     updatedAt: Date.now(),
     resumeData: uploadedResume ? uploadedResume.dataUrl : '',
@@ -45,8 +56,8 @@ function getFormRecord() {
 }
 
 function validateForm(record) {
-  if (!record.fullName || !record.email || !record.phone || !record.positionApplied || !record.department || !record.source) {
-    throw new Error('Please complete all required fields.');
+  if (!record.email || !record.phone || !record.fullName || !record.positionApplied || !record.remarks || !record.resumeData) {
+    throw new Error('Please complete all required fields, including your resume.');
   }
   return true;
 }
@@ -118,6 +129,8 @@ form.addEventListener('submit', async (event) => {
     uploadedResume = null;
     resumePreview.style.display = 'none';
     resumeName.textContent = '';
+    applicantOptionsLoaded = false;
+    await loadApplicantOptions();
     await renderApplicants();
   } catch (error) {
     showStatus(error.message || 'Something went wrong while submitting your application.', 'error');
@@ -150,16 +163,11 @@ async function renderApplicants() {
 async function loadApplicantOptions() {
   if (applicantOptionsLoaded) return;
   if (applicantOptionsRequest) return applicantOptionsRequest;
-  if (departmentSelect && !departmentSelect.options.length) {
-    departmentSelect.innerHTML = '<option value="">Loading departments...</option>';
-  }
-  if (departmentSelect) departmentSelect.disabled = false;
   applicantOptionsRequest = (async () => {
     try {
       const result = await window.HR_PORTAL_SHEETS.request(`${getSheet2Url()}?action=applicant-options`);
       if (departmentSelect) {
-        const departments = Array.isArray(result.departments) ? result.departments : [];
-        if (!departments.length) throw new Error('No departments are available from the HR data service.');
+        const departments = Array.isArray(window.STARKSON_DEPARTMENTS) ? window.STARKSON_DEPARTMENTS : [];
         const selectedValue = departmentSelect.value;
         departmentSelect.innerHTML = '<option value="">Select department</option>';
         departments.forEach(department => {
@@ -171,41 +179,8 @@ async function loadApplicantOptions() {
         if (departments.includes(selectedValue)) departmentSelect.value = selectedValue;
         departmentSelect.disabled = false;
       }
-      if (mrfTransfer) {
-        mrfTransfer.innerHTML = '<option value="">No MRF assignment</option>';
-        (Array.isArray(result.mrfNumbers) ? result.mrfNumbers : []).forEach(number => {
-          const option = document.createElement('option');
-          option.value = number;
-          option.textContent = number;
-          mrfTransfer.appendChild(option);
-        });
-      }
-      if (statusSelect) {
-        statusSelect.innerHTML = '<option value="">Select application status</option>';
-        (Array.isArray(result.applicantStatuses) ? result.applicantStatuses : []).forEach(status => {
-          const option = document.createElement('option');
-          option.value = status;
-          option.textContent = status;
-          statusSelect.appendChild(option);
-        });
-      }
-      if (positionLevelSelect) {
-        positionLevelSelect.innerHTML = '<option value="">Select position level</option>';
-        (Array.isArray(result.positionLevels) ? result.positionLevels : []).forEach(level => {
-          const option = document.createElement('option');
-          option.value = level;
-          option.textContent = level;
-          positionLevelSelect.appendChild(option);
-        });
-      }
       applicantOptionsLoaded = true;
-      applicantOptionsFailed = false;
     } catch (error) {
-      if (departmentSelect) {
-        departmentSelect.disabled = false;
-        departmentSelect.innerHTML = '<option value="">Click to retry department list</option>';
-      }
-      applicantOptionsFailed = true;
       console.warn('Unable to load applicant options:', error);
     } finally {
       applicantOptionsRequest = null;
@@ -215,11 +190,13 @@ async function loadApplicantOptions() {
 }
 
 if (departmentSelect) {
-  departmentSelect.addEventListener('focus', () => {
-    if (!applicantOptionsLoaded && !applicantOptionsRequest) loadApplicantOptions();
-  });
-  departmentSelect.addEventListener('click', () => {
-    if (applicantOptionsFailed && !applicantOptionsRequest) loadApplicantOptions();
+  const departments = Array.isArray(window.STARKSON_DEPARTMENTS) ? window.STARKSON_DEPARTMENTS : [];
+  departmentSelect.innerHTML = '<option value="">Select department</option>';
+  departments.forEach(department => {
+    const option = document.createElement('option');
+    option.value = department;
+    option.textContent = department;
+    departmentSelect.appendChild(option);
   });
 }
 

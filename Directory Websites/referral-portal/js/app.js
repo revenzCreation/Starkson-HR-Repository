@@ -50,10 +50,6 @@ const dropZoneContent = document.getElementById('dropZoneContent');
 const resumeGroup = document.getElementById('resumeGroup');
 const fileError = document.getElementById('fileError');
 const statusDiv = document.getElementById('statusMessage');
-let departmentOptionsLoaded = false;
-let departmentOptionsRequest = null;
-let departmentOptionsFailed = false;
-
 function safeReadDraft() {
   try {
     const raw = localStorage.getItem('referralDraft');
@@ -141,49 +137,20 @@ document.addEventListener('DOMContentLoaded', () => {
 async function loadDepartmentOptions() {
   const selects = [deptSelect, applicantDepartmentSelect].filter(Boolean);
   if (!selects.length) return;
-  if (departmentOptionsLoaded) return;
-  if (departmentOptionsRequest) return departmentOptionsRequest;
-  departmentOptionsRequest = (async () => {
-    try {
-      const result = await window.HR_PORTAL_SHEETS.request(`${getSheet2Url()}?action=department-options`);
-      const departments = Array.isArray(result.departments) ? result.departments : [];
-      if (!departments.length) throw new Error('No departments are available from the HR data service.');
-      selects.forEach(select => {
-        const selectedValue = select.value;
-        select.disabled = false;
-        select.innerHTML = '<option value="" disabled selected>Select department</option>';
-        departments.forEach(department => {
-          const option = document.createElement('option');
-          option.value = department;
-          option.textContent = department;
-          select.appendChild(option);
-        });
-        if (departments.includes(selectedValue)) select.value = selectedValue;
-      });
-      departmentOptionsLoaded = true;
-      departmentOptionsFailed = false;
-    } catch (error) {
-      selects.forEach(select => {
-        select.disabled = false;
-        select.innerHTML = '<option value="">Click to retry department list</option>';
-      });
-      departmentOptionsFailed = true;
-      console.warn('Unable to load department choices:', error);
-    } finally {
-      departmentOptionsRequest = null;
-    }
-  })();
-  return departmentOptionsRequest;
+  const departments = Array.isArray(window.STARKSON_DEPARTMENTS) ? window.STARKSON_DEPARTMENTS : [];
+  selects.forEach(select => {
+    const selectedValue = select.value;
+    select.disabled = false;
+    select.innerHTML = '<option value="" disabled selected>Select department</option>';
+    departments.forEach(department => {
+      const option = document.createElement('option');
+      option.value = department;
+      option.textContent = department;
+      select.appendChild(option);
+    });
+    if (departments.includes(selectedValue)) select.value = selectedValue;
+  });
 }
-
-[deptSelect, applicantDepartmentSelect].filter(Boolean).forEach(select => {
-  select.addEventListener('focus', () => {
-    if (!departmentOptionsLoaded && !departmentOptionsRequest) loadDepartmentOptions();
-  });
-  select.addEventListener('click', () => {
-    if (departmentOptionsFailed && !departmentOptionsRequest) loadDepartmentOptions();
-  });
-});
 
 function checkOtherDeptVisibility() {
   if (!deptSelect || !otherDeptGroup || !otherDeptInput) return;

@@ -46,76 +46,52 @@
           <form id="applicantForm" novalidate>
             <div class="field-grid">
               <div class="field">
-                <label for="fullName">Full Name <span class="req" style="color: var(--brand-red);">*</span></label>
-                <input id="fullName" name="fullName" type="text" placeholder="e.g. Juan Santos Dela Cruz" required>
-              </div>
-              <div class="field">
-                <label for="email">Email Address <span class="req" style="color: var(--brand-red);">*</span></label>
+                <label for="email">Active Email <span class="req" style="color: var(--brand-red);">*</span></label>
                 <input id="email" name="email" type="email" placeholder="name@example.com" required>
               </div>
               <div class="field">
-                <label for="phone">Phone Number <span class="req" style="color: var(--brand-red);">*</span></label>
+                <label for="phone">Active Mobile Number <span class="req" style="color: var(--brand-red);">*</span></label>
                 <input id="phone" name="phone" type="tel" placeholder="09XX XXX XXXX" required>
               </div>
               <div class="field">
-                <label for="positionApplied">Position Applied For <span class="req" style="color: var(--brand-red);">*</span></label>
-                <input id="positionApplied" name="positionApplied" type="text" placeholder="e.g. Machine Operator, QA Lead" required>
+                <label for="firstName">First Name <span class="req" style="color: var(--brand-red);">*</span></label>
+                <input id="firstName" name="firstName" type="text" placeholder="First name" required>
               </div>
               <div class="field">
-                <label for="department">Target Department <span class="req" style="color: var(--brand-red);">*</span></label>
-                <select id="department" name="department" required>
-                  <option value="">Loading departments...</option>
-                </select>
+                <label for="middleInitial">Middle Initial</label>
+                <input id="middleInitial" name="middleInitial" type="text" maxlength="1" placeholder="M">
               </div>
               <div class="field">
-                <label for="mrfTransfer">MRF Transfer</label>
-                <select id="mrfTransfer" name="mrfTransfer">
-                  <option value="">No MRF assignment</option>
-                </select>
+                <label for="lastName">Last Name <span class="req" style="color: var(--brand-red);">*</span></label>
+                <input id="lastName" name="lastName" type="text" placeholder="Last name" required>
               </div>
               <div class="field">
-                <label for="source">Application Source <span class="req" style="color: var(--brand-red);">*</span></label>
-                <select id="source" name="source" required>
-                  <option value="">Select source</option>
-                  <option>Walk-in Applicant</option>
-                  <option>Employee Referral</option>
-                  <option>Facebook Careers</option>
-                  <option>LinkedIn</option>
-                  <option>DOLE / Job Fair</option>
-                  <option>Company Website</option>
+                <label for="gender">Gender <span class="req" style="color: var(--brand-red);">*</span></label>
+                <select id="gender" name="gender" required>
+                  <option value="">Select gender</option>
+                  <option>Male</option>
+                  <option>Female</option>
                   <option>Other</option>
                 </select>
               </div>
               <div class="field">
-                <label for="availabilityDate">Earliest Availability Date</label>
-                <input id="availabilityDate" name="availabilityDate" type="date">
-              </div>
-              <div class="field">
-                <label for="positionLevel">Position Level</label>
-                <select id="positionLevel" name="positionLevel">
-                  <option value="">Select position level</option>
-                </select>
-              </div>
-              <div class="field">
-                <label for="status">Application Status</label>
-                <select id="status" name="status">
-                  <option value="">Select application status</option>
-                </select>
+                <label for="age">Age <span class="req" style="color: var(--brand-red);">*</span></label>
+                <input id="age" name="age" type="number" min="18" max="80" placeholder="e.g. 25" required>
               </div>
             </div>
 
             <div class="field" style="margin-top: 14px;">
-              <label for="remarks">Experience &amp; Notes</label>
-              <textarea id="remarks" name="remarks" placeholder="Briefly summarize your relevant manufacturing experience, skills, or notes for HR..."></textarea>
+              <label for="positionApplied">Position <span class="req" style="color: var(--brand-red);">*</span></label>
+              <input id="positionApplied" name="positionApplied" type="text" placeholder="e.g. Production Operator, QA Inspector, Mechanical Engineer" required>
             </div>
 
             <div class="field" style="margin-top: 14px;">
-              <label>Resume / Supporting Document</label>
+              <label>Kindly submit your updated resume. <span class="req" style="color: var(--brand-red);">*</span></label>
               <div class="uploader" id="resumeUploadBox">
-                <input id="resumeInput" type="file" accept=".pdf,.doc,.docx,.jpg,.jpeg,.png">
+                <input id="resumeInput" type="file" accept=".pdf,.doc,.docx,.jpg,.jpeg,.png" required>
                 <div style="font-size: 24px; margin-bottom: 6px;">📄</div>
                 <div><strong>Click to upload</strong> or drag file here</div>
-                <small>PDF, DOC, DOCX, JPG, PNG (Max 5 MB)</small>
+                <small>Upload 1 supported file: PDF, document, or image. Max 10 MB.</small>
                 <div class="uploader-preview" id="resumePreview">Uploaded: <span id="resumeName"></span></div>
               </div>
             </div>
@@ -170,6 +146,7 @@
   </div>
 
   <script src="../shared/api-config.js"></script>
+  <script src="../shared/departments.js"></script>
   <script src="js/app.js"></script>
 </body>
 </html>

@@ -15,6 +15,7 @@
   <link rel="stylesheet" href="css/components.css">
   <link rel="stylesheet" href="css/style.css">
   <script src="Directory Websites/shared/api-config.js"></script>
+  <script src="Directory Websites/shared/departments.js"></script>
   <script src="js/portal.js" defer></script>
 </head>
 <body>
@@ -238,19 +239,10 @@
   </div>
 
   <script>
-    let supportDepartmentsFailed = false;
-    let supportDepartmentsRequest = null;
-
-    async function loadSupportDepartments() {
+    function loadSupportDepartments() {
       const departmentField = document.getElementById('inqDept');
-      const apiUrl = window.HR_PORTAL_SHEETS?.connections?.companySheet2;
-      if (!departmentField || !apiUrl) return;
-      if (supportDepartmentsRequest) return supportDepartmentsRequest;
-      supportDepartmentsRequest = (async () => {
-      try {
-        const result = await window.HR_PORTAL_SHEETS.request(`${apiUrl}?action=department-options`);
-        const departments = Array.isArray(result.departments) ? result.departments : [];
-        if (!departments.length) throw new Error('No departments are available from the HR data service.');
+      const departments = Array.isArray(window.STARKSON_DEPARTMENTS) ? window.STARKSON_DEPARTMENTS : [];
+      if (!departmentField) return;
         departmentField.innerHTML = '<option value="">Select department</option>';
         departments.forEach(department => {
           const option = document.createElement('option');
@@ -259,21 +251,7 @@
           departmentField.appendChild(option);
         });
         departmentField.disabled = false;
-        supportDepartmentsFailed = false;
-      } catch (error) {
-        departmentField.disabled = false;
-        departmentField.innerHTML = '<option value="">Click to retry department list</option>';
-        supportDepartmentsFailed = true;
-      } finally {
-        supportDepartmentsRequest = null;
-      }
-      })();
-      return supportDepartmentsRequest;
     }
-
-    document.getElementById('inqDept')?.addEventListener('click', () => {
-      if (supportDepartmentsFailed) loadSupportDepartments();
-    });
 
     loadSupportDepartments();
 

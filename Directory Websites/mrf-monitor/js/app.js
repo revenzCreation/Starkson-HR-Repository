@@ -1,4 +1,4 @@
-import { loadAllRecords, loadDepartmentOptions, saveRecord } from './storage.js';
+import { loadAllRecords, saveRecord } from './storage.js';
 import { toast, compressImage } from './utils.js';
 import { records, setRecords, renderDashboard, renderTable, openModal, closeModal, saveModalChanges, deleteCurrentModalRecord } from './ui.js';
 
@@ -10,8 +10,6 @@ const fileInput = document.getElementById('fileInput');
 const previewImg = document.getElementById('previewImg');
 const uploadPlaceholder = document.getElementById('uploadPlaceholder');
 const departmentSelect = document.getElementById('f_dept');
-let departmentsLoaded = false;
-let departmentsRequest = null;
 
 if (form) {
   form.addEventListener('submit', async e => {
@@ -71,12 +69,7 @@ if (form) {
 
 async function loadDepartments() {
   if (!departmentSelect) return;
-  if (departmentsLoaded) return;
-  if (departmentsRequest) return departmentsRequest;
-  departmentsRequest = (async () => {
-   try {
-  const departments = await loadDepartmentOptions();
-  if (!departments.length) throw new Error('No departments are available from the HR data service.');
+  const departments = Array.isArray(window.STARKSON_DEPARTMENTS) ? window.STARKSON_DEPARTMENTS : [];
   departmentSelect.innerHTML = '<option value="">Select department</option>';
   departments.forEach(department => {
     const option = document.createElement('option');
@@ -85,25 +78,6 @@ async function loadDepartments() {
     departmentSelect.appendChild(option);
   });
   departmentSelect.disabled = false;
-  departmentsLoaded = true;
-   } catch (error) {
-    departmentSelect.disabled = false;
-    departmentSelect.innerHTML = '<option value="">Click to retry department list</option>';
-    throw error;
-   } finally {
-    departmentsRequest = null;
-   }
-  })();
-  return departmentsRequest;
-}
-
-if (departmentSelect) {
-  departmentSelect.addEventListener('focus', () => {
-    if (!departmentsLoaded && !departmentsRequest) loadDepartments().catch(() => {});
-  });
-  departmentSelect.addEventListener('click', () => {
-    if (!departmentsLoaded && !departmentsRequest) loadDepartments().catch(() => {});
-  });
 }
 
 document.querySelectorAll('nav.tabs button').forEach(btn => {

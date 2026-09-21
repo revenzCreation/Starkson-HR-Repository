@@ -89,11 +89,7 @@ function getEmployeeDepartmentOptions() {
 
 function applyDepartmentValidation() {
   const sheet = getSheet(CONFIG.referralSheet, REFERRAL_FIELDS);
-  const map = fieldMap(REFERRAL_FIELDS);
-  const departments = getEmployeeDepartmentOptions();
-  if (!departments.length) return;
-  const rule = SpreadsheetApp.newDataValidation().requireValueInList(departments, true).setAllowInvalid(false).build();
-  sheet.getRange(2, map.department, Math.max(sheet.getMaxRows() - 1, 1), 1).setDataValidation(rule);
+  sheet.getRange(1, 1, sheet.getMaxRows(), sheet.getMaxColumns()).clearDataValidations();
 }
 
 function syncEmployeeFiles() {
@@ -159,18 +155,18 @@ function repairIds(rows, fields) {
   const idIndex = fields.findIndex(field => field[0] === 'id'); if (idIndex < 0) return;
   let highest = rows.reduce((max, row) => Math.max(max, parseInt(String(row[idIndex]).replace(/\D/g, ''), 10) || 0), 0);
   const used = {}; rows.forEach(row => { const value = String(row[idIndex] || '').replace(/\D/g, ''); if (value) used[Number(value)] = true; });
-  rows.forEach(row => { const number = parseInt(String(row[idIndex] || '').replace(/\D/g, ''), 10); if (!number || String(row[idIndex]).length !== 4) { do { highest += 1; } while (used[highest]); row[idIndex] = String(highest).padStart(4, '0'); used[highest] = true; } else row[idIndex] = String(number).padStart(4, '0'); });
+  rows.forEach(row => { const number = parseInt(String(row[idIndex] || '').replace(/\D/g, ''), 10); if (!number || String(row[idIndex]).length !== 5) { do { highest += 1; } while (used[highest]); row[idIndex] = String(highest).padStart(5, '0'); used[highest] = true; } else row[idIndex] = String(number).padStart(5, '0'); });
 }
 
 function appendRecord(sheet, fields, record) { const values = fields.map(field => record[field[0]] == null ? '' : record[field[0]]); sheet.getRange(sheet.getLastRow() + 1, 1, 1, values.length).setValues([values]); }
 function fieldMap(fields) { const map = {}; fields.forEach((field, index) => map[field[0]] = index + 1); return map; }
-function nextId(sheet, idColumn) { if (sheet.getLastRow() < 2) return '0001'; const values = sheet.getRange(2, idColumn, sheet.getLastRow() - 1, 1).getValues(); const highest = values.reduce((max, row) => Math.max(max, parseInt(String(row[0]).replace(/\D/g, ''), 10) || 0), 0); return String(highest + 1).padStart(4, '0'); }
+function nextId(sheet, idColumn) { if (sheet.getLastRow() < 2) return '00001'; const values = sheet.getRange(2, idColumn, sheet.getLastRow() - 1, 1).getValues(); const highest = values.reduce((max, row) => Math.max(max, parseInt(String(row[0]).replace(/\D/g, ''), 10) || 0), 0); return String(highest + 1).padStart(5, '0'); }
 function saveUpload(data, name, mimeType, folderId, prefix) { if (!data) return ''; const bytes = Utilities.base64Decode(String(data).split(',').pop()); const blob = Utilities.newBlob(bytes, mimeType || 'application/octet-stream', prefix + '_' + (name || 'upload')); return DriveApp.getFolderById(folderId).createFile(blob).getUrl(); }
 function normalizeEmployeeFile(file) { const original = file.getName(); const extension = (original.match(/\.[^.]+$/) || [''])[0].toUpperCase(); const base = original.replace(/\.[^.]+$/, '').replace(/[_-]+/g, ' ').trim(); const parts = base.split(','); const surname = clean(parts[0].trim().split(/\s+/).slice(0, parts.length > 1 ? 99 : 1).join(' ')); const firstName = clean((parts.length > 1 ? parts[1] : base.split(/\s+/)[1] || '').trim().split(/\s+/)[0]); const target = [surname, firstName].filter(Boolean).join(', ') + extension; if (target !== original) file.setName(target); return { surname: surname, firstName: firstName }; }
 function setShortLink(sheet, row, column, url, label) { sheet.getRange(row, column).setRichTextValue(SpreadsheetApp.newRichTextValue().setText(label).setLinkUrl(url).build()); }
 function getLink(sheet, row, column) { const rich = sheet.getRange(row, column).getRichTextValue(); return rich && rich.getLinkUrl ? rich.getLinkUrl() : ''; }
 function formatSheet(sheet, count) { sheet.getRange(1, 1, 1, count).setFontFamily('Arial').setFontSize(9).setFontWeight('bold').setHorizontalAlignment('center'); if (sheet.getMaxRows() > 1) sheet.getRange(2, 1, sheet.getMaxRows() - 1, count).setFontFamily('Arial').setFontSize(9); normalizeIdColumn(sheet); sheet.setFrozenRows(1); }
-function normalizeIdColumn(sheet) { if (sheet.getMaxRows() < 2) return; const range = sheet.getRange(2, 1, sheet.getMaxRows() - 1, 1); const values = range.getValues().map(row => { const digits = String(row[0] == null ? '' : row[0]).replace(/\D/g, ''); return [digits ? digits.padStart(4, '0') : '']; }); range.setNumberFormat('@').setValues(values); }
+function normalizeIdColumn(sheet) { if (sheet.getMaxRows() < 2) return; const range = sheet.getRange(2, 1, sheet.getMaxRows() - 1, 1); const values = range.getValues().map(row => { const digits = String(row[0] == null ? '' : row[0]).replace(/\D/g, ''); return [digits ? digits.padStart(5, '0') : '']; }); range.setNumberFormat('@').setValues(values); }
 function normalizeHeader(value) { return String(value || '').toLowerCase().replace(/[^a-z0-9]/g, ''); }
 function clean(value) { return String(value == null ? '' : value).trim().replace(/\s+/g, ' ').toUpperCase(); }
 function parseBody(e) { return JSON.parse((e && e.postData && e.postData.contents) || '{}'); }
