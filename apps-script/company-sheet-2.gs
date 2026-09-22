@@ -42,24 +42,9 @@ function doGet(e) {
 function doPost(e) {
   try {
     const body = parseBody(e);
-    if (body.action === 'save') {
-      const record = saveMrf(body.record || {});
-      queueSyncEvent('mrf.changed', 'website');
-      flushSyncOutbox();
-      return json({ ok: true, record: record });
-    }
-    if (body.action === 'delete') {
-      deleteById(CONFIG.mrfSheet, MRF_FIELDS, body.id);
-      queueSyncEvent('mrf.changed', 'website');
-      flushSyncOutbox();
-      return json({ ok: true });
-    }
-    if (body.action === 'save-applicant' || body.action === 'applicant-save') {
-      const record = saveApplicant(body.record || body.applicant || {});
-      queueSyncEvent('mrf.changed', 'website');
-      flushSyncOutbox();
-      return json({ ok: true, record: record });
-    }
+    if (body.action === 'save') return json({ ok: true, record: saveMrf(body.record || {}) });
+    if (body.action === 'delete') { deleteById(CONFIG.mrfSheet, MRF_FIELDS, body.id); return json({ ok: true }); }
+    if (body.action === 'save-applicant' || body.action === 'applicant-save') return json({ ok: true, record: saveApplicant(body.record || body.applicant || {}) });
     return json({ ok: false, error: 'Unknown action' });
   } catch (error) { return json({ ok: false, error: error.message }); }
 }
@@ -68,7 +53,7 @@ function onOpen() {
   clearApplicantDropdowns();
 }
 
-function handleSheetEdit(e) {
+function onEdit(e) {
   const range = e && e.range;
   if (!range) return;
   const sheet = range.getSheet();
@@ -79,8 +64,6 @@ function handleSheetEdit(e) {
   if (isMrfSheet) {
     syncMrfHeadcounts();
     clearApplicantDropdowns();
-    queueSyncEvent('mrf.changed', 'sheet');
-    flushSyncOutbox();
     return;
   }
   const row = range.getRow();
@@ -106,19 +89,6 @@ function handleSheetEdit(e) {
     syncApplicantAssignmentState();
     if (touchesTransfer || touchesStatus) syncMrfHeadcounts();
     if (touchesStatus) syncActiveApplicantsToEmployeeData();
-    queueSyncEvent('mrf.changed', 'sheet');
-    flushSyncOutbox();
-  }
-}
-
-function installSyncTriggers() {
-  const triggers = ScriptApp.getProjectTriggers();
-  const handlers = triggers.map(trigger => trigger.getHandlerFunction());
-  if (handlers.indexOf('handleSheetEdit') < 0) {
-    ScriptApp.newTrigger('handleSheetEdit').forSpreadsheet(CONFIG.spreadsheetId).onEdit().create();
-  }
-  if (handlers.indexOf('retrySyncOutbox') < 0) {
-    ScriptApp.newTrigger('retrySyncOutbox').timeBased().everyMinutes(1).create();
   }
 }
 
@@ -139,7 +109,7 @@ function saveApplicant(input) {
     const sheet = getSheet(CONFIG.applicantsSheet, APPLICANT_FIELDS); const map = ensureSchema(sheet, APPLICANT_FIELDS);
     const id = normalizeId(input.id) || nextId(sheet, map.id);
     const mrfTransfer = cleanUpper(input.mrfTransfer || '');
-    const status = mrfTransfer ? 'Hired' : normalizeApplicantStatus(input.status);
+    const status = normalizeApplicantStatus(input.status);
     validateMrfTransfer(sheet, map, id, mrfTransfer, status);
     const data = input.resumeData || input.fileData || ''; const name = input.resumeFileName || input.fileName || ''; const mime = input.resumeMimeType || input.fileMimeType || '';
     const resumeLink = saveUpload(data, name, mime, CONFIG.applicantFolderId, 'APPLICANT_' + id); const now = Date.now();
@@ -166,8 +136,6 @@ function getApplicantOptions() {
 function setupDatabase() {
   ensureSchema(getSheet(CONFIG.mrfSheet, MRF_FIELDS), MRF_FIELDS);
   ensureSchema(getSheet(CONFIG.applicantsSheet, APPLICANT_FIELDS), APPLICANT_FIELDS);
-  getSyncOutboxSheet();
-  installSyncTriggers();
   syncApplicantAssignmentState();
   syncMrfHeadcounts();
   syncActiveApplicantsToEmployeeData();
@@ -295,7 +263,6 @@ function syncMrfHeadcounts() {
     const assignedRange = mrfSheet.getRange(sheetRow, assignedColumn);
     const formula = '=COUNTIF(Applicants!$' + columnToLetter(transferColumn) + ':$' + columnToLetter(transferColumn) + ', $' + columnToLetter(mrfNumberColumn) + sheetRow + ')';
     assignedRange.setFormula(formula);
-    SpreadsheetApp.flush();
 
     const assigned = Number(assignedRange.getValue()) || 0;
     const available = Math.max(0, original - assigned);
@@ -335,9 +302,6 @@ function syncApplicantAssignmentState() {
     const sheetRow = index + 2;
     const mrfTransfer = String(row[applicantMap.mrfTransfer - 1] || '').trim();
     const isAssigned = Boolean(mrfTransfer);
-    if (isAssigned && String(row[applicantMap.status - 1] || '').trim().toLowerCase() !== 'hired') {
-      applicantSheet.getRange(sheetRow, applicantMap.status).setValue('Hired');
-    }
     applicantSheet.getRange(sheetRow, 1, 1, APPLICANT_FIELDS.length).setBackground(isAssigned ? '#F4B183' : null);
   });
 }
@@ -414,78 +378,3 @@ function clean(value) { return String(value == null ? '' : value).trim().replace
 function cleanUpper(value) { return clean(value).toUpperCase(); }
 function parseBody(e) { return JSON.parse((e && e.postData && e.postData.contents) || '{}'); }
 function json(value) { return ContentService.createTextOutput(JSON.stringify(value)).setMimeType(ContentService.MimeType.JSON); }
-
-const SYNC_OUTBOX_HEADERS = ['Event ID', 'Created At', 'Type', 'Source', 'Payload', 'Attempts', 'Next Attempt At', 'Status', 'Last Error', 'Delivered At'];
-
-function getSyncOutboxSheet() {
-  const spreadsheet = SpreadsheetApp.openById(CONFIG.spreadsheetId);
-  let sheet = spreadsheet.getSheetByName('Sync Outbox');
-  if (!sheet) sheet = spreadsheet.insertSheet('Sync Outbox');
-  if (sheet.getLastRow() === 0) sheet.getRange(1, 1, 1, SYNC_OUTBOX_HEADERS.length).setValues([SYNC_OUTBOX_HEADERS]);
-  return sheet;
-}
-
-function queueSyncEvent(type, source) {
-  const event = {
-    eventId: Utilities.getUuid(),
-    type: type,
-    source: source,
-    occurredAt: new Date().toISOString()
-  };
-  const sheet = getSyncOutboxSheet();
-  sheet.appendRow([event.eventId, new Date(), event.type, event.source, JSON.stringify(event), 0, new Date(), 'pending', '', '']);
-  return event;
-}
-
-function getSyncRelayUrl() {
-  return PropertiesService.getScriptProperties().getProperty('SYNC_RELAY_URL') || '';
-}
-
-function getSyncRelaySecret() {
-  return PropertiesService.getScriptProperties().getProperty('SYNC_RELAY_SECRET') || '';
-}
-
-function deliverSyncEvent(event) {
-  const relayUrl = getSyncRelayUrl();
-  if (!relayUrl) return { delivered: false, error: 'SYNC_RELAY_URL is not configured.' };
-  try {
-    const response = UrlFetchApp.fetch(relayUrl.replace(/\/$/, '') + '/events', {
-      method: 'post',
-      contentType: 'application/json',
-      headers: { 'X-Sync-Secret': getSyncRelaySecret() },
-      payload: JSON.stringify(event),
-      muteHttpExceptions: true
-    });
-    const status = response.getResponseCode();
-    if (status >= 200 && status < 300) return { delivered: true };
-    return { delivered: false, error: 'Relay returned HTTP ' + status + '.' };
-  } catch (error) {
-    return { delivered: false, error: error.message };
-  }
-}
-
-function flushSyncOutbox() {
-  const sheet = getSyncOutboxSheet();
-  const lastRow = sheet.getLastRow();
-  if (lastRow < 2 || !getSyncRelayUrl()) return;
-  const rows = sheet.getRange(2, 1, lastRow - 1, SYNC_OUTBOX_HEADERS.length).getValues();
-  const now = Date.now();
-  rows.forEach((row, index) => {
-    const status = String(row[7] || 'pending');
-    const nextAttempt = new Date(row[6] || 0).getTime();
-    if (status === 'delivered' || (nextAttempt && nextAttempt > now)) return;
-    const result = deliverSyncEvent(JSON.parse(row[4]));
-    const targetRow = index + 2;
-    if (result.delivered) {
-      sheet.getRange(targetRow, 8, 1, 3).setValues([['delivered', row[8] || '', new Date()]]);
-      return;
-    }
-    const attempts = Number(row[5] || 0) + 1;
-    const delayMinutes = Math.min(360, Math.pow(2, Math.min(attempts, 8)));
-    sheet.getRange(targetRow, 6, 1, 4).setValues([[attempts, new Date(now + delayMinutes * 60000), 'pending', result.error]]);
-  });
-}
-
-function retrySyncOutbox() {
-  flushSyncOutbox();
-}

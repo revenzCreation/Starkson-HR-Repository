@@ -26,7 +26,7 @@ On the first request after deployment, the script migrates both the `MRF`/`MRF R
 
 This project handles MRF Monitor and Applicant Intake. It uses `MRF_MONITORING_DATABASE` for MRF uploads and `CANDIDATE_RESUMES` for applicant resumes.
 
-MRF headcount is derived from the Applicants tab: every applicant with an `MRF Transfer` assignment is counted. Assigning an applicant to an MRF automatically sets the applicant status to `Hired`. Available headcount is `Original Headcount - Assigned Headcount`, never below zero; an MRF becomes `Fulfilled` at zero and becomes available again when an assignment is removed. A linked applicant must use the same department and position as the selected MRF.
+MRF headcount is derived from the Applicants tab: only applicants with an `MRF Transfer` whose application `Status` is `Hired` are counted as assigned. Available headcount is `Original Headcount - Hired assignments`, never below zero; an MRF becomes `Fulfilled` at zero and becomes available again if a hire is changed to another status. A linked applicant must use the same department and position as the selected MRF.
 
 ## Required permissions
 
@@ -38,7 +38,3 @@ The website expects JSON responses and these actions:
 - Sheet 2: default `GET`, `POST` actions `save` and `delete`, `GET?action=applicant-list`, `POST` action `save-applicant`
 
 The currently deployed URLs must be updated to the new version. The old deployment can continue returning `Unknown action` until the new version is selected under **Deploy > Manage deployments**.
-
-## MRF live synchronization
-
-The MRF backend publishes `mrf.changed` events to the configured relay after website writes and direct Sheet edits. Set the Apps Script project properties `SYNC_RELAY_URL` and `SYNC_RELAY_SECRET`, then run `setupDatabase()` once. This creates the `Sync Outbox` sheet and a one-minute retry trigger. The outbox retains failed deliveries instead of dropping them silently.

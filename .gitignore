@@ -1,5 +1,3 @@
-sync-relay-events.json
-sync-relay-events.json.tmp
 # Secrets and local environment
 .env
 .env.*
@@ -20,4 +18,3 @@ npm-debug.log*
 .vscode/
 .DS_Store
 Thumbs.db
-.vercel
