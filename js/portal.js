@@ -161,34 +161,14 @@
   }
 
   /* ------------------------------------------------------------------ *
-   * Theme Controller (Dark Obsidian <-> Light Bond-Paper)              *
+   * HR Login Button                                                      *
    * ------------------------------------------------------------------ */
-  const THEME_STORAGE_KEY = "starkson-theme";
-  const themeToggles = document.querySelectorAll("[data-theme-toggle]");
-
-  function applyTheme(theme) {
-    if (theme === "light") {
-      root.setAttribute("data-theme", "light");
-    } else {
-      root.removeAttribute("data-theme");
-    }
-    localStorage.setItem(THEME_STORAGE_KEY, theme);
-  }
-
-  const savedTheme = localStorage.getItem(THEME_STORAGE_KEY);
-  if (savedTheme) {
-    applyTheme(savedTheme);
-  } else if (window.matchMedia("(prefers-color-scheme: light)").matches) {
-    // Optionally default to dark if not set, or follow system
-  }
-
-  themeToggles.forEach((toggle) => {
-    toggle.addEventListener("click", () => {
-      const current = root.getAttribute("data-theme") === "light" ? "light" : "dark";
-      const next = current === "light" ? "dark" : "light";
-      applyTheme(next);
+  const hrLoginButton = document.querySelector("[data-hr-login-toggle]");
+  if (hrLoginButton) {
+    hrLoginButton.addEventListener("click", () => {
+      window.location.href = "Directory Websites/201-files/index.html";
     });
-  });
+  }
 
   /* ------------------------------------------------------------------ *
    * Live Philippine Standard Time (PST/PHT, UTC+8) Clock & Office Status*

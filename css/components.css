@@ -420,12 +420,12 @@
   letter-spacing: 0.04em;
 }
 
-/* ---- Theme Toggle Button ----------------------------------------------- */
-.hr-theme-toggle {
+/* ---- HR Login Button -------------------------------------------------- */
+.hr-login-toggle {
   display: inline-flex;
   align-items: center;
-  gap: 6px;
-  padding: 6px 12px;
+  justify-content: center;
+  padding: 7px 14px;
   border: var(--border-glass);
   border-radius: var(--radius-pill);
   background: var(--surface-2);
@@ -435,18 +435,10 @@
   cursor: pointer;
   transition: background var(--dur-fast), border-color var(--dur-fast), transform var(--dur-fast);
 }
-.hr-theme-toggle:hover {
+.hr-login-toggle:hover {
   border-color: var(--line-red);
   transform: translateY(-1px);
 }
-.hr-theme-toggle__icon {
-  width: 14px;
-  height: 14px;
-}
-[data-theme="light"] .hr-theme-toggle__sun { display: none; }
-[data-theme="light"] .hr-theme-toggle__moon { display: block; }
-:not([data-theme="light"]) .hr-theme-toggle__sun { display: block; }
-:not([data-theme="light"]) .hr-theme-toggle__moon { display: none; }
 
 /* ---- Metric Statistics Grid -------------------------------------------- */
 .hr-stats-grid {

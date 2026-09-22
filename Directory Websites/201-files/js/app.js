@@ -1,15 +1,3 @@
-const isAuthenticated = (() => {
-  let authenticated = false;
-  try {
-    authenticated = sessionStorage.getItem('201auth') === '1';
-  } catch (_) {
-    authenticated = false;
-  }
-
-  if (!authenticated) window.location.replace('login.html');
-  return authenticated;
-})();
-
 let records = [];
 const tableBody = document.getElementById('employeeRows');
 const emptyState = document.getElementById('emptyState');
@@ -137,7 +125,7 @@ function render() {
 }
 
 async function initialize() {
-  if (!isAuthenticated || !recordCount || !emptyState) return;
+  if (!recordCount || !emptyState) return;
   recordCount.textContent = 'Loading...';
 
   try {
