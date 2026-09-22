@@ -1,7 +1,7 @@
 (function () {
   const CONNECTIONS = {
-    companySheet1: 'https://script.google.com/macros/s/AKfycbzMtnoAr3Y8Y8JNsWcUw_Lyv1-lEU_9-QlVExhpqBhHUjseiUz97wyxD6fCnvsRSmrT/exec',
-    companySheet2: 'https://script.google.com/macros/s/AKfycbxJhTnJg-G4Y2e_n_XSVD4C1yI2zMbhE7t__GtqHRqboU3dMjYHA6OH6Fkp80V2-Hjm7w/exec'
+    companySheet1: 'https://script.google.com/macros/s/AKfycbzOeJvdgpy9ZQXQCGKI5UidJJf2UPicB5SwsCkkdmL9ZbK3Ef4qiccriu0PJJB1WmPr/exec',
+    companySheet2: 'https://script.google.com/macros/s/AKfycbwc_5IUH8jS7bjg4KqYNIj68O-lKlzSTabTXtTWpJcrcOb8zC4f5ns16wxLMJCdx_ZDmQ/exec'
   };
 
   window.HR_PORTAL_SHEETS = window.HR_PORTAL_SHEETS || {};
