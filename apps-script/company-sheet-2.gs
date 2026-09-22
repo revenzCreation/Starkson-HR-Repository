@@ -19,14 +19,12 @@ const MRF_FIELDS = [
 const APPLICANT_FIELDS = [
   ['id', 'ID', ['id']], ['fullName', 'Full Name', ['full name', 'fullname', 'applicant name']], ['email', 'Email', ['email', 'applicant email']],
   ['phone', 'Phone', ['phone']], ['gender', 'Gender', ['gender', 'sex']], ['age', 'Age', ['age']], ['positionApplied', 'Position Applied', ['position applied', 'positionapplied', 'position']],
-  ['mrfTransfer', 'MRF Transfer', ['mrf transfer', 'mrftransfer', 'mrf number']], ['status', 'Status', ['status']],
+  ['mrfTransfer', 'MRF Transfer', ['mrf transfer', 'mrftransfer', 'mrf number']],
   ['resumeLink', 'Resume Link', ['resume link', 'resumelink']],
   ['createdAt', 'Created At', ['created at', 'createdat']], ['updatedAt', 'Updated At', ['updated at', 'updatedat']]
 ];
 
-const APPLICANT_STATUSES = ['Applied', 'Screening', 'Interview', 'Offer', 'Hired', 'Active', 'Onboard'];
-const LEGACY_APPLICANT_STATUSES = ['Rejected', 'Withdrawn'];
-const MRF_STATUSES = ['Pending', 'In Review', 'Approved', 'Rejected', 'Fulfilled'];
+const MRF_STATUSES = ['In Progress', 'Filled', 'Overfilled'];
 
 function doGet(e) {
   try {
@@ -76,19 +74,15 @@ function onEdit(e) {
     applicantMap.email,
     applicantMap.phone,
     applicantMap.positionApplied,
-    applicantMap.mrfTransfer,
-    applicantMap.status
+    applicantMap.mrfTransfer
   ].some(column => String(rowValues[column - 1] || '').trim());
   const headers = sheet.getRange(1, 1, 1, sheet.getLastColumn()).getDisplayValues()[0].map(normalizeHeader);
   const transferColumn = headers.indexOf(normalizeHeader('MRF Transfer')) + 1;
-  const statusColumn = headers.indexOf(normalizeHeader('Status')) + 1;
   const touchesTransfer = transferColumn && range.getColumn() <= transferColumn && range.getLastColumn() >= transferColumn;
-  const touchesStatus = statusColumn && range.getColumn() <= statusColumn && range.getLastColumn() >= statusColumn;
-  if (hasApplicantInformation || touchesTransfer || touchesStatus) {
+  if (hasApplicantInformation || touchesTransfer) {
     clearApplicantDropdowns();
     syncApplicantAssignmentState();
-    if (touchesTransfer || touchesStatus) syncMrfHeadcounts();
-    if (touchesStatus) syncActiveApplicantsToEmployeeData();
+    if (touchesTransfer) syncMrfHeadcounts();
   }
 }
 
@@ -109,14 +103,13 @@ function saveApplicant(input) {
     const sheet = getSheet(CONFIG.applicantsSheet, APPLICANT_FIELDS); const map = ensureSchema(sheet, APPLICANT_FIELDS);
     const id = normalizeId(input.id) || nextId(sheet, map.id);
     const mrfTransfer = cleanUpper(input.mrfTransfer || '');
-    const status = normalizeApplicantStatus(input.status);
-    validateMrfTransfer(sheet, map, id, mrfTransfer, status);
+    validateMrfTransfer(sheet, map, id, mrfTransfer);
     const data = input.resumeData || input.fileData || ''; const name = input.resumeFileName || input.fileName || ''; const mime = input.resumeMimeType || input.fileMimeType || '';
     const resumeLink = saveUpload(data, name, mime, CONFIG.applicantFolderId, 'APPLICANT_' + id); const now = Date.now();
     const mergedFullName = [input.firstName, input.middleInitial, input.lastName].filter(Boolean).join(' ').trim();
     const selectedPosition = String(input.positionApplied || input.position || '').trim();
-    const record = { id: id, fullName: clean(mergedFullName || input.fullName), email: clean(input.email).toLowerCase(), phone: clean(input.phone), gender: clean(input.gender), age: clean(input.age), positionApplied: clean(selectedPosition), mrfTransfer: mrfTransfer, resumeLink: resumeLink, status: status, createdAt: Number(input.createdAt) || now, updatedAt: now };
-    upsertRecord(sheet, APPLICANT_FIELDS, map, record); if (resumeLink) setShortLink(sheet, findRow(sheet, map.id, id), map.resumeLink, resumeLink, 'Open Resume'); syncApplicantAssignmentState(); syncMrfHeadcounts(); syncActiveApplicantsToEmployeeData(); applyDropdownValidations(); formatSheet(sheet, APPLICANT_FIELDS.length); return record;
+    const record = { id: id, fullName: clean(mergedFullName || input.fullName), email: clean(input.email).toLowerCase(), phone: clean(input.phone), gender: clean(input.gender), age: clean(input.age), positionApplied: clean(selectedPosition), mrfTransfer: mrfTransfer, resumeLink: resumeLink, createdAt: Number(input.createdAt) || now, updatedAt: now };
+    upsertRecord(sheet, APPLICANT_FIELDS, map, record); if (resumeLink) setShortLink(sheet, findRow(sheet, map.id, id), map.resumeLink, resumeLink, 'Open Resume'); syncApplicantAssignmentState(); syncMrfHeadcounts(); applyDropdownValidations(); formatSheet(sheet, APPLICANT_FIELDS.length); return record;
   } finally { lock.releaseLock(); }
 }
 
@@ -130,7 +123,7 @@ function deleteById(name, fields, id) { const sheet = getSheet(name, fields); co
 function getApplicantOptions() {
   syncMrfHeadcounts();
   clearApplicantDropdowns();
-  return { ok: true, mrfNumbers: getMrfOptions(), positionLevels: getEmployeeLevelOptions(), applicantStatuses: APPLICANT_STATUSES };
+  return { ok: true, mrfNumbers: getMrfOptions(), positionLevels: getEmployeeLevelOptions() };
 }
 
 function setupDatabase() {
@@ -138,7 +131,6 @@ function setupDatabase() {
   ensureSchema(getSheet(CONFIG.applicantsSheet, APPLICANT_FIELDS), APPLICANT_FIELDS);
   syncApplicantAssignmentState();
   syncMrfHeadcounts();
-  syncActiveApplicantsToEmployeeData();
   clearApplicantDropdowns();
 }
 
@@ -219,19 +211,13 @@ function getAssignedHeadcountByMrf(excludeApplicantId) {
   return counts;
 }
 
-function validateMrfTransfer(applicantSheet, applicantMap, applicantId, mrfNumber, applicantStatus) {
+function validateMrfTransfer(applicantSheet, applicantMap, applicantId, mrfNumber) {
   if (!mrfNumber) return;
   const mrfSheet = getSheet(CONFIG.mrfSheet, MRF_FIELDS);
   const mrfMap = ensureSchema(mrfSheet, MRF_FIELDS);
   const rows = mrfSheet.getLastRow() < 2 ? [] : mrfSheet.getRange(2, 1, mrfSheet.getLastRow() - 1, MRF_FIELDS.length).getValues();
   const target = rows.find(row => String(row[mrfMap.mrfNumber - 1] || '').trim().toUpperCase() === mrfNumber.toUpperCase());
   if (!target) throw new Error('The selected MRF number does not exist.');
-  const original = Number(target[mrfMap.originalHeadcount - 1] || 0) || 0;
-  if (String(applicantStatus).toUpperCase() !== 'HIRED') return;
-
-  const assignedCounts = getAssignedHeadcountByMrf(applicantId);
-  const currentAssignments = assignedCounts[mrfNumber.toUpperCase()] || 0;
-  if (currentAssignments >= original) throw new Error('This MRF has no remaining headcount.');
 }
 
 function columnToLetter(column) {
@@ -264,18 +250,14 @@ function syncMrfHeadcounts() {
     const formula = '=COUNTIF(Applicants!$' + columnToLetter(transferColumn) + ':$' + columnToLetter(transferColumn) + ', $' + columnToLetter(mrfNumberColumn) + sheetRow + ')';
     assignedRange.setFormula(formula);
 
-    const assigned = Number(assignedRange.getValue()) || 0;
-    const available = Math.max(0, original - assigned);
-    const workflowStatus = normalizeMrfStatus(row[mrfMap.status - 1]);
     if (!mrfNumber) {
       mrfSheet.getRange(sheetRow, assignedColumn).setValue(0);
       return;
     }
-    if (available === 0 || String(workflowStatus).toUpperCase() === 'FULFILLED') {
-      mrfSheet.getRange(sheetRow, mrfMap.status).setValue('Fulfilled');
-    } else {
-      mrfSheet.getRange(sheetRow, mrfMap.status).setValue(workflowStatus);
-    }
+    const assigned = Number(assignedRange.getValue()) || 0;
+    const status = assigned > original ? 'Overfilled' : assigned === original ? 'Filled' : 'In Progress';
+    const statusRange = mrfSheet.getRange(sheetRow, mrfMap.status);
+    statusRange.setValue(status).setBackground(status === 'Overfilled' ? '#F4CCCC' : null);
   });
 }
 
@@ -286,7 +268,6 @@ function clearApplicantDropdowns() {
   const applicantMap = ensureSchema(applicantSheet, APPLICANT_FIELDS);
   const lastRow = Math.max(applicantSheet.getLastRow(), 2);
   applicantSheet.getRange(2, applicantMap.mrfTransfer, Math.max(lastRow - 1, 1), 1).clearDataValidations();
-  applicantSheet.getRange(2, applicantMap.status, Math.max(lastRow - 1, 1), 1).clearDataValidations();
 }
 
 function clearAllDataValidations(sheet) {
@@ -354,9 +335,11 @@ function syncActiveApplicantsToEmployeeData() {
 }
 
 function normalizeMrfStatus(value) {
-  const status = clean(value || 'Pending').toLowerCase();
+  const status = clean(value || 'In Progress').toLowerCase();
   const normalized = MRF_STATUSES.find(option => option.toLowerCase() === status);
-  return normalized || 'Pending';
+  if (normalized) return normalized;
+  if (status === 'fulfilled') return 'Filled';
+  return 'In Progress';
 }
 
 function getSheet(name, fields) { const ss = SpreadsheetApp.openById(CONFIG.spreadsheetId); const aliases = name === CONFIG.mrfSheet ? CONFIG.mrfSheetAliases : CONFIG.applicantSheetAliases; let sheet = aliases.map(alias => ss.getSheetByName(alias)).find(Boolean); if (!sheet) sheet = ss.insertSheet(name); ensureSchema(sheet, fields); return sheet; }

@@ -26,7 +26,7 @@ On the first request after deployment, the script migrates both the `MRF`/`MRF R
 
 This project handles MRF Monitor and Applicant Intake. It uses `MRF_MONITORING_DATABASE` for MRF uploads and `CANDIDATE_RESUMES` for applicant resumes.
 
-MRF headcount is derived from the Applicants tab: only applicants with an `MRF Transfer` whose application `Status` is `Hired` are counted as assigned. Available headcount is `Original Headcount - Hired assignments`, never below zero; an MRF becomes `Fulfilled` at zero and becomes available again if a hire is changed to another status. A linked applicant must use the same department and position as the selected MRF.
+MRF headcount is derived from the Applicants tab: every applicant with an `MRF Transfer` is counted as assigned. An MRF is `In Progress` below its original headcount, `Filled` at the requested headcount, and `Overfilled` above it. Overfilled MRF status cells are highlighted red. Applicant status is not used; assigning an MRF transfer indicates the applicant is hired.
 
 ## Required permissions
 

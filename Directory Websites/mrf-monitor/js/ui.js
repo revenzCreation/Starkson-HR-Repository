@@ -1,13 +1,11 @@
 import { saveRecord, deleteRecord } from './storage.js';
 import { toast, escapeHtml, statusClass } from './utils.js';
 
-export const STATUSES = ['Pending', 'In Review', 'Approved', 'Rejected', 'Fulfilled'];
+export const STATUSES = ['In Progress', 'Filled', 'Overfilled'];
 export const STATUS_COLORS = {
-  Pending: '#a97423',
-  'In Review': '#2c4a6e',
-  Approved: '#3d6b4f',
-  Rejected: '#a3382c',
-  Fulfilled: '#5c4a72'
+  'In Progress': '#2c4a6e',
+  Filled: '#3d6b4f',
+  Overfilled: '#a3382c'
 };
 export let records = [];
 let currentModalId = null;
@@ -41,8 +39,8 @@ function ensureDomTargets() {
 export function renderDashboard() {
   const total = records.length;
   const totalHeadcount = records.reduce((sum, record) => sum + Number(record.headcount || 0), 0);
-  const approved = records.filter(record => record.status === 'Approved').length;
-  const pending = records.filter(record => record.status === 'Pending' || record.status === 'In Review').length;
+  const approved = records.filter(record => record.status === 'Filled').length;
+  const pending = records.filter(record => record.status === 'In Progress').length;
   const elements = ensureDomTargets();
 
   if (elements.statRow) {
