@@ -173,7 +173,9 @@ function readFileData(file) {
 function resetForm() {
   if (form) form.reset();
   const countInput = document.getElementById('f_count');
+  const statusSelect = document.getElementById('f_status');
   if (countInput) countInput.value = 1;
+  if (statusSelect) statusSelect.value = 'Open';
   pendingFile = null;
   if (previewImg) {
     previewImg.style.display = 'none';

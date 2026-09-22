@@ -130,6 +130,17 @@
             <input type="number" id="f_count" min="1" value="1" required>
           </div>
           <div class="field">
+            <label for="f_status">MRF Status</label>
+            <select id="f_status" required>
+              <option value="Open" selected>Open</option>
+              <option value="In Progress">In Progress</option>
+              <option value="Filled">Filled</option>
+              <option value="On Hold">On Hold</option>
+              <option value="Cancelled">Cancelled</option>
+              <option value="Overfilled">Overfilled</option>
+            </select>
+          </div>
+          <div class="field">
             <label for="f_daterequested">Date Requested</label>
             <input type="date" id="f_daterequested">
           </div>
