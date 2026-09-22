@@ -1,4 +1,4 @@
-import { loadAllRecords, saveRecord } from './storage.js';
+import { loadAllRecords, saveRecord, subscribeToSyncEvents } from './storage.js';
 import { toast, compressImage } from './utils.js';
 import { records, setRecords, renderDashboard, renderTable, openModal, closeModal, saveModalChanges, deleteCurrentModalRecord } from './ui.js';
 
@@ -185,19 +185,31 @@ if (resetFormBtn) resetFormBtn.addEventListener('click', resetForm);
 });
 
 const refreshBtn = document.getElementById('refreshBtn');
-if (refreshBtn) {
-  refreshBtn.addEventListener('click', async () => {
-    try {
-      const loaded = await loadAllRecords();
-      setRecords(loaded);
-      renderTable();
-      renderDashboard();
-      toast('Refreshed');
-    } catch (err) {
-      toast(err.message || 'Could not refresh records');
-    }
-  });
+let refreshInFlight = false;
+
+async function refreshRecords(showToast = false) {
+  if (refreshInFlight) return;
+  refreshInFlight = true;
+  try {
+    const loaded = await loadAllRecords();
+    setRecords(loaded);
+    renderTable();
+    renderDashboard();
+    if (showToast) toast('Refreshed');
+  } catch (err) {
+    if (showToast) toast(err.message || 'Could not refresh records');
+  } finally {
+    refreshInFlight = false;
+  }
 }
+
+if (refreshBtn) {
+  refreshBtn.addEventListener('click', () => refreshRecords(true));
+}
+
+window.setInterval(() => {
+  if (!document.hidden) refreshRecords();
+}, 10000);
 
 const modalClose = document.getElementById('modalClose');
 const modalBg = document.getElementById('modalBg');
@@ -251,11 +263,20 @@ if (exportCsvBtn) {
     toast(err.message || 'Could not load departments');
   }
   try {
-    const loaded = await loadAllRecords();
-    setRecords(loaded);
+    await refreshRecords();
   } catch (err) {
     toast(err.message || 'Could not load records');
   }
+  subscribeToSyncEvents(async () => {
+    try {
+      const loaded = await loadAllRecords();
+      setRecords(loaded);
+      renderTable();
+      renderDashboard();
+    } catch (err) {
+      toast(err.message || 'Live update failed; use Refresh to retry');
+    }
+  });
   renderDashboard();
   renderTable();
 })();
