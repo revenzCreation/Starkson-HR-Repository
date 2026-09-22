@@ -4,6 +4,8 @@ import { records, setRecords, renderDashboard, renderTable, openModal, closeModa
 
 let pendingFile = null;
 let isSavingRequest = false;
+let isRefreshingData = false;
+let realtimeRefreshTimer = null;
 
 const form = document.getElementById('mrfForm');
 const uploadBox = document.getElementById('uploadBox');
@@ -197,19 +199,42 @@ if (resetFormBtn) resetFormBtn.addEventListener('click', resetForm);
   element.addEventListener('change', renderTable);
 });
 
-const refreshBtn = document.getElementById('refreshBtn');
-if (refreshBtn) {
-  refreshBtn.addEventListener('click', async () => {
-    try {
-      const loaded = await loadAllRecords();
-      setRecords(loaded);
-      renderTable();
-      renderDashboard();
-      toast('Refreshed');
-    } catch (err) {
-      toast(err.message || 'Could not refresh records');
+async function refreshFromServer({ silent = false } = {}) {
+  if (isRefreshingData) return;
+  isRefreshingData = true;
+
+  try {
+    const loaded = await loadAllRecords();
+    setRecords(loaded);
+    renderTable();
+    renderDashboard();
+    if (!silent) toast('Refreshed');
+  } catch (err) {
+    if (!silent) toast(err.message || 'Could not refresh records');
+  } finally {
+    isRefreshingData = false;
+  }
+}
+
+function startRealtimeRefresh() {
+  if (realtimeRefreshTimer) {
+    clearInterval(realtimeRefreshTimer);
+  }
+
+  realtimeRefreshTimer = setInterval(() => {
+    refreshFromServer({ silent: true });
+  }, 5000);
+
+  document.addEventListener('visibilitychange', () => {
+    if (document.visibilityState === 'visible') {
+      refreshFromServer({ silent: true });
     }
   });
+}
+
+const refreshBtn = document.getElementById('refreshBtn');
+if (refreshBtn) {
+  refreshBtn.addEventListener('click', () => refreshFromServer());
 }
 
 const modalClose = document.getElementById('modalClose');
@@ -271,4 +296,5 @@ if (exportCsvBtn) {
   }
   renderDashboard();
   renderTable();
+  startRealtimeRefresh();
 })();
