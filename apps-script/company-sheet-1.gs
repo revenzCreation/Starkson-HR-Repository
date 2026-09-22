@@ -4,6 +4,7 @@ const CONFIG = {
   employeeDataSheetId: 1807874829,
   referralSheet: 'Referrals',
   employeeSheet: '201 Files',
+  hrAccountsSheet: 'HR Accounts',
   referralFolderId: '1kL5CK1-ZEY51BZo6_BQjY8MSSfoEzcBl',
   employeeFolderId: '1wroebNAIgVf6oMVa1EMm6gZ_-f6dCotL'
 };
@@ -33,11 +34,175 @@ const EMPLOYEE_FIELDS = [
   ['driveFileId', 'Drive File ID', ['drive file id', 'drivefileid']]
 ];
 
+const HR_ACCOUNT_FIELDS = [
+  ['id', 'ID', ['id']], ['fullName', 'Full Name', ['full name', 'fullname']],
+  ['email', 'Email', ['email', 'email address']], ['department', 'Department', ['department']],
+  ['role', 'Role', ['role']], ['username', 'Username', ['username', 'user name']],
+  ['password', 'Password', ['password']], ['status', 'Status', ['status']],
+  ['createdAt', 'Created At', ['created at', 'createdat']], ['updatedAt', 'Updated At', ['updated at', 'updatedat']]
+];
+
+const DEFAULT_HR_ACCOUNTS = [
+  { fullName: 'Cardinal Admin', email: 'cardinal@starkson.com', department: 'People & Culture', role: 'cardinal', username: 'cardinal', password: 'Cardinal123!', status: 'Active' },
+  { fullName: 'Master Admin', email: 'master@starkson.com', department: 'People & Culture', role: 'master', username: 'master', password: 'Master123!', status: 'Active' },
+  { fullName: 'HR Staff', email: 'hr@starkson.com', department: 'People & Culture', role: 'hr', username: 'hr', password: 'Hr123!', status: 'Active' }
+];
+
+function ensureHrAccountsSheet() {
+  const sheet = getSheet(CONFIG.hrAccountsSheet, HR_ACCOUNT_FIELDS);
+  const map = ensureSchema(sheet, HR_ACCOUNT_FIELDS);
+  const rows = sheet.getLastRow() > 1 ? sheet.getRange(2, 1, sheet.getLastRow() - 1, HR_ACCOUNT_FIELDS.length).getValues() : [];
+  if (!rows.length) {
+    DEFAULT_HR_ACCOUNTS.forEach((account, index) => {
+      const record = {
+        id: String(index + 1).padStart(5, '0'),
+        fullName: account.fullName,
+        email: account.email,
+        department: account.department,
+        role: normalizeHrRole(account.role),
+        username: account.username,
+        password: account.password,
+        status: account.status || 'Active',
+        createdAt: Date.now(),
+        updatedAt: Date.now()
+      };
+      appendRecord(sheet, HR_ACCOUNT_FIELDS, record);
+    });
+    return getSheet(CONFIG.hrAccountsSheet, HR_ACCOUNT_FIELDS);
+  }
+  return sheet;
+}
+
+function normalizeHrRole(value) {
+  const role = String(value || '').trim().toLowerCase();
+  return ['cardinal', 'master', 'hr'].includes(role) ? role : 'hr';
+}
+
+function readHrAccountRecords() {
+  const sheet = ensureHrAccountsSheet();
+  const map = ensureSchema(sheet, HR_ACCOUNT_FIELDS);
+  const values = sheet.getDataRange().getValues();
+  if (values.length < 2) return [];
+  return values.slice(1).filter(row => row[map.id - 1]).map((row) => {
+    const record = {};
+    HR_ACCOUNT_FIELDS.forEach(field => {
+      record[field[0]] = row[map[field[0]] - 1] == null ? '' : row[map[field[0]] - 1];
+    });
+    if (record.password) record.password = '';
+    return record;
+  });
+}
+
+function authenticateHrAccount(input) {
+  const username = String(input && input.username || '').trim().toLowerCase();
+  const password = String(input && input.password || '').trim();
+  if (!username || !password) return null;
+
+  const sheet = ensureHrAccountsSheet();
+  const map = ensureSchema(sheet, HR_ACCOUNT_FIELDS);
+  const values = sheet.getDataRange().getValues();
+  if (values.length < 2) return null;
+
+  for (let i = 1; i < values.length; i += 1) {
+    const row = values[i];
+    const record = {};
+    HR_ACCOUNT_FIELDS.forEach(field => {
+      record[field[0]] = row[map[field[0]] - 1] == null ? '' : row[map[field[0]] - 1];
+    });
+    const sameUsername = String(record.username || '').trim().toLowerCase() === username;
+    const samePassword = String(record.password || '').trim() === password;
+    const active = String(record.status || 'Active').toLowerCase() !== 'inactive';
+    if (sameUsername && samePassword && active) {
+      const safeRecord = { ...record, password: '' };
+      return safeRecord;
+    }
+  }
+  return null;
+}
+
+function saveHrAccountRecord(input) {
+  const sheet = ensureHrAccountsSheet();
+  const map = ensureSchema(sheet, HR_ACCOUNT_FIELDS);
+  const trimmedUsername = String(input && input.username || '').trim();
+  const trimmedPassword = String(input && input.password || '').trim();
+  if (!trimmedUsername || !trimmedPassword) {
+    throw new Error('Username and password are required.');
+  }
+
+  const role = normalizeHrRole(input && input.role);
+  const existing = findHrAccountByUsername(trimmedUsername, input && input.id);
+  if (existing && existing.id !== String(input && input.id || '')) {
+    throw new Error('An HR account with that username already exists.');
+  }
+
+  const id = String(input && input.id || '').trim() || nextId(sheet, map.id);
+  const record = {
+    id: id,
+    fullName: String(input && input.fullName || '').trim() || 'HR Staff',
+    email: String(input && input.email || '').trim(),
+    department: String(input && input.department || '').trim() || 'People & Culture',
+    role: role,
+    username: trimmedUsername,
+    password: trimmedPassword,
+    status: String(input && input.status || 'Active').trim() || 'Active',
+    createdAt: input && input.createdAt ? Number(input.createdAt) : Date.now(),
+    updatedAt: Date.now()
+  };
+
+  const rowIndex = findRow(sheet, map.id, id);
+  if (rowIndex) {
+    const updateRange = sheet.getRange(rowIndex, 1, 1, HR_ACCOUNT_FIELDS.length);
+    updateRange.setValues([HR_ACCOUNT_FIELDS.map(field => record[field[0]] == null ? '' : record[field[0]])]);
+  } else {
+    appendRecord(sheet, HR_ACCOUNT_FIELDS, record);
+  }
+
+  const saved = { ...record, password: '' };
+  return saved;
+}
+
+function deleteHrAccountRecord(id) {
+  const sheet = ensureHrAccountsSheet();
+  const map = ensureSchema(sheet, HR_ACCOUNT_FIELDS);
+  const rowIndex = findRow(sheet, map.id, String(id || '').trim());
+  if (rowIndex) {
+    sheet.deleteRow(rowIndex);
+  }
+}
+
+function findHrAccountByUsername(username, excludeId) {
+  const sheet = ensureHrAccountsSheet();
+  const map = ensureSchema(sheet, HR_ACCOUNT_FIELDS);
+  const values = sheet.getDataRange().getValues();
+  if (values.length < 2) return null;
+  for (let i = 1; i < values.length; i += 1) {
+    const row = values[i];
+    const currentId = String(row[map.id - 1] || '').trim();
+    if (excludeId && currentId === String(excludeId).trim()) continue;
+    if (String(row[map.username - 1] || '').trim().toLowerCase() === String(username || '').trim().toLowerCase()) {
+      const record = {};
+      HR_ACCOUNT_FIELDS.forEach(field => {
+        record[field[0]] = row[map[field[0]] - 1] == null ? '' : row[map[field[0]] - 1];
+      });
+      return record;
+    }
+  }
+  return null;
+}
+
 function doGet(e) {
   try {
     const action = e && e.parameter && e.parameter.action || 'referrals-list';
     if (action === '201-list') { syncEmployeeFiles(); return json({ ok: true, records: readRecords(CONFIG.employeeSheet, EMPLOYEE_FIELDS, true) }); }
     if (action === 'list' || action === 'referrals-list') return json({ ok: true, records: readRecords(CONFIG.referralSheet, REFERRAL_FIELDS, false) });
+    if (action === 'hr-accounts-list') return json({ ok: true, records: readHrAccountRecords() });
+    if (action === 'hr-login') {
+      const username = e && e.parameter && e.parameter.username || '';
+      const password = e && e.parameter && e.parameter.password || '';
+      const account = authenticateHrAccount({ username, password });
+      if (!account) return json({ ok: false, error: 'Invalid HR username or password.' });
+      return json({ ok: true, account: account });
+    }
     return json({ ok: false, error: 'Unknown action' });
   } catch (error) { return json({ ok: false, error: error.message }); }
 }
@@ -50,6 +215,17 @@ function doPost(e) {
   try {
     const body = parseBody(e);
     if (!body.action || body.action === 'referral-save') return json({ ok: true, record: saveReferral(body) });
+    if (body.action === 'hr-account-login' || body.action === 'hr-login') {
+      const account = authenticateHrAccount(body.account || body || {});
+      if (!account) return json({ ok: false, error: 'Invalid HR username or password.' });
+      return json({ ok: true, account: account });
+    }
+    if (body.action === 'hr-account-save' || body.action === 'hr-save') return json({ ok: true, record: saveHrAccountRecord(body.record || body || {}) });
+    if (body.action === 'hr-account-delete' || body.action === 'hr-delete') {
+      deleteHrAccountRecord(body.id || body.record && body.record.id);
+      return json({ ok: true });
+    }
+    if (body.action === 'hr-accounts-list') return json({ ok: true, records: readHrAccountRecords() });
     return json({ ok: false, error: 'Unknown action' });
   } catch (error) { return json({ ok: false, error: error.message }); }
 }
