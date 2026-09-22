@@ -22,7 +22,7 @@ const APPLICANT_FIELDS = [
   ['createdAt', 'Created At', ['created at', 'createdat']], ['updatedAt', 'Updated At', ['updated at', 'updatedat']]
 ];
 
-const MRF_STATUSES = ['In Progress', 'Filled', 'Overfilled'];
+const MRF_STATUSES = ['Open', 'In Progress', 'Filled', 'On Hold', 'Cancelled', 'Overfilled'];
 const GENDER_OPTIONS = ['Male', 'Female', 'Other', 'Prefer not to say'];
 
 function doGet(e) {
@@ -194,6 +194,7 @@ function syncMrfHeadcounts() {
   const transferColumn = applicantMap.mrfTransfer || 8;
   const mrfNumberColumn = mrfMap.mrfNumber || 2;
   const assignedColumn = mrfMap.assignedHeadcount || 6;
+  const applicantSheetReference = "'" + applicantSheet.getName().replace(/'/g, "''") + "'";
 
   if (mrfSheet.getLastRow() < 2) return;
   const rows = mrfSheet.getRange(2, 1, mrfSheet.getLastRow() - 1, MRF_FIELDS.length).getValues();
@@ -202,7 +203,7 @@ function syncMrfHeadcounts() {
     const mrfNumber = String(row[mrfMap.mrfNumber - 1] || '').trim();
     const original = Number(row[mrfMap.originalHeadcount - 1] || 0) || 1;
     const assignedRange = mrfSheet.getRange(sheetRow, assignedColumn);
-    const formula = '=COUNTIF(Applicants!$' + columnToLetter(transferColumn) + ':$' + columnToLetter(transferColumn) + ', $' + columnToLetter(mrfNumberColumn) + sheetRow + ')';
+    const formula = '=COUNTIF(' + applicantSheetReference + '!$' + columnToLetter(transferColumn) + ':$' + columnToLetter(transferColumn) + ', $' + columnToLetter(mrfNumberColumn) + sheetRow + ')';
     assignedRange.setFormula(formula);
 
     if (!mrfNumber) {
@@ -210,7 +211,8 @@ function syncMrfHeadcounts() {
       return;
     }
     const assigned = Number(assignedRange.getValue()) || 0;
-    const status = assigned > original ? 'Overfilled' : assigned === original ? 'Filled' : 'In Progress';
+    const currentStatus = normalizeMrfStatus(row[mrfMap.status - 1]);
+    const status = assigned > original ? 'Overfilled' : assigned === original ? 'Filled' : currentStatus;
     const statusRange = mrfSheet.getRange(sheetRow, mrfMap.status);
     statusRange.setValue(status).setBackground(status === 'Overfilled' ? '#F4CCCC' : null);
   });
@@ -254,11 +256,13 @@ function clearAllDataValidations(sheet) {
 }
 
 function normalizeMrfStatus(value) {
-  const status = clean(value || 'In Progress').toLowerCase();
+  const status = clean(value || 'Open').toLowerCase();
   const normalized = MRF_STATUSES.find(option => option.toLowerCase() === status);
   if (normalized) return normalized;
   if (status === 'fulfilled') return 'Filled';
-  return 'In Progress';
+  if (status === 'pending' || status === 'approved') return 'Open';
+  if (status === 'rejected') return 'Cancelled';
+  return 'Open';
 }
 
 function getSheet(name, fields) { const ss = SpreadsheetApp.openById(CONFIG.spreadsheetId); const aliases = name === CONFIG.mrfSheet ? CONFIG.mrfSheetAliases : CONFIG.applicantSheetAliases; let sheet = aliases.map(alias => ss.getSheetByName(alias)).find(Boolean); if (!sheet) sheet = ss.insertSheet(name); ensureSchema(sheet, fields); return sheet; }

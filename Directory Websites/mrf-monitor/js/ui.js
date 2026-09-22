@@ -1,14 +1,18 @@
 import { saveRecord, deleteRecord } from './storage.js';
 import { toast, escapeHtml, statusClass } from './utils.js';
 
-export const STATUSES = ['In Progress', 'Filled', 'Overfilled'];
+export const STATUSES = ['Open', 'In Progress', 'Filled', 'On Hold', 'Cancelled', 'Overfilled'];
 export const STATUS_COLORS = {
+  Open: '#a97423',
   'In Progress': '#2c4a6e',
   Filled: '#3d6b4f',
-  Overfilled: '#a3382c'
+  'On Hold': '#8a5a2b',
+  Cancelled: '#a3382c',
+  Overfilled: '#7f1d1d'
 };
 export let records = [];
 let currentModalId = null;
+let isSavingModal = false;
 
 export function setRecords(newRecords) {
   records = Array.isArray(newRecords) ? newRecords : [];
@@ -47,7 +51,7 @@ export function renderDashboard() {
     elements.statRow.innerHTML = `
       <div class="stat-card navy"><div class="num">${total}</div><div class="label">Total MRFs Logged</div></div>
       <div class="stat-card amber"><div class="num">${totalHeadcount}</div><div class="label">Available Headcount</div></div>
-      <div class="stat-card green"><div class="num">${approved}</div><div class="label">Approved</div></div>
+      <div class="stat-card green"><div class="num">${approved}</div><div class="label">Filled</div></div>
       <div class="stat-card red"><div class="num">${pending}</div><div class="label">Awaiting Action</div></div>
     `;
   }
@@ -91,7 +95,7 @@ export function renderDashboard() {
     elements.activityList.innerHTML = recent.length ? recent.map(record => `
       <li>
         <span>${escapeHtml(record.position || 'Untitled')} <span class="who">— ${escapeHtml(record.department || 'Unassigned')}</span></span>
-        <span class="stamp ${statusClass(record.status)}" style="transform:none;padding:2px 7px;font-size:10px;">${escapeHtml(record.status || 'Pending')}</span>
+        <span class="stamp ${statusClass(record.status)}" style="transform:none;padding:2px 7px;font-size:10px;">${escapeHtml(record.status || 'Open')}</span>
       </li>
     `).join('') : '<li><span class="who">No activity yet</span></li>';
   }
@@ -159,7 +163,7 @@ export function renderTable() {
       <td data-label="Position">${escapeHtml(record.position || '—')}</td>
       <td data-label="Headcount"><strong>${Number(record.headcount || 0)}</strong></td>
       <td data-label="Date Needed">${escapeHtml(record.dateNeeded || '—')}</td>
-      <td data-label="Status"><span class="stamp ${statusClass(record.status)}">${escapeHtml(record.status || 'Pending')}</span></td>
+      <td data-label="Status"><span class="stamp ${statusClass(record.status)}">${escapeHtml(record.status || 'Open')}</span></td>
       <td data-label=""><button class="btn ghost small" data-open="${escapeHtml(record.id || '')}">Open</button></td>
     `;
     elements.tableBody?.appendChild(tr);
@@ -223,10 +227,16 @@ export function closeModal() {
 }
 
 export async function saveModalChanges() {
+  if (isSavingModal) return;
   const record = records.find(item => item.id === currentModalId);
   if (!record) return;
+  isSavingModal = true;
   const elements = ensureDomTargets();
-  if (elements.saveModalBtn) elements.saveModalBtn.disabled = true;
+  if (elements.saveModalBtn) {
+    elements.saveModalBtn.disabled = true;
+    elements.saveModalBtn.setAttribute('aria-busy', 'true');
+    elements.saveModalBtn.textContent = 'Saving...';
+  }
 
   try {
     record.status = document.getElementById('modalStatus')?.value || record.status;
@@ -241,7 +251,12 @@ export async function saveModalChanges() {
   } catch (err) {
     toast(err.message || 'Update failed — try again');
   } finally {
-    if (elements.saveModalBtn) elements.saveModalBtn.disabled = false;
+    isSavingModal = false;
+    if (elements.saveModalBtn) {
+      elements.saveModalBtn.disabled = false;
+      elements.saveModalBtn.removeAttribute('aria-busy');
+      elements.saveModalBtn.textContent = 'Save Changes';
+    }
   }
 }
 

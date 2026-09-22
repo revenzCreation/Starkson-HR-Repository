@@ -3,6 +3,7 @@ import { toast, compressImage } from './utils.js';
 import { records, setRecords, renderDashboard, renderTable, openModal, closeModal, saveModalChanges, deleteCurrentModalRecord } from './ui.js';
 
 let pendingFile = null;
+let isSavingRequest = false;
 
 const form = document.getElementById('mrfForm');
 const uploadBox = document.getElementById('uploadBox');
@@ -14,12 +15,26 @@ const departmentSelect = document.getElementById('f_dept');
 if (form) {
   form.addEventListener('submit', async e => {
     e.preventDefault();
+    if (isSavingRequest) return;
+    isSavingRequest = true;
+    const submitBtn = e.target.querySelector('button[type="submit"]');
+    if (submitBtn) {
+      submitBtn.disabled = true;
+      submitBtn.setAttribute('aria-busy', 'true');
+      submitBtn.textContent = 'Saving...';
+    }
     const deptInput = document.getElementById('f_dept');
     const positionInput = document.getElementById('f_position');
     const dept = deptInput ? deptInput.value.trim() : '';
     const position = positionInput ? positionInput.value.trim() : '';
     if (!dept || !position) {
       toast('Department and position are required');
+      isSavingRequest = false;
+      if (submitBtn) {
+        submitBtn.disabled = false;
+        submitBtn.removeAttribute('aria-busy');
+        submitBtn.textContent = 'Save Request';
+      }
       return;
     }
 
@@ -32,7 +47,7 @@ if (form) {
       dateRequested: document.getElementById('f_daterequested')?.value || '',
       dateNeeded: document.getElementById('f_dateneeded')?.value || '',
       requestedBy: document.getElementById('f_requestedby')?.value.trim() || '',
-      status: document.getElementById('f_status')?.value || 'Pending',
+      status: document.getElementById('f_status')?.value || 'Open',
       remarks: document.getElementById('f_remarks')?.value.trim() || '',
       fileName: pendingFile?.name || '',
       fileMimeType: pendingFile?.mimeType || '',
@@ -40,12 +55,6 @@ if (form) {
       createdAt: Date.now(),
       updatedAt: Date.now()
     };
-
-    const submitBtn = e.target.querySelector('button[type="submit"]');
-    if (submitBtn) {
-      submitBtn.disabled = true;
-      submitBtn.textContent = 'Saving...';
-    }
 
     try {
       const savedRecord = await saveRecord(rec);
@@ -59,8 +68,10 @@ if (form) {
     } catch (err) {
       toast(err.message || 'Save failed — try again');
     } finally {
+      isSavingRequest = false;
       if (submitBtn) {
         submitBtn.disabled = false;
+        submitBtn.removeAttribute('aria-busy');
         submitBtn.textContent = 'Save Request';
       }
     }

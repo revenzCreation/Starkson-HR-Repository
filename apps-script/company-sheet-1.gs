@@ -140,15 +140,24 @@ function ensureSchema(sheet, fields) {
   const sourceMap = {}; oldHeaders.forEach((header, index) => { sourceMap[normalizeHeader(header)] = index; });
   const rowCount = Math.max(sheet.getLastRow() - 1, 0);
   const oldRows = rowCount ? sheet.getRange(2, 1, rowCount, columnCount).getValues() : [];
-  const rows = oldRows.map(row => fields.map(field => {
+  const oldRichRows = rowCount ? sheet.getRange(2, 1, rowCount, columnCount).getRichTextValues() : [];
+  const rows = oldRows.map((row, rowIndex) => fields.map(field => {
     const source = [field[1]].concat(field[2]).map(normalizeHeader).find(key => sourceMap[key] !== undefined);
+    if (field[0] === 'resumeLink' || field[0] === 'directLink') {
+      const sourceIndex = sourceMap[source];
+      const rich = oldRichRows[rowIndex] && oldRichRows[rowIndex][sourceIndex];
+      const link = rich && rich.getLinkUrl ? rich.getLinkUrl() : '';
+      if (link) return link;
+    }
     return source === undefined ? '' : row[sourceMap[source]];
   }));
   repairIds(rows, fields);
   sheet.getRange(1, 1, Math.max(sheet.getLastRow(), 1), labels.length).clearContent();
   sheet.getRange(1, 1, 1, labels.length).setValues([labels]);
   if (rows.length) sheet.getRange(2, 1, rows.length, labels.length).setValues(rows);
-  formatSheet(sheet, labels.length); return fieldMap(fields);
+  formatSheet(sheet, labels.length);
+  restoreFileLinks(sheet, fields);
+  return fieldMap(fields);
 }
 
 function repairIds(rows, fields) {
@@ -165,6 +174,19 @@ function saveUpload(data, name, mimeType, folderId, prefix) { if (!data) return 
 function normalizeEmployeeFile(file) { const original = file.getName(); const extension = (original.match(/\.[^.]+$/) || [''])[0].toUpperCase(); const base = original.replace(/\.[^.]+$/, '').replace(/[_-]+/g, ' ').trim(); const parts = base.split(','); const surname = clean(parts[0].trim().split(/\s+/).slice(0, parts.length > 1 ? 99 : 1).join(' ')); const firstName = clean((parts.length > 1 ? parts[1] : base.split(/\s+/)[1] || '').trim().split(/\s+/)[0]); const target = [surname, firstName].filter(Boolean).join(', ') + extension; if (target !== original) file.setName(target); return { surname: surname, firstName: firstName }; }
 function setShortLink(sheet, row, column, url, label) { sheet.getRange(row, column).setRichTextValue(SpreadsheetApp.newRichTextValue().setText(label).setLinkUrl(url).build()); }
 function getLink(sheet, row, column) { const rich = sheet.getRange(row, column).getRichTextValue(); return rich && rich.getLinkUrl ? rich.getLinkUrl() : ''; }
+function restoreFileLinks(sheet, fields) {
+  const labels = { resumeLink: 'Open Resume', directLink: 'Open 201 File' };
+  const fieldMapByName = fieldMap(fields);
+  Object.keys(labels).forEach(key => {
+    const column = fieldMapByName[key];
+    if (!column || sheet.getLastRow() < 2) return;
+    const values = sheet.getRange(2, column, sheet.getLastRow() - 1, 1).getDisplayValues();
+    values.forEach((row, index) => {
+      const url = String(row[0] || '').trim();
+      if (/^https?:\/\//i.test(url)) setShortLink(sheet, index + 2, column, url, labels[key]);
+    });
+  });
+}
 function formatSheet(sheet, count) { sheet.getRange(1, 1, 1, count).setFontFamily('Arial').setFontSize(9).setFontWeight('bold').setHorizontalAlignment('center'); if (sheet.getMaxRows() > 1) sheet.getRange(2, 1, sheet.getMaxRows() - 1, count).setFontFamily('Arial').setFontSize(9); normalizeIdColumn(sheet); sheet.setFrozenRows(1); }
 function normalizeIdColumn(sheet) { if (sheet.getMaxRows() < 2) return; const range = sheet.getRange(2, 1, sheet.getMaxRows() - 1, 1); const values = range.getValues().map(row => { const digits = String(row[0] == null ? '' : row[0]).replace(/\D/g, ''); return [digits ? digits.padStart(5, '0') : '']; }); range.setNumberFormat('@').setValues(values); }
 function normalizeHeader(value) { return String(value || '').toLowerCase().replace(/[^a-z0-9]/g, ''); }

@@ -271,11 +271,12 @@ nav.tabs button:not(.active):hover {
   white-space: nowrap;
 }
 
-.stamp.Pending { color: var(--amber); background: var(--amber-dim); }
-.stamp.InReview { color: var(--navy); background: var(--navy-dim); }
-.stamp.Approved { color: var(--green); background: var(--green-dim); }
-.stamp.Rejected { color: var(--red); background: var(--red-dim); }
-.stamp.Fulfilled { color: var(--purple); background: var(--purple-dim); }
+.stamp.Open { color: var(--amber); background: var(--amber-dim); }
+.stamp.InProgress { color: var(--navy); background: var(--navy-dim); }
+.stamp.Filled { color: var(--green); background: var(--green-dim); }
+.stamp.OnHold { color: var(--amber); background: var(--amber-dim); }
+.stamp.Cancelled { color: var(--red); background: var(--red-dim); }
+.stamp.Overfilled { color: var(--red); background: var(--red-dim); }
 
 /* Stack bar */
 .stack-bar {

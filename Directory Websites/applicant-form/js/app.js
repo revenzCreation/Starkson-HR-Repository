@@ -15,6 +15,7 @@ const departmentSelect = document.getElementById('department');
 let applicantOptionsLoaded = false;
 let applicantOptionsRequest = null;
 let uploadedResume = null;
+let isSubmitting = false;
 
 function getFormRecord() {
   const fullName = [
@@ -114,6 +115,15 @@ resumeUploadBox.addEventListener('drop', async (event) => {
 
 form.addEventListener('submit', async (event) => {
   event.preventDefault();
+  if (isSubmitting) return;
+  isSubmitting = true;
+  const submitButton = form.querySelector('button[type="submit"]');
+  if (submitButton) {
+    submitButton.disabled = true;
+    submitButton.setAttribute('aria-busy', 'true');
+    submitButton.dataset.originalLabel = submitButton.textContent;
+    submitButton.textContent = 'Submitting...';
+  }
 
   try {
     const payload = getFormRecord();
@@ -134,6 +144,14 @@ form.addEventListener('submit', async (event) => {
     await renderApplicants();
   } catch (error) {
     showStatus(error.message || 'Something went wrong while submitting your application.', 'error');
+  } finally {
+    isSubmitting = false;
+    if (submitButton) {
+      submitButton.disabled = false;
+      submitButton.removeAttribute('aria-busy');
+      submitButton.textContent = submitButton.dataset.originalLabel || 'Submit Application';
+      delete submitButton.dataset.originalLabel;
+    }
   }
 });
 
