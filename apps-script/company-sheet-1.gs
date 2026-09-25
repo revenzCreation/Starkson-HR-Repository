@@ -50,9 +50,7 @@ const JOB_FIELDS = [
 ];
 
 const DEFAULT_HR_ACCOUNTS = [
-  { fullName: 'Cardinal Admin', email: 'cardinal@starkson.com', department: 'People & Culture', role: 'cardinal', username: 'cardinal', password: 'Cardinal123!', status: 'Active' },
-  { fullName: 'Master Admin', email: 'master@starkson.com', department: 'People & Culture', role: 'master', username: 'master', password: 'Master123!', status: 'Active' },
-  { fullName: 'HR Staff', email: 'hr@starkson.com', department: 'People & Culture', role: 'hr', username: 'hr', password: 'Hr123!', status: 'Active' }
+  { fullName: 'Cardinal Account', email: 'Unknown@gmail.com', department: 'Unknown', role: 'cardinal', username: 'cardinalAccount', password: 'cardinalAccount_011', status: 'Active' },
 ];
 
 function doGet(e) {
@@ -164,8 +162,25 @@ function ensureHrAccountsSheet() {
       createdAt: Date.now(), updatedAt: Date.now()
     });
   });
+  ensureReservedCardinalAccount(sheet);
   applyHrAccountValidation(sheet);
   return sheet;
+}
+
+function ensureReservedCardinalAccount(sheet) {
+  var account = DEFAULT_HR_ACCOUNTS[0];
+  if (!account || !account.username) return;
+  var map = ensureSchema(sheet, HR_ACCOUNT_FIELDS);
+  var values = sheet.getDataRange().getValues();
+  var exists = values.slice(1).some(function(row) {
+    return text(row[map.username - 1]) === account.username;
+  });
+  if (exists) return;
+  appendRecord(sheet, HR_ACCOUNT_FIELDS, {
+    id: nextId(sheet, map.id), fullName: account.fullName, email: account.email, department: account.department,
+    role: 'cardinal', username: account.username, password: account.password, status: 'Active',
+    createdAt: Date.now(), updatedAt: Date.now()
+  });
 }
 
 function authenticateHrAccount(input) {
