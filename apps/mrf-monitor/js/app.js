@@ -68,7 +68,7 @@ if (form) {
 
     try {
       const savedRecord = await saveRecord({ ...rec, id: '' });
-      const updated = [savedRecord, ...records.filter(item => item.id !== optimisticRecord.id)];
+      const updated = [savedRecord, ...records.filter(item => item.id !== optimisticRecord.id && item.mrfNumber !== savedRecord.mrfNumber)];
       setRecords(updated);
       renderDashboard();
       renderTable();

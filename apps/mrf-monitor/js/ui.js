@@ -16,7 +16,16 @@ let currentModalId = null;
 let isSavingModal = false;
 
 export function setRecords(newRecords) {
-  records = Array.isArray(newRecords) ? newRecords : [];
+  const unique = new Map();
+  (Array.isArray(newRecords) ? newRecords : []).forEach(record => {
+    const normalized = {
+      ...record,
+      headcount: Number(record.headcount || record.originalHeadcount || 0)
+    };
+    const key = normalized.mrfNumber || normalized.id;
+    if (key) unique.set(String(key), normalized);
+  });
+  records = [...unique.values()];
 }
 
 export function setTotalCandidates(count) {

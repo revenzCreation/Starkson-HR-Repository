@@ -6,7 +6,7 @@ function getApiUrl() {
 
 export async function loadAllRecords() {
   const result = await window.HR_PORTAL_SHEETS.request(getApiUrl());
-  return result.records || [];
+  return normalizeRecords(result.records);
 }
 
 export async function loadApplicantRecords() {
@@ -19,7 +19,7 @@ export async function saveRecord(rec) {
     method: 'POST',
     body: JSON.stringify({ action: 'save', record: { ...rec, id: rec.id || '' } })
   });
-  return result.record;
+  return normalizeRecord(result.record);
 }
 
 export async function deleteRecord(id) {
@@ -27,4 +27,22 @@ export async function deleteRecord(id) {
     method: 'POST',
     body: JSON.stringify({ action: 'delete', id })
   });
+}
+
+function normalizeRecord(record) {
+  if (!record) return record;
+  return {
+    ...record,
+    headcount: Number(record.headcount || record.originalHeadcount || 0)
+  };
+}
+
+function normalizeRecords(records) {
+  const unique = new Map();
+  (Array.isArray(records) ? records : []).forEach(record => {
+    const normalized = normalizeRecord(record);
+    const key = normalized.mrfNumber || normalized.id;
+    if (key) unique.set(String(key), normalized);
+  });
+  return [...unique.values()];
 }
