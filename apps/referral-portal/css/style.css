@@ -696,6 +696,21 @@ select option {
     padding: 2.2rem 1.4rem;
     border-radius: 12px;
   }
+  .landing-card {
+    padding-top: 1.4rem;
+  }
+  .portal-home-link {
+    position: static;
+    align-self: flex-start;
+    margin: 0 0 2rem;
+    max-width: 100%;
+  }
+  .landing-card .logo-wrapper {
+    margin-top: 0;
+  }
+  .brand-title {
+    font-size: clamp(1.35rem, 7vw, 1.85rem);
+  }
   .form-row {
     flex-direction: column;
     gap: 0;
