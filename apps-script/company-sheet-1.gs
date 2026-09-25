@@ -36,7 +36,7 @@ const EMPLOYEE_FIELDS = [
 const HR_ACCOUNT_FIELDS = [
   ['id', 'ID', ['id']], ['fullName', 'Full Name', ['full name', 'fullname']],
   ['email', 'Email', ['email', 'email address']], ['department', 'Department', ['department']],
-  ['role', 'Role', ['role']], ['username', 'Username', ['username', 'user name']],
+  ['role', 'Account Level', ['account level', 'accountlevel', 'role']], ['username', 'Username', ['username', 'user name']],
   ['password', 'Password', ['password']], ['status', 'Status', ['status']],
   ['createdAt', 'Created At', ['created at', 'createdat']], ['updatedAt', 'Updated At', ['updated at', 'updatedat']]
 ];
@@ -157,14 +157,14 @@ function listOpenJobs() {
 
 function ensureHrAccountsSheet() {
   var sheet = getSheet(CONFIG.hrAccountsSheet, HR_ACCOUNT_FIELDS);
-  if (sheet.getLastRow() > 1) return sheet;
-  DEFAULT_HR_ACCOUNTS.forEach(function(account, index) {
+  if (sheet.getLastRow() <= 1) DEFAULT_HR_ACCOUNTS.forEach(function(account, index) {
     appendRecord(sheet, HR_ACCOUNT_FIELDS, {
       id: padId(index + 1), fullName: account.fullName, email: account.email, department: account.department,
-      role: normalizeHrRole(account.role), username: account.username, password: account.password, status: account.status,
+      role: normalizeAccountLevel(account.role), username: account.username, password: account.password, status: normalizeAccountStatus(account.status),
       createdAt: Date.now(), updatedAt: Date.now()
     });
   });
+  applyHrAccountValidation(sheet);
   return sheet;
 }
 
@@ -177,7 +177,7 @@ function authenticateHrAccount(input) {
   var values = sheet.getDataRange().getValues();
   for (var i = 1; i < values.length; i += 1) {
     var record = rowToRecord(values[i], HR_ACCOUNT_FIELDS, map);
-    if (text(record.username) === username && text(record.password) === password && text(record.status || 'Active').toLowerCase() !== 'inactive') {
+    if (text(record.username) === username && text(record.password) === password && normalizeAccountStatus(record.status) === 'Active') {
       record.password = '';
       return record;
     }
@@ -192,10 +192,12 @@ function saveHrAccountRecord(input) {
   var password = text(input && input.password);
   if (!username || !password) throw new Error('Username and password are required.');
   var id = text(input && input.id) || nextId(sheet, map.id);
+  var accountLevel = normalizeAccountLevel(input.accountLevel || input.role);
+  if (accountLevel === 'cardinal') throw new Error('Cardinal Account is reserved and cannot be assigned.');
   if (findHrAccountByUsername(username, id)) throw new Error('An HR account with that username already exists.');
   var record = {
     id: id, fullName: text(input.fullName) || 'HR Staff', email: text(input.email), department: text(input.department) || 'People & Culture',
-    role: normalizeHrRole(input.role), username: username, password: password, status: text(input.status) || 'Active',
+    role: accountLevel, username: username, password: password, status: normalizeAccountStatus(input.status),
     createdAt: input.createdAt || Date.now(), updatedAt: Date.now()
   };
   upsertRecord(sheet, HR_ACCOUNT_FIELDS, map, record);
@@ -314,6 +316,15 @@ function applyDepartmentValidation() {
   var range = sheet.getRange(2, map.department, Math.max(1, sheet.getMaxRows() - 1), 1), departments = getEmployeeDepartmentOptions();
   if (!departments.length) { range.clearDataValidations(); return; }
   range.setDataValidation(SpreadsheetApp.newDataValidation().requireValueInList(departments, true).setAllowInvalid(false).build());
+}
+
+function applyHrAccountValidation(sheet) {
+  var map = fieldMap(HR_ACCOUNT_FIELDS);
+  var rowCount = Math.max(1, sheet.getMaxRows() - 1);
+  var levelRule = SpreadsheetApp.newDataValidation().requireValueInList(['Admin Account', 'Head Account', 'HR Staff'], true).setAllowInvalid(false).build();
+  var statusRule = SpreadsheetApp.newDataValidation().requireValueInList(['Active', 'Inactive'], true).setAllowInvalid(false).build();
+  sheet.getRange(2, map.role, rowCount, 1).setDataValidation(levelRule);
+  sheet.getRange(2, map.status, rowCount, 1).setDataValidation(statusRule);
 }
 
 function getSheet(name, fields) {
@@ -456,7 +467,14 @@ function normalizeIdColumn(sheet) {
 }
 
 function fieldMap(fields) { var map = {}; fields.forEach(function(field, index) { map[field[0]] = index + 1; }); return map; }
-function normalizeHrRole(value) { var role = text(value).toLowerCase(); return ['cardinal', 'master', 'hr'].indexOf(role) >= 0 ? role : 'hr'; }
+function normalizeAccountLevel(value) {
+  var level = text(value).toLowerCase().replace(/[_-]+/g, ' ');
+  if (level === 'admin account' || level === 'admin' || level === 'master' || level === 'master admin') return 'admin';
+  if (level === 'head account' || level === 'head') return 'head';
+  if (level === 'cardinal' || level === 'cardinal admin') return 'cardinal';
+  return 'hr';
+}
+function normalizeAccountStatus(value) { return text(value).toLowerCase() === 'inactive' ? 'Inactive' : 'Active'; }
 function normalizeId(value) { return String(value == null ? '' : value).replace(/^0+(?=\d)/, ''); }
 function padId(value) { var result = String(value == null ? '' : value); while (result.length < 5) result = '0' + result; return result; }
 function normalizeHeader(value) { return String(value || '').toLowerCase().replace(/[^a-z0-9]/g, ''); }
