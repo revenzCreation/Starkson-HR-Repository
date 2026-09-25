@@ -2,6 +2,13 @@
   "version": 2,
   "cleanUrls": true,
   "trailingSlash": false,
+  "redirects": [
+    {
+      "source": "/job-openings",
+      "destination": "/apps/job-openings",
+      "permanent": false
+    }
+  ],
   "rewrites": [
     {
       "source": "/",
@@ -34,10 +41,6 @@
     {
       "source": "/applicant-form",
       "destination": "/apps/applicant-form/index.html"
-    },
-    {
-      "source": "/job-openings",
-      "destination": "/apps/job-openings/index.html"
     },
     {
       "source": "/mrf-monitor",
