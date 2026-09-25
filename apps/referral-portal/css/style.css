@@ -699,8 +699,9 @@ select option {
   .landing-card {
     padding-top: 1.4rem;
   }
-  .portal-home-link {
+  .landing-card > .hr-back-link {
     position: static;
+    display: inline-flex;
     align-self: flex-start;
     margin: 0 0 2rem;
     max-width: 100%;
