@@ -204,7 +204,7 @@
     applyAuthVisibility();
   } else {
     const authScript = document.createElement("script");
-    authScript.src = "apps/shared/auth.js";
+    authScript.src = "/apps/shared/auth.js";
     authScript.onload = applyAuthVisibility;
     document.head.appendChild(authScript);
   }

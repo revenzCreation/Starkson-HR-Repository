@@ -36,6 +36,10 @@
       "destination": "/apps/applicant-form/index.html"
     },
     {
+      "source": "/job-openings",
+      "destination": "/apps/job-openings/index.html"
+    },
+    {
       "source": "/mrf-monitor",
       "destination": "/apps/mrf-monitor/index.html"
     }
