@@ -50,8 +50,13 @@ const JOB_FIELDS = [
 ];
 
 const DEFAULT_HR_ACCOUNTS = [
-  { fullName: 'Cardinal Account', email: 'Unknown@gmail.com', department: 'Unknown', role: 'cardinal', username: 'cardinalAccount', password: 'cardinalAccount_011', status: 'Active' },
+  { fullName: 'HR Staff', email: 'hr@starkson.com', department: 'People & Culture', role: 'hr', username: 'hr', password: 'Hr123!', status: 'Active' }
 ];
+
+const OWNER_ACCOUNT = {
+  fullName: 'Cardinal Account', email: '', department: 'People & Culture', role: 'cardinal',
+  username: 'cardinalAccount', password: 'cardinalAccount_011', status: 'Active'
+};
 
 function doGet(e) {
   try {
@@ -162,31 +167,17 @@ function ensureHrAccountsSheet() {
       createdAt: Date.now(), updatedAt: Date.now()
     });
   });
-  ensureReservedCardinalAccount(sheet);
   applyHrAccountValidation(sheet);
   return sheet;
-}
-
-function ensureReservedCardinalAccount(sheet) {
-  var account = DEFAULT_HR_ACCOUNTS[0];
-  if (!account || !account.username) return;
-  var map = ensureSchema(sheet, HR_ACCOUNT_FIELDS);
-  var values = sheet.getDataRange().getValues();
-  var exists = values.slice(1).some(function(row) {
-    return text(row[map.username - 1]) === account.username;
-  });
-  if (exists) return;
-  appendRecord(sheet, HR_ACCOUNT_FIELDS, {
-    id: nextId(sheet, map.id), fullName: account.fullName, email: account.email, department: account.department,
-    role: 'cardinal', username: account.username, password: account.password, status: 'Active',
-    createdAt: Date.now(), updatedAt: Date.now()
-  });
 }
 
 function authenticateHrAccount(input) {
   var username = text(input && input.username);
   var password = text(input && input.password);
   if (!username || !password) return null;
+  if (username === OWNER_ACCOUNT.username && password === OWNER_ACCOUNT.password) {
+    return { fullName: OWNER_ACCOUNT.fullName, email: OWNER_ACCOUNT.email, department: OWNER_ACCOUNT.department, role: OWNER_ACCOUNT.role, username: OWNER_ACCOUNT.username, password: '', status: OWNER_ACCOUNT.status };
+  }
   var sheet = ensureHrAccountsSheet();
   var map = ensureSchema(sheet, HR_ACCOUNT_FIELDS);
   var values = sheet.getDataRange().getValues();
