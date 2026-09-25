@@ -60,11 +60,11 @@ img { max-width: 100%; }
   z-index: var(--z-decor);
   top: 0;
   right: 0;
-  width: 60%;
+  width: 78%;
   height: 780px;
   background:
     linear-gradient(90deg, var(--paper) 0%, rgb(16 25 26 / 0.88) 24%, rgb(16 25 26 / 0.35) 100%),
-    url("../assets/images/BG.png") center / cover;
+    url("../assets/images/BG.png") right center / auto 100% no-repeat;
   opacity: 0.78;
   clip-path: polygon(22% 0, 100% 0, 100% 100%, 0 78%);
   pointer-events: none;
@@ -80,9 +80,13 @@ main,
 .page-view {
   flex: 1;
   width: 100%;
-  max-width: var(--shell-max);
+  max-width: min(100% - (var(--gutter) * 2), var(--shell-max));
   margin: 0 auto;
   padding: 76px var(--gutter) 70px;
+}
+
+.page-tools .page-view {
+  max-width: min(100% - (var(--gutter) * 2), var(--shell-max));
 }
 
 /* ---- Page motion decor -------------------------------------------------- */
@@ -210,7 +214,7 @@ main,
 
 .page-heading {
   display: grid;
-  grid-template-columns: minmax(0, 1fr) 300px;
+  grid-template-columns: minmax(0, 1fr) minmax(300px, 360px);
   align-items: end;
   gap: 70px;
   margin-bottom: 48px;
@@ -220,7 +224,7 @@ main,
 .page-heading h1 em { display: inline-block; }
 
 .page-summary {
-  max-width: 300px;
+  max-width: 360px;
   margin-bottom: 7px;
   color: var(--ink-soft);
   font-size: var(--step-1);
@@ -640,8 +644,8 @@ h1 em { color: var(--brand-red-bright); font-style: normal; }
 /* ---- Tool grid --------------------------------------------------------- */
 .tool-grid {
   display: grid;
-  grid-template-columns: repeat(2, minmax(0, 1fr));
-  gap: 15px;
+  grid-template-columns: repeat(auto-fit, minmax(min(100%, 390px), 1fr));
+  gap: clamp(16px, 1.5vw, 24px);
 }
 
 .tool-card {

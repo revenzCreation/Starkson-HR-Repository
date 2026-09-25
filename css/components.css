@@ -440,6 +440,28 @@
   transform: translateY(-1px);
 }
 
+/* ---- Theme Toggle ----------------------------------------------------- */
+.theme-toggle {
+  display: inline-flex;
+  align-items: center;
+  gap: 7px;
+  padding: 7px 12px;
+  border: var(--border-glass);
+  border-radius: var(--radius-pill);
+  background: var(--surface-2);
+  color: var(--ink);
+  font: 600 var(--step--1)/1 var(--font-body);
+  cursor: pointer;
+  transition: background var(--dur-fast), border-color var(--dur-fast), transform var(--dur-fast);
+}
+.theme-toggle:hover {
+  border-color: var(--line-red);
+  transform: translateY(-1px);
+}
+.theme-toggle__moon { display: none; }
+[data-theme="light"] .theme-toggle__sun { display: none; }
+[data-theme="light"] .theme-toggle__moon { display: block; }
+
 /* ---- Metric Statistics Grid -------------------------------------------- */
 .hr-stats-grid {
   display: grid;

@@ -12,6 +12,28 @@
   const NAV_BREAKPOINT = 800;
 
   /* ------------------------------------------------------------------ *
+   * Theme preference — shared by the public portal surfaces             *
+   * ------------------------------------------------------------------ */
+  const themeToggle = document.querySelector("[data-theme-toggle]");
+  const themeLabel = document.querySelector("[data-theme-label]");
+  const savedTheme = window.localStorage.getItem("starkson-theme");
+  const preferredTheme = savedTheme || (window.matchMedia("(prefers-color-scheme: light)").matches ? "light" : "dark");
+
+  function applyTheme(theme) {
+    const isLight = theme === "light";
+    root.dataset.theme = isLight ? "light" : "dark";
+    if (themeToggle) themeToggle.setAttribute("aria-pressed", String(isLight));
+    if (themeLabel) themeLabel.textContent = isLight ? "Dark mode" : "Light mode";
+  }
+
+  applyTheme(preferredTheme);
+  themeToggle?.addEventListener("click", () => {
+    const nextTheme = root.dataset.theme === "light" ? "dark" : "light";
+    window.localStorage.setItem("starkson-theme", nextTheme);
+    applyTheme(nextTheme);
+  });
+
+  /* ------------------------------------------------------------------ *
    * Pointer spotlight — rAF throttled so we write one style per frame   *
    * instead of one per pointermove event.                               *
    * ------------------------------------------------------------------ */
