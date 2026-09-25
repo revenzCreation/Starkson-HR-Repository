@@ -306,7 +306,10 @@ const MAX_FILE_SIZE = 5 * 1024 * 1024;
 const ALLOWED_MIME_TYPES = [
   'application/pdf',
   'application/msword',
-  'application/vnd.openxmlformats-officedocument.wordprocessingml.document'
+  'application/vnd.openxmlformats-officedocument.wordprocessingml.document',
+  'image/jpeg',
+  'image/png',
+  'image/webp'
 ];
 
 if (dropZone) {
@@ -350,9 +353,9 @@ function handleFileSelect() {
       return;
     }
 
-    if (!ALLOWED_MIME_TYPES.includes(file.type) && !file.name.match(/\.(pdf|doc|docx)$/i)) {
+    if (!ALLOWED_MIME_TYPES.includes(file.type) && !file.name.match(/\.(pdf|doc|docx|jpg|jpeg|png|webp)$/i)) {
       clearFile();
-      if (fileError) fileError.textContent = 'Invalid file type. Only PDF, DOC, or DOCX allowed.';
+      if (fileError) fileError.textContent = 'Invalid file type. PDF, DOC, DOCX, JPG, PNG, or WebP allowed.';
       if (resumeGroup) resumeGroup.classList.add('invalid');
       return;
     }

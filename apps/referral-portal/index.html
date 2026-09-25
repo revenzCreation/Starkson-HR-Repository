@@ -217,9 +217,9 @@
 
           <!-- RESUME UPLOAD -->
           <div class="form-group" id="resumeGroup">
-            <label>Resume / CV <span class="req">*</span> <span class="optional">(Max 5MB: PDF, DOC, DOCX)</span></label>
+            <label>Resume / CV <span class="req">*</span> <span class="optional">(Max 5MB: PDF, DOC, DOCX, JPG, PNG)</span></label>
             <div class="drop-zone" id="dropZone">
-              <input type="file" id="resume" name="resume" accept=".pdf,.doc,.docx,application/pdf,application/msword,application/vnd.openxmlformats-officedocument.wordprocessingml.document" class="file-input" required>
+              <input type="file" id="resume" name="resume" accept=".pdf,.doc,.docx,.jpg,.jpeg,.png,.webp,application/pdf,application/msword,application/vnd.openxmlformats-officedocument.wordprocessingml.document,image/jpeg,image/png,image/webp" class="file-input" required>
               <div class="drop-zone-content" id="dropZoneContent">
                 <svg class="upload-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5">
                   <path d="M21 15v4a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2v-4"></path>
@@ -227,7 +227,7 @@
                   <line x1="12" y1="3" x2="12" y2="15"></line>
                 </svg>
                 <p>Drag &amp; drop resume file here, or <span>browse files</span></p>
-                <span class="subtext">Supported: PDF, DOC, DOCX up to 5 MB. Automatically synced to Google Drive.</span>
+                <span class="subtext">Supported: PDF, DOC, DOCX, JPG, PNG, or WebP up to 5 MB. Automatically synced to Google Drive.</span>
               </div>
               <div id="filePreview" class="file-preview hidden">
                 <span class="file-name" id="fileName">resume.pdf</span>
