@@ -7,7 +7,7 @@
   <meta name="theme-color" content="#10191a">
   <title>HR Tools | Starkson Packaging Inc.</title>
   <link rel="icon" href="favicon.png" type="image/png">
-  <link rel="apple-touch-icon" href="Directory Websites/referral-portal/images/logo.png">
+  <link rel="apple-touch-icon" href="assets/logos/logo.png">
   <link rel="preconnect" href="https://fonts.googleapis.com">
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
   <link href="https://fonts.googleapis.com/css2?family=DM+Sans:wght@400;500;600;700&family=IBM+Plex+Mono:wght@500;600&family=Manrope:wght@600;700;800&display=swap" rel="stylesheet">
@@ -38,8 +38,8 @@
     <!-- Header -->
     <header class="site-header">
       <a class="brand" href="index.html" aria-label="Starkson HR Portal home">
-        <img src="Directory Websites/referral-portal/images/logo.png" alt="Starkson Logo">
-        <span><strong>STARKSON</strong><small>Packaging Solutions for QSR &amp; FMCG</small></span>
+        <img src="assets/logos/logo.png" alt="Starkson Logo">
+        <span><strong>STARKSON</strong><small>Packaging Inc.</small></span>
       </a>
 
       <button class="nav-toggle" type="button" data-nav-toggle aria-expanded="false" aria-controls="primary-nav">
@@ -54,7 +54,9 @@
 
       <nav class="main-nav" id="primary-nav" aria-label="Main navigation">
         <a href="index.html">Home</a>
-        <a class="active" href="tools.html" aria-current="page">HR Tools</a>
+        <a class="active auth-required-link" href="tools.html" aria-current="page">HR Tools</a>
+        <a href="forms.html">HR Forms</a>
+        <a href="careers.html">Careers</a>
         <a href="support.html">Support Desk</a>
       </nav>
     </header>
@@ -98,7 +100,7 @@
       <!-- Tool Grid with Live Badges, Sub-actions and 3D Specular Tilt -->
       <div class="tool-grid">
         <!-- 01: Employee Referrals -->
-        <a class="tool-card featured" href="Directory Websites/referral-portal/index.html" data-tool-item data-category="recruitment">
+        <a class="tool-card featured" href="apps/referral-portal/index.html" data-tool-item data-category="recruitment">
           <div class="card-topline">
             <div style="display: flex; align-items: center; gap: 8px;">
               <span class="tool-number">01</span>
@@ -124,7 +126,7 @@
         </a>
 
         <!-- 02: Manpower Requests -->
-        <a class="tool-card" href="Directory Websites/mrf-monitor/index.html" data-tool-item data-category="operations">
+        <a class="tool-card" href="apps/mrf-monitor/index.html" data-tool-item data-category="operations">
           <div class="card-topline">
             <div style="display: flex; align-items: center; gap: 8px;">
               <span class="tool-number">02</span>
@@ -149,11 +151,24 @@
           </span>
         </a>
 
+        <!-- 03: Job Openings -->
+        <a class="tool-card" href="apps/job-openings/index.html" data-tool-item data-category="recruitment">
+          <div class="card-topline">
+            <div style="display: flex; align-items: center; gap: 8px;"><span class="tool-number">03</span><span class="hr-badge hr-badge--sage" style="font-size: 10px; padding: 2px 7px;">Sheet 1 Connected</span></div>
+            <svg class="card-arrow hr-icon hr-icon--lg" viewBox="0 0 24 24" aria-hidden="true"><path d="M7 17 17 7"/><path d="M8 7h9v9"/></svg>
+          </div>
+          <div class="tool-icon icon-briefcase" aria-hidden="true"><span></span><i></i></div>
+          <h2>Job Openings</h2>
+          <p>Create, update, and publish the openings shown on the public Careers page. Every listing is stored in the Job Openings sheet.</p>
+          <div style="display: flex; gap: 6px; flex-wrap: wrap; margin-top: 14px;"><span style="font-size: 10px; padding: 3px 8px; border-radius: 4px; background: rgba(255,255,255,0.05); color: var(--ink-soft);">Public Listings</span><span style="font-size: 10px; padding: 3px 8px; border-radius: 4px; background: rgba(255,255,255,0.05); color: var(--ink-soft);">Google Sheets</span><span style="font-size: 10px; padding: 3px 8px; border-radius: 4px; background: rgba(255,255,255,0.05); color: var(--ink-soft);">HR Access</span></div>
+          <span class="card-link">Manage job openings <svg class="hr-icon hr-icon--sm" viewBox="0 0 24 24" aria-hidden="true"><path d="M5 12h14"/><path d="m13 6 6 6-6 6"/></svg></span>
+        </a>
+
         <!-- 03: Applicant Intake -->
-        <a class="tool-card" href="Directory Websites/applicant-form/index.html" data-tool-item data-category="recruitment">
+        <a class="tool-card" href="apps/applicant-form/index.html" data-tool-item data-category="recruitment">
           <div class="card-topline">
             <div style="display: flex; align-items: center; gap: 8px;">
-              <span class="tool-number">03</span>
+              <span class="tool-number">04</span>
               <span class="hr-badge hr-badge--sage" style="font-size: 10px; padding: 2px 7px;">Sheet 2 Connected</span>
             </div>
             <svg class="card-arrow hr-icon hr-icon--lg" viewBox="0 0 24 24" aria-hidden="true">
@@ -176,10 +191,10 @@
         </a>
 
         <!-- 04: 201 Files -->
-        <a class="tool-card" href="Directory Websites/201-files/index.html" data-tool-item data-category="records">
+        <a class="tool-card" href="apps/201-files/index.html" data-tool-item data-category="records">
           <div class="card-topline">
             <div style="display: flex; align-items: center; gap: 8px;">
-              <span class="tool-number">04</span>
+              <span class="tool-number">05</span>
               <span class="hr-badge hr-badge--neutral" style="font-size: 10px; padding: 2px 7px;">HR Access</span>
             </div>
             <svg class="card-arrow hr-icon hr-icon--lg" viewBox="0 0 24 24" aria-hidden="true">
@@ -206,7 +221,9 @@
     <footer class="site-footer">
       <nav class="footer-nav" aria-label="Footer navigation">
         <a href="index.html">Home</a>
-        <a href="tools.html">HR Tools</a>
+        <a href="tools.html" class="auth-required-link">HR Tools</a>
+        <a href="forms.html">HR Forms</a>
+        <a href="careers.html">Careers</a>
         <a href="support.html">Support</a>
         <a href="mailto:starksonpackaginginc@gmail.com">Contact HR</a>
       </nav>

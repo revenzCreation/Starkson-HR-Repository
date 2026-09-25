@@ -1,0 +1,57 @@
+{
+  "version": 2,
+  "cleanUrls": true,
+  "trailingSlash": false,
+  "rewrites": [
+    {
+      "source": "/",
+      "destination": "/index.html"
+    },
+    {
+      "source": "/tools",
+      "destination": "/tools.html"
+    },
+    {
+      "source": "/support",
+      "destination": "/support.html"
+    },
+    {
+      "source": "/201-files",
+      "destination": "/apps/201-files/index.html"
+    },
+    {
+      "source": "/apps/201-files/:path*",
+      "destination": "/apps/201-files/index.html"
+    },
+    {
+      "source": "/201-files/login",
+      "destination": "/apps/201-files/login.html"
+    },
+    {
+      "source": "/referral-portal",
+      "destination": "/apps/referral-portal/index.html"
+    },
+    {
+      "source": "/applicant-form",
+      "destination": "/apps/applicant-form/index.html"
+    },
+    {
+      "source": "/mrf-monitor",
+      "destination": "/apps/mrf-monitor/index.html"
+    }
+  ],
+  "headers": [
+    {
+      "source": "/(.*)",
+      "headers": [
+        { "key": "X-Content-Type-Options", "value": "nosniff" },
+        { "key": "X-Frame-Options", "value": "DENY" },
+        { "key": "Referrer-Policy", "value": "strict-origin-when-cross-origin" },
+        {
+          "key": "Content-Security-Policy",
+          "value": "default-src 'self'; base-uri 'self'; object-src 'self' https://drive.google.com; frame-src 'self' https://drive.google.com https://docs.google.com https://*.googleusercontent.com; child-src 'self' https://drive.google.com https://docs.google.com https://*.googleusercontent.com; script-src 'self' 'unsafe-inline' https://fonts.googleapis.com https://fonts.gstatic.com; style-src 'self' 'unsafe-inline' https://fonts.googleapis.com https://fonts.gstatic.com; img-src 'self' data: blob: https://*.googleusercontent.com https://drive.google.com https://*.drive.google.com https://images.unsplash.com https://fonts.gstatic.com; font-src 'self' data: https://fonts.gstatic.com https://fonts.googleapis.com; connect-src 'self' https://script.google.com https://*.googleapis.com https://*.googleusercontent.com; form-action 'self' https://script.google.com; upgrade-insecure-requests"
+        }
+      ]
+    }
+  ]
+}

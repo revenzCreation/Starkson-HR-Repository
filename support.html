@@ -7,15 +7,15 @@
   <meta name="theme-color" content="#10191a">
   <title>Support Desk | Starkson Packaging Inc.</title>
   <link rel="icon" href="favicon.png" type="image/png">
-  <link rel="apple-touch-icon" href="Directory Websites/referral-portal/images/logo.png">
+  <link rel="apple-touch-icon" href="assets/logos/logo.png">
   <link rel="preconnect" href="https://fonts.googleapis.com">
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
   <link href="https://fonts.googleapis.com/css2?family=DM+Sans:wght@400;500;600;700&family=IBM+Plex+Mono:wght@500;600&family=Manrope:wght@600;700;800&display=swap" rel="stylesheet">
   <link rel="stylesheet" href="css/tokens.css">
   <link rel="stylesheet" href="css/components.css">
   <link rel="stylesheet" href="css/style.css">
-  <script src="Directory Websites/shared/api-config.js"></script>
-  <script src="Directory Websites/shared/departments.js"></script>
+  <script src="apps/shared/api-config.js"></script>
+  <script src="apps/shared/departments.js"></script>
   <script src="js/portal.js" defer></script>
 </head>
 <body>
@@ -40,8 +40,8 @@
     <!-- Header -->
     <header class="site-header">
       <a class="brand" href="index.html" aria-label="Starkson HR Portal home">
-        <img src="Directory Websites/referral-portal/images/logo.png" alt="Starkson Logo">
-        <span><strong>STARKSON</strong><small>Packaging Solutions for QSR &amp; FMCG</small></span>
+        <img src="assets/logos/logo.png" alt="Starkson Logo">
+        <span><strong>STARKSON</strong><small>Packaging Inc.</small></span>
       </a>
 
       <button class="nav-toggle" type="button" data-nav-toggle aria-expanded="false" aria-controls="primary-nav">
@@ -56,7 +56,9 @@
 
       <nav class="main-nav" id="primary-nav" aria-label="Main navigation">
         <a href="index.html">Home</a>
-        <a href="tools.html">HR Tools</a>
+        <a href="tools.html" class="auth-required-link">HR Tools</a>
+        <a href="forms.html">HR Forms</a>
+        <a href="careers.html">Careers</a>
         <a class="active" href="support.html" aria-current="page">Support Desk</a>
       </nav>
     </header>
@@ -208,7 +210,9 @@
     <footer class="site-footer">
       <nav class="footer-nav" aria-label="Footer navigation">
         <a href="index.html">Home</a>
-        <a href="tools.html">HR Tools</a>
+        <a href="tools.html" class="auth-required-link">HR Tools</a>
+        <a href="forms.html">HR Forms</a>
+        <a href="careers.html">Careers</a>
         <a href="support.html">Support</a>
         <a href="mailto:starksonpackaginginc@gmail.com">Contact HR</a>
       </nav>

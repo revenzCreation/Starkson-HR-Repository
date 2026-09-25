@@ -1,0 +1,96 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Job Openings | Starkson HR Portal</title>
+  <link rel="icon" href="../../favicon.png" type="image/png">
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link rel="stylesheet" href="../../css/tokens.css">
+  <link rel="stylesheet" href="../../css/components.css">
+  <link rel="stylesheet" href="../../css/style.css">
+  <script src="../../js/portal.js" defer></script>
+  <script src="../shared/api-config.js"></script>
+</head>
+<body>
+  <a class="hr-skip-link" href="#main-content">Skip to content</a>
+  <div class="page-shell page-tools job-openings-page">
+    <header class="site-header">
+      <a class="brand" href="../../tools.html" aria-label="Back to HR Tools"><img src="../../assets/logos/logo.png" alt="Starkson Logo"><span><strong>STARKSON</strong><small>Packaging Inc.</small></span></a>
+    </header>
+    <main class="page-view" id="main-content">
+      <div class="page-heading">
+        <div><p class="eyebrow"><span class="eyebrow-dot"></span> Recruitment Operations</p><h1>Manage <em>job openings.</em></h1></div>
+        <div class="job-openings-intro-actions"><p class="page-summary">Publish the roles shown on Careers. Changes are saved to the Job Openings sheet in Company Sheet 1.</p><a class="hr-back-link" href="../../tools.html"><svg class="hr-icon hr-icon--sm" viewBox="0 0 24 24" aria-hidden="true"><path d="m15 18-6-6 6-6"/></svg><span>Back to Tools</span></a></div>
+      </div>
+      <div class="hr-manager-panel">
+        <div class="hr-manager-panel__header"><div><span class="eyebrow hr-manager-panel__eyebrow"><span class="eyebrow-dot"></span> Job Opening Database</span><h3 id="formHeading">Create a new opening</h3></div><span class="hr-badge hr-badge--sage">HR Only</span></div>
+        <form id="jobForm" class="hr-manager-form">
+          <input id="jobId" type="hidden">
+          <div class="hr-manager-form__grid"><div class="field"><label for="jobTitle">Job Title</label><input id="jobTitle" required placeholder="e.g. Production Operator"></div><div class="field"><label for="jobType">Employment Type</label><input id="jobType" value="Full-time" required></div></div>
+          <div class="hr-manager-form__grid"><div class="field"><label for="jobLocation">Location</label><input id="jobLocation" required placeholder="Silang Plant"></div><div class="field"><label for="jobSalary">Monthly Salary</label><input id="jobSalary" required placeholder="PHP 20,000-28,000"></div></div>
+          <div class="field"><label for="jobSummary">Role Summary</label><textarea id="jobSummary" required placeholder="Describe the role, responsibilities, and requirements"></textarea></div>
+          <div class="hr-manager-form__actions"><button type="reset" class="btn secondary" id="resetJob">Clear</button><button type="submit" class="btn primary">Save Opening</button></div>
+        </form>
+        <p id="statusMessage" role="status" aria-live="polite"></p>
+      </div>
+      <section style="margin-top: 32px;"><div class="page-topline"><h2>Published openings</h2><button class="hr-btn hr-btn--ghost hr-btn--sm" type="button" id="refreshJobs" title="Refresh published openings"><svg class="hr-icon hr-icon--sm" viewBox="0 0 24 24" aria-hidden="true"><path d="M20 11a8 8 0 0 0-14.9-3.9L3 9"/><path d="M3 4v5h5"/><path d="M4 13a8 8 0 0 0 14.9 3.9L21 15"/><path d="M21 20v-5h-5"/></svg><span>Refresh</span></button></div><div id="jobsList" class="tool-grid" aria-live="polite"></div></section>
+    </main>
+  </div>
+  <script>
+    (() => {
+      const apiUrl = window.HR_PORTAL_SHEETS?.connections?.companySheet1;
+      const form = document.getElementById('jobForm');
+      const jobsList = document.getElementById('jobsList');
+      const statusMessage = document.getElementById('statusMessage');
+      const fields = ['jobId', 'jobTitle', 'jobType', 'jobLocation', 'jobSalary', 'jobSummary'];
+      let jobs = [];
+
+      function getSession() {
+        try { return window.HR_PORTAL_AUTH?.getSession?.() || JSON.parse(sessionStorage.getItem('starkson_hr_session') || 'null'); } catch (error) { return null; }
+      }
+      function isAuthenticated() { const session = getSession(); return Boolean(session && session.authenticated); }
+      function showStatus(message, type) { statusMessage.textContent = message; statusMessage.style.color = type === 'error' ? 'var(--brand-red-bright)' : 'var(--status-sage-bright)'; }
+      function escapeHtml(value) { return String(value == null ? '' : value).replace(/[&<>'"]/g, character => ({ '&': '&amp;', '<': '&lt;', '>': '&gt;', "'": '&#39;', '"': '&quot;' }[character])); }
+      function formatSummary(value) {
+        return String(value == null ? '' : value).split(/\r?\n/).map(line => {
+          const escaped = escapeHtml(line);
+          const heading = escaped.match(/^(#{1,6})\s+(.+)$/);
+          if (heading) return `<h${Math.min(6, heading[1].length + 2)}>${formatInline(heading[2])}</h${Math.min(6, heading[1].length + 2)}>`;
+          return formatInline(escaped) || '<br>';
+        }).join('<br>');
+      }
+      function formatInline(value) { return value.replace(/\*\*(.+?)\*\*|\*([^*\n]+)\*/g, (_, doubleBold, singleBold) => `<strong>${doubleBold || singleBold}</strong>`); }
+      function resetForm() { form.reset(); document.getElementById('jobId').value = ''; document.getElementById('jobType').value = 'Full-time'; document.getElementById('formHeading').textContent = 'Create a new opening'; }
+      function renderJobs() {
+        jobsList.innerHTML = jobs.length ? jobs.map(job => `<article class="job-card"><div class="job-head"><span class="job-badge">${escapeHtml(job.status || 'Open')}</span><span class="muted">${escapeHtml(job.type || 'Full-time')}</span></div><h2>${escapeHtml(job.title)}</h2><div class="job-summary-content">${formatSummary(job.summary)}</div><div class="job-meta"><span>${escapeHtml(job.location)}</span><span>${escapeHtml(job.salary)}</span></div><div class="job-footer"><button class="btn secondary" type="button" data-edit="${escapeHtml(job.id)}">Edit</button><button class="btn secondary" type="button" data-delete="${escapeHtml(job.id)}">Delete</button></div></article>`).join('') : '<div class="careers-empty"><h2>No openings in the database</h2><p>Create the first published role above.</p></div>';
+        jobsList.querySelectorAll('[data-edit]').forEach(button => button.addEventListener('click', () => editJob(button.dataset.edit)));
+        jobsList.querySelectorAll('[data-delete]').forEach(button => button.addEventListener('click', () => deleteJob(button.dataset.delete)));
+      }
+      async function request(url, options) { return window.HR_PORTAL_SHEETS.request(url, options); }
+      async function loadJobs() {
+        try { const result = await request(`${apiUrl}?action=job-list`); jobs = Array.isArray(result.records) ? result.records : []; renderJobs(); }
+        catch (error) { showStatus(error.message || 'Unable to load openings.', 'error'); }
+      }
+      function editJob(id) {
+        const job = jobs.find(item => String(item.id) === String(id)); if (!job) return;
+        document.getElementById('jobId').value = job.id || ''; document.getElementById('jobTitle').value = job.title || ''; document.getElementById('jobType').value = job.type || 'Full-time'; document.getElementById('jobLocation').value = job.location || ''; document.getElementById('jobSalary').value = job.salary || ''; document.getElementById('jobSummary').value = job.summary || ''; document.getElementById('formHeading').textContent = 'Edit opening'; window.scrollTo({ top: 0, behavior: 'smooth' });
+      }
+      async function deleteJob(id) {
+        if (!window.confirm('Delete this job opening?')) return;
+        try { await request(apiUrl, { method: 'POST', body: JSON.stringify({ action: 'job-delete', id }) }); showStatus('Opening deleted.'); await loadJobs(); } catch (error) { showStatus(error.message || 'Unable to delete opening.', 'error'); }
+      }
+      form.addEventListener('submit', async event => {
+        event.preventDefault();
+        const record = { id: document.getElementById('jobId').value.trim(), title: document.getElementById('jobTitle').value.trim(), type: document.getElementById('jobType').value.trim(), location: document.getElementById('jobLocation').value.trim(), salary: document.getElementById('jobSalary').value.trim(), summary: document.getElementById('jobSummary').value.trim(), status: 'Open' };
+        try { await request(apiUrl, { method: 'POST', body: JSON.stringify({ action: 'job-save', record }) }); showStatus('Opening saved to Job Openings.'); resetForm(); await loadJobs(); } catch (error) { showStatus(error.message || 'Unable to save opening.', 'error'); }
+      });
+      document.getElementById('resetJob').addEventListener('click', resetForm);
+      document.getElementById('refreshJobs').addEventListener('click', loadJobs);
+      if (!isAuthenticated()) { window.location.href = '../../apps/201-files/login.html?next=apps/job-openings/index.html'; return; }
+      loadJobs();
+    })();
+  </script>
+</body>
+</html>

@@ -1,0 +1,201 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>MRF Monitor | Manpower Requisition & Status Tracker</title>
+<link rel="icon" href="../../favicon.png" type="image/png">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=DM+Sans:wght@400;500;600;700&family=IBM+Plex+Mono:wght@500;600&family=Manrope:wght@600;700;800&display=swap" rel="stylesheet">
+<link rel="stylesheet" href="../../css/tokens.css">
+<link rel="stylesheet" href="../../css/components.css">
+<link rel="stylesheet" href="css/styles.css">
+</head>
+<body>
+<div class="wrap">
+
+  <header>
+    <div class="brand">
+      <img src="../../assets/logos/logo.png" alt="Starkson Logo" style="width: 38px; height: 38px; object-fit: contain;">
+      <div>
+        <h1>MRF Monitor</h1>
+        <div class="sub">Manpower Request Form — upload, department tracking & status dashboard</div>
+      </div>
+    </div>
+    <div style="display: flex; align-items: center; gap: 12px; flex-wrap: wrap;">
+      <a class="hr-back-link" href="../../tools.html"><svg class="hr-icon hr-icon--sm" viewBox="0 0 24 24" aria-hidden="true"><path d="m15 18-6-6 6-6"/></svg><span>Back to Tools</span></a>
+      <nav class="tabs">
+        <button data-tab="dashboard" class="active">Dashboard</button>
+        <button data-tab="requests">All Requests</button>
+        <button data-tab="new">+ New Request</button>
+      </nav>
+    </div>
+  </header>
+
+  <!-- DASHBOARD -->
+  <section id="view-dashboard" class="view active">
+    <div class="stat-row" id="statRow"></div>
+
+    <div class="two-col">
+      <div class="panel">
+        <h2>Status Allocation Breakdown</h2>
+        <div class="stack-bar" id="stackBar"></div>
+        <div class="legend" id="legend"></div>
+      </div>
+      <div class="panel">
+        <h2>Recent Requisition Activity</h2>
+        <ul class="activity" id="activityList"></ul>
+      </div>
+    </div>
+
+    <div class="panel">
+      <h2>Headcount Demand by Department</h2>
+      <div id="deptBars"></div>
+    </div>
+  </section>
+
+  <!-- REQUESTS -->
+  <section id="view-requests" class="view">
+    <div class="toolbar">
+      <input type="text" id="searchInput" placeholder="Search department, position, MRF #...">
+      <select id="statusFilter">
+        <option value="">All statuses</option>
+        <option>Open</option>
+        <option>In Progress</option>
+        <option>Filled</option>
+        <option>On Hold</option>
+        <option>Cancelled</option>
+        <option>Overfilled</option>
+      </select>
+      <select id="sortSelect">
+        <option value="new">Newest first</option>
+        <option value="old">Oldest first</option>
+        <option value="needed">Date needed (soonest)</option>
+        <option value="headcount">Headcount (highest)</option>
+      </select>
+      <button class="btn ghost" id="exportCsvBtn" title="Download spreadsheet report">Export CSV</button>
+      <button class="btn" id="refreshBtn">Refresh</button>
+    </div>
+    <div class="panel" style="padding:0;overflow-x:auto;">
+      <table>
+        <thead>
+          <tr>
+            <th>Attachment</th><th>MRF #</th><th>Department</th><th>Position</th>
+            <th>Headcount</th><th>Date Needed</th><th>Status</th><th>Action</th>
+          </tr>
+        </thead>
+        <tbody id="tableBody"></tbody>
+      </table>
+      <div class="empty-state" id="emptyState" style="display:none;">
+        <div class="big">No manpower requests logged yet</div>
+        <div>Upload your first request slip or form from the "+ New Request" tab.</div>
+      </div>
+    </div>
+  </section>
+
+  <!-- NEW REQUEST -->
+  <section id="view-new" class="view">
+    <div class="panel">
+      <h2>Log a Manpower Request</h2>
+      <form id="mrfForm">
+        <div class="upload-box" id="uploadBox">
+          <label for="fileInput" class="sr-only">Upload request file</label>
+          <input type="file" id="fileInput" style="display:none;" aria-label="Upload request file">
+          <div id="uploadPlaceholder">
+            <div class="icon">📂</div>
+            <div><strong>Click to upload</strong> or drag hard-copy scan here</div>
+            <div class="hint">PDF, PNG, JPG, or DOC up to 5 MB. Automatically compressed and synced to Google Drive.</div>
+          </div>
+          <img id="previewImg" style="display:none;" alt="Scan preview">
+        </div>
+
+        <div class="form-grid" style="margin-top:20px;">
+          <div class="field">
+            <label for="f_mrfnum">MRF Number</label>
+            <input type="text" id="f_mrfnum" placeholder="e.g. MRF-2026-045">
+          </div>
+          <div class="field">
+            <label for="f_dept">Requesting Department</label>
+            <select id="f_dept" required disabled>
+              <option value="">Select department</option>
+            </select>
+          </div>
+          <div class="field">
+            <label for="f_position">Position Requested</label>
+            <input type="text" id="f_position" placeholder="e.g. Machine Operator, QA Inspector" required>
+          </div>
+          <div class="field">
+            <label for="f_count">Headcount Needed</label>
+            <input type="number" id="f_count" min="1" value="1" required>
+          </div>
+          <div class="field">
+            <label for="f_status">MRF Status</label>
+            <select id="f_status" required>
+              <option value="Open" selected>Open</option>
+              <option value="In Progress">In Progress</option>
+              <option value="Filled">Filled</option>
+              <option value="On Hold">On Hold</option>
+              <option value="Cancelled">Cancelled</option>
+              <option value="Overfilled">Overfilled</option>
+            </select>
+          </div>
+          <div class="field">
+            <label for="f_daterequested">Date Requested</label>
+            <input type="date" id="f_daterequested">
+          </div>
+          <div class="field">
+            <label for="f_dateneeded">Date Needed</label>
+            <input type="date" id="f_dateneeded">
+          </div>
+          <div class="field">
+            <label for="f_requestedby">Requested By</label>
+            <input type="text" id="f_requestedby" placeholder="Supervisor name / designation">
+          </div>
+          <div class="field full">
+            <label for="f_remarks">Justification &amp; Approver Notes</label>
+            <textarea id="f_remarks" placeholder="Reason for requisition, shift requirements, equipment assignments..."></textarea>
+          </div>
+        </div>
+
+        <div class="form-actions">
+          <button type="button" class="btn ghost" id="resetFormBtn">Clear</button>
+          <button type="submit" class="btn">Save Request</button>
+        </div>
+      </form>
+    </div>
+  </section>
+
+</div>
+
+<!-- VIEW/EDIT MODAL -->
+<div class="modal-bg" id="modalBg">
+  <div class="modal">
+    <span class="close" id="modalClose">&times;</span>
+    <h3 id="modalTitle">Request Details</h3>
+    <img id="modalImg" style="display:none;" alt="Attached document">
+    <div class="detail-grid" id="modalDetails"></div>
+    <div class="field" style="margin-bottom:12px;">
+      <label>Change Status</label>
+      <select id="modalStatus" class="status-select" style="width:100%;padding:10px;"></select>
+    </div>
+    <div class="field" style="margin-bottom:16px;">
+      <label>Remarks &amp; Feedback</label>
+      <textarea id="modalRemarks"></textarea>
+    </div>
+    <div class="form-actions">
+      <button class="btn danger small" id="deleteBtn">Delete</button>
+      <button class="btn small" id="saveModalBtn">Save Changes</button>
+    </div>
+  </div>
+</div>
+
+<div class="toast" id="toast" role="status" aria-live="polite"></div>
+
+<script src="../shared/api-config.js"></script>
+<script src="../shared/departments.js"></script>
+<script src="../shared/cache.js"></script>
+<script src="../shared/sync.js"></script>
+<script type="module" src="js/app.js"></script>
+</body>
+</html>

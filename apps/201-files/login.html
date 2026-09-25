@@ -1,0 +1,104 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <meta name="description" content="HR portal authentication for Starkson Packaging Inc.">
+  <title>HR Portal Access | Starkson Packaging Inc.</title>
+  <link rel="icon" href="../../favicon.png" type="image/png">
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=DM+Sans:wght@400;500;600;700&family=IBM+Plex+Mono:wght@500;600&family=Manrope:wght@600;700;800&display=swap" rel="stylesheet">
+  <link rel="stylesheet" href="../../css/tokens.css">
+  <link rel="stylesheet" href="../../css/components.css">
+  <link rel="stylesheet" href="css/style.css">
+  <style>
+    .login-shake {
+      animation: hr-shake 0.35s cubic-bezier(0.2, 0.8, 0.2, 1);
+    }
+  </style>
+</head>
+<body>
+  <div class="page-shell login-shell">
+    <header class="site-header">
+      <a class="brand" href="../../index.html" aria-label="Starkson HR Portal home">
+        <img src="../../assets/logos/logo.png" alt="Starkson logo">
+        <span><strong>STARKSON</strong><small>Packaging Inc.</small></span>
+      </a>
+      <a class="hr-back-link" href="../../tools.html"><svg class="hr-icon hr-icon--sm" viewBox="0 0 24 24" aria-hidden="true"><path d="m15 18-6-6 6-6"/></svg><span>Back to Tools</span></a>
+    </header>
+
+    <main class="login-page">
+      <section class="login-card" aria-labelledby="loginTitle">
+        <div style="display: flex; align-items: center; justify-content: space-between; margin-bottom: 20px;">
+          <span class="login-mark" aria-hidden="true">201</span>
+          <span class="hr-badge hr-badge--neutral" style="font-size: 10px;">Restricted Access</span>
+        </div>
+
+        <p class="eyebrow"><span class="eyebrow-dot"></span> Internal HR Access</p>
+        <h1 id="loginTitle">HR Portal <em>sign in.</em></h1>
+        <p class="login-intro">Sign in to access the internal HR tools, personnel records, and job management features for authorized Starkson staff.</p>
+
+        <form id="loginForm">
+          <label for="user">HR Staff Username</label>
+          <input id="user" name="user" type="text" autocomplete="username" placeholder="Enter authorized username" required>
+          
+          <label for="password">Password</label>
+          <div style="position: relative;">
+            <input id="password" name="password" type="password" autocomplete="current-password" placeholder="••••••••" required style="padding-right: 44px;">
+            <button type="button" id="togglePasswordBtn" aria-label="Toggle password visibility"
+                    style="position: absolute; right: 10px; top: 50%; transform: translateY(-50%); background: none; border: none; color: var(--muted); cursor: pointer; font-size: 13px; font-weight: 700; padding: 4px;">
+              👁️
+            </button>
+          </div>
+
+          <button class="login-button" type="submit">
+            <span>Sign in to HR Portal</span>
+            <span aria-hidden="true">&rarr;</span>
+          </button>
+          <p class="login-status" id="loginStatus" role="alert" aria-live="assertive"></p>
+        </form>
+
+        <div class="account-recovery">
+          <button class="recovery-toggle" id="recoveryToggle" type="button" aria-expanded="false" aria-controls="recoveryPanel">
+            Forgot username or password?
+          </button>
+          <form id="recoveryForm" class="recovery-panel" hidden>
+            <p class="recovery-help">Enter the exact five-digit account ID from the HR Accounts sheet, then choose new credentials.</p>
+            <label for="recoveryId">Account ID</label>
+            <input id="recoveryId" name="recoveryId" inputmode="numeric" pattern="[0-9]{5}" maxlength="5" placeholder="e.g. 00001" required>
+            <label for="recoveryUser">New username</label>
+            <input id="recoveryUser" name="recoveryUser" autocomplete="username" required>
+            <label for="recoveryPassword">New password</label>
+            <input id="recoveryPassword" name="recoveryPassword" type="password" minlength="8" autocomplete="new-password" required>
+            <button class="login-button recovery-submit" type="submit">Update account</button>
+            <p class="login-status" id="recoveryStatus" role="alert" aria-live="assertive"></p>
+          </form>
+        </div>
+
+        <p class="login-note"><span>i</span> Access is restricted to authorized Starkson HR staff and designated personnel.</p>
+      </section>
+    </main>
+
+    <footer class="site-footer">
+      <span>&copy; 2026 Starkson Packaging Inc.</span>
+      <span>People &amp; Culture &middot; Authorized personnel only</span>
+    </footer>
+  </div>
+
+  <script>
+    const toggleBtn = document.getElementById('togglePasswordBtn');
+    const pwdInput = document.getElementById('password');
+    if (toggleBtn && pwdInput) {
+      toggleBtn.addEventListener('click', () => {
+        const isPwd = pwdInput.type === 'password';
+        pwdInput.type = isPwd ? 'text' : 'password';
+        toggleBtn.textContent = isPwd ? '🔒' : '👁️';
+      });
+    }
+  </script>
+  <script src="../shared/api-config.js"></script>
+  <script src="../shared/auth.js"></script>
+  <script src="js/login.js?v=20260907-2"></script>
+</body>
+</html>

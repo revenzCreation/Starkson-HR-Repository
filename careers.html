@@ -1,0 +1,200 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <meta name="description" content="Starkson Packaging Inc. Careers and Open Jobs listings">
+  <meta name="theme-color" content="#10191a">
+  <title>Careers | Starkson Packaging Inc.</title>
+  <link rel="icon" href="favicon.png" type="image/png">
+  <link rel="apple-touch-icon" href="assets/logos/logo.png">
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=DM+Sans:wght@400;500;600;700&family=IBM+Plex+Mono:wght@500;600&family=Manrope:wght@600;700;800&display=swap" rel="stylesheet">
+  <link rel="stylesheet" href="css/tokens.css">
+  <link rel="stylesheet" href="css/components.css">
+  <link rel="stylesheet" href="css/style.css">
+  <script src="js/portal.js" defer></script>
+</head>
+<body>
+  <a class="hr-skip-link" href="#main-content">Skip to content</a>
+
+  <div class="page-shell page-tools">
+    <div style="padding: 16px var(--gutter) 0;">
+      <div class="hr-ops-bar">
+        <div class="hr-ops-bar__group">
+          <span data-office-status><span class="hr-pulse-dot hr-pulse-dot--live"></span> HR Office Open (until 5:00 PM)</span>
+          <span style="opacity: 0.35;">|</span>
+          <span>Career Opportunities: <strong style="color: var(--status-sage-bright);">Open</strong></span>
+        </div>
+        <div class="hr-ops-bar__group">
+          <span class="hr-ops-bar__clock" data-pht-clock>--:--:-- PHT</span>
+          <button class="hr-login-toggle" type="button" data-hr-login-toggle aria-label="HR Login">HR Login</button>
+        </div>
+      </div>
+    </div>
+
+    <header class="site-header">
+      <a class="brand" href="index.html" aria-label="Starkson HR Portal home">
+        <img src="assets/logos/logo.png" alt="Starkson Logo">
+        <span><strong>STARKSON</strong><small>Packaging Inc.</small></span>
+      </a>
+
+      <button class="nav-toggle" type="button" data-nav-toggle aria-expanded="false" aria-controls="primary-nav">
+        <span class="hr-visually-hidden">Menu</span>
+        <svg class="nav-toggle__open hr-icon hr-icon--lg" viewBox="0 0 24 24" aria-hidden="true">
+          <path d="M4 7h16"/><path d="M4 12h16"/><path d="M4 17h16"/>
+        </svg>
+        <svg class="nav-toggle__close hr-icon hr-icon--lg" viewBox="0 0 24 24" aria-hidden="true">
+          <path d="M6 6l12 12"/><path d="M18 6L6 18"/>
+        </svg>
+      </button>
+
+      <nav class="main-nav" id="primary-nav" aria-label="Main navigation">
+        <a href="index.html">Home</a>
+        <a href="tools.html" class="auth-required-link">HR Tools</a>
+        <a href="forms.html">HR Forms</a>
+        <a class="active" href="careers.html" aria-current="page">Careers</a>
+        <a href="support.html">Support Desk</a>
+      </nav>
+    </header>
+
+    <main class="page-view" id="main-content">
+      <div class="page-motion" aria-hidden="true">
+        <span class="page-signal page-signal-one"></span>
+        <span class="page-signal page-signal-two"></span>
+        <span class="page-orbit page-orbit-one"><i></i></span>
+        <span class="page-orbit page-orbit-two"><i></i></span>
+        <span class="page-coordinate">HR / 04 <b>●</b> CAREERS</span>
+      </div>
+
+      <div class="page-heading">
+        <div>
+          <p class="eyebrow"><span class="eyebrow-dot"></span> Building Better Teams</p>
+          <h1>Open jobs for<br><em>future-ready talent.</em></h1>
+        </div>
+        <p class="page-summary">Explore current opportunities across production, support, warehousing, quality, and engineering roles. We are looking for people who want to grow with us and help build a stronger workplace.</p>
+      </div>
+
+      <section id="jobsList" class="tool-grid" aria-label="Available job openings"></section>
+
+    </main>
+
+    <footer class="site-footer">
+      <nav class="footer-nav" aria-label="Footer navigation">
+        <a href="index.html">Home</a>
+        <a href="tools.html" class="auth-required-link">HR Tools</a>
+        <a href="forms.html">HR Forms</a>
+        <a href="careers.html">Careers</a>
+        <a href="support.html">Support</a>
+        <a href="mailto:starksonpackaginginc@gmail.com">Contact HR</a>
+      </nav>
+      <div class="footer-meta">
+        <span>© 2026 Starkson Packaging Inc.</span>
+        <span>·</span>
+        <span>People & Culture · Internal Operations Hub</span>
+        <span>·</span>
+        <span>Silang, Cavite, Philippines</span>
+      </div>
+    </footer>
+  </div>
+
+  <script src="apps/shared/api-config.js"></script>
+  <script>
+    (() => {
+      const STORAGE_KEY = 'starkson_current_jobs';
+      const legacyJobTitles = new Set(['Production Operator', 'Quality Inspector', 'Warehouse Associate', 'Production Supervisor']);
+      const apiUrl = window.HR_PORTAL_SHEETS?.connections?.companySheet1;
+
+      function escapeHtml(value) {
+        return String(value == null ? '' : value).replace(/[&<>'"]/g, character => ({ '&': '&amp;', '<': '&lt;', '>': '&gt;', "'": '&#39;', '"': '&quot;' }[character]));
+      }
+
+      function formatSummary(value) {
+        return String(value == null ? '' : value).split(/\r?\n/).map(line => {
+          const escaped = escapeHtml(line);
+          const heading = escaped.match(/^(#{1,6})\s+(.+)$/);
+          if (heading) return `<h${Math.min(6, heading[1].length + 2)}>${formatInline(heading[2])}</h${Math.min(6, heading[1].length + 2)}>`;
+          return formatInline(escaped) || '<br>';
+        }).join('<br>');
+      }
+
+      function formatInline(value) {
+        return value.replace(/\*\*(.+?)\*\*|\*([^*\n]+)\*/g, (_, doubleBold, singleBold) => `<strong>${doubleBold || singleBold}</strong>`);
+      }
+
+      function formatPreview(value) {
+        const preview = String(value == null ? '' : value).replace(/^#{1,6}\s+/gm, '').replace(/\s+/g, ' ').trim();
+        const shortened = preview.length > 220 ? `${preview.slice(0, 217).trim()}...` : preview;
+        return formatInline(escapeHtml(shortened || 'Explore this opportunity at Starkson Packaging.'));
+      }
+
+      function getLocalJobs() {
+        try {
+          const saved = localStorage.getItem(STORAGE_KEY);
+          const parsed = saved ? JSON.parse(saved) : [];
+          const normalized = Array.isArray(parsed) ? parsed.filter((job) => job && typeof job === 'object') : [];
+          return normalized.some(job => legacyJobTitles.has(job.title)) ? [] : normalized;
+        } catch (error) { return []; }
+      }
+
+      function renderJobs(jobs) {
+        const container = document.getElementById('jobsList');
+        if (!container) return;
+
+        if (!jobs.length) {
+          container.innerHTML = `
+            <div class="careers-empty" aria-live="polite">
+              <div class="careers-empty__mark">!</div>
+              <h2>No active openings yet</h2>
+              <p>HR is currently not listing any open positions. Please check back soon for new opportunities.</p>
+            </div>
+          `;
+          return;
+        }
+
+        container.innerHTML = jobs.map((job, index) => `
+          <article class="job-card">
+            <div class="job-head">
+              <span class="job-badge">Open Jobs</span>
+              <span class="muted">${escapeHtml(job.type || 'Full-time')}</span>
+            </div>
+            <h2>${escapeHtml(job.title)}</h2>
+            <p>${formatPreview(job.summary)}</p>
+            <div class="job-meta">
+              <span>${escapeHtml(job.location || 'Silang Plant')}</span>
+              <span>${escapeHtml(job.type || 'Full-time')}</span>
+              <span>${String(job.title || '').toLowerCase().includes('supervisor') ? 'Leadership' : 'Open'}</span>
+            </div>
+            <div class="job-footer">
+              <span class="job-salary">${escapeHtml(job.salary || 'Open')}</span>
+              <button class="job-apply" type="button" data-job-details="${index}">View details<svg class="hr-icon hr-icon--sm" viewBox="0 0 24 24" aria-hidden="true"><path d="M5 12h14"/><path d="m13 6 6 6-6 6"/></svg></button>
+            </div>
+            <div class="job-details" data-job-panel="${index}" hidden><div class="job-summary-content">${formatSummary(job.summary || '')}</div><a class="job-apply" href="apps/applicant-form/index.html?job=${encodeURIComponent(job.title || '')}">Apply for this role<svg class="hr-icon hr-icon--sm" viewBox="0 0 24 24" aria-hidden="true"><path d="M5 12h14"/><path d="m13 6 6 6-6 6"/></svg></a></div>
+          </article>
+        `).join('');
+
+        container.querySelectorAll('[data-job-details]').forEach(button => button.addEventListener('click', () => {
+          const panel = container.querySelector(`[data-job-panel="${button.dataset.jobDetails}"]`);
+          const isHidden = panel.hidden;
+          panel.hidden = !isHidden;
+          button.setAttribute('aria-expanded', String(isHidden));
+        }));
+      }
+
+      async function loadJobs() {
+        if (apiUrl) {
+          try {
+            const result = await window.HR_PORTAL_SHEETS.request(`${apiUrl}?action=job-list`);
+            renderJobs(Array.isArray(result.records) ? result.records : []);
+            return;
+          } catch (error) { /* Use the local cache while the deployment is being updated. */ }
+        }
+        renderJobs(getLocalJobs());
+      }
+
+      loadJobs();
+    })();
+  </script>
+</body>
+</html>

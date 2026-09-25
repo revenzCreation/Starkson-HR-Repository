@@ -161,13 +161,52 @@
   }
 
   /* ------------------------------------------------------------------ *
-   * HR Login Button                                                      *
+   * HR Login Button / Auth visibility                                     *
    * ------------------------------------------------------------------ */
   const hrLoginButton = document.querySelector("[data-hr-login-toggle]");
+  const authRequiredLinks = document.querySelectorAll(".auth-required-link");
+
+  function applyAuthVisibility() {
+    const session = window.HR_PORTAL_AUTH?.getSession?.();
+    const isAuthenticated = Boolean(session?.authenticated);
+
+    authRequiredLinks.forEach((link) => {
+      if (isAuthenticated) {
+        link.hidden = false;
+      } else {
+        link.hidden = true;
+      }
+    });
+
+    if (hrLoginButton) {
+      hrLoginButton.textContent = isAuthenticated ? 'Logout' : 'HR Login';
+      hrLoginButton.setAttribute('aria-label', isAuthenticated ? 'Logout' : 'HR Login');
+    }
+
+    if (!isAuthenticated && window.location.pathname.toLowerCase().endsWith("tools.html")) {
+      window.location.replace("apps/201-files/login.html?next=tools.html");
+    }
+  }
+
   if (hrLoginButton) {
     hrLoginButton.addEventListener("click", () => {
-      window.location.href = "Directory Websites/201-files/index.html";
+      if (window.HR_PORTAL_AUTH?.getSession?.()?.authenticated) {
+        window.HR_PORTAL_AUTH.logout();
+        window.location.reload();
+        return;
+      }
+      const next = window.location.pathname.toLowerCase().endsWith("tools.html") ? "?next=tools.html" : "?next=" + encodeURIComponent(window.location.pathname.replace(/^\//, ""));
+      window.location.href = `apps/201-files/login.html${next}`;
     });
+  }
+
+  if (window.HR_PORTAL_AUTH) {
+    applyAuthVisibility();
+  } else {
+    const authScript = document.createElement("script");
+    authScript.src = "apps/shared/auth.js";
+    authScript.onload = applyAuthVisibility;
+    document.head.appendChild(authScript);
   }
 
   /* ------------------------------------------------------------------ *

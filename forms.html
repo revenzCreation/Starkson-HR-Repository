@@ -1,0 +1,137 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <meta name="description" content="HR Forms for Starkson Packaging Inc.">
+  <meta name="theme-color" content="#10191a">
+  <title>HR Forms | Starkson Packaging Inc.</title>
+  <link rel="icon" href="favicon.png" type="image/png">
+  <link rel="apple-touch-icon" href="assets/logos/logo.png">
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=DM+Sans:wght@400;500;600;700&family=IBM+Plex+Mono:wght@500;600&family=Manrope:wght@600;700;800&display=swap" rel="stylesheet">
+  <link rel="stylesheet" href="css/tokens.css">
+  <link rel="stylesheet" href="css/components.css">
+  <link rel="stylesheet" href="css/style.css">
+  <script src="js/portal.js" defer></script>
+</head>
+<body>
+  <a class="hr-skip-link" href="#main-content">Skip to content</a>
+
+  <div class="page-shell page-tools">
+    <div style="padding: 16px var(--gutter) 0;">
+      <div class="hr-ops-bar">
+        <div class="hr-ops-bar__group">
+          <span data-office-status><span class="hr-pulse-dot hr-pulse-dot--live"></span> HR Office Open (until 5:00 PM)</span>
+          <span style="opacity: 0.35;">|</span>
+          <span>HR Forms Archive: <strong style="color: var(--status-sage-bright);">Available</strong></span>
+        </div>
+        <div class="hr-ops-bar__group">
+          <span class="hr-ops-bar__clock" data-pht-clock>--:--:-- PHT</span>
+          <button class="hr-login-toggle" type="button" data-hr-login-toggle aria-label="HR Login">HR Login</button>
+        </div>
+      </div>
+    </div>
+
+    <header class="site-header">
+      <a class="brand" href="index.html" aria-label="Starkson HR Portal home">
+        <img src="assets/logos/logo.png" alt="Starkson Logo">
+        <span><strong>STARKSON</strong><small>Packaging Inc.</small></span>
+      </a>
+
+      <button class="nav-toggle" type="button" data-nav-toggle aria-expanded="false" aria-controls="primary-nav">
+        <span class="hr-visually-hidden">Menu</span>
+        <svg class="nav-toggle__open hr-icon hr-icon--lg" viewBox="0 0 24 24" aria-hidden="true">
+          <path d="M4 7h16"/><path d="M4 12h16"/><path d="M4 17h16"/>
+        </svg>
+        <svg class="nav-toggle__close hr-icon hr-icon--lg" viewBox="0 0 24 24" aria-hidden="true">
+          <path d="M6 6l12 12"/><path d="M18 6L6 18"/>
+        </svg>
+      </button>
+
+      <nav class="main-nav" id="primary-nav" aria-label="Main navigation">
+        <a href="index.html">Home</a>
+        <a href="tools.html" class="auth-required-link">HR Tools</a>
+        <a class="active" href="forms.html" aria-current="page">HR Forms</a>
+        <a href="careers.html">Careers</a>
+        <a href="support.html">Support Desk</a>
+      </nav>
+    </header>
+
+    <main class="page-view" id="main-content">
+      <div class="page-motion" aria-hidden="true">
+        <span class="page-signal page-signal-one"></span>
+        <span class="page-signal page-signal-two"></span>
+        <span class="page-orbit page-orbit-one"><i></i></span>
+        <span class="page-orbit page-orbit-two"><i></i></span>
+        <span class="page-coordinate">HR / 02 <b>●</b> FORMS PORTAL</span>
+      </div>
+
+      <div class="page-heading">
+        <div>
+          <p class="eyebrow"><span class="eyebrow-dot"></span> HR Documents</p>
+          <h1>Forms for every<br><em>people process.</em></h1>
+        </div>
+        <p class="page-summary">Access the standard HR forms used for hiring, onboarding, employee requests, attendance concerns, and general personnel documentation.</p>
+      </div>
+
+      <div class="tool-grid">
+        <a class="tool-card featured" href="apps/applicant-form/index.html" data-tool-item data-category="recruitment">
+          <div class="card-topline">
+            <div style="display: flex; align-items: center; gap: 8px;">
+              <span class="tool-number">01</span>
+              <span class="hr-badge hr-badge--sage" style="font-size: 10px; padding: 2px 7px;">Applicant</span>
+            </div>
+            <svg class="card-arrow hr-icon hr-icon--lg" viewBox="0 0 24 24" aria-hidden="true">
+              <path d="M7 17 17 7"/><path d="M8 7h9v9"/>
+            </svg>
+          </div>
+          <div class="tool-icon icon-doc" aria-hidden="true"><span></span><i></i><i></i></div>
+          <h2>Applicant Intake Form</h2>
+          <p>Standard form for collecting applicant information for screening, interview scheduling, and hiring coordination.</p>
+          <span class="card-link">Open form
+            <svg class="hr-icon hr-icon--sm" viewBox="0 0 24 24" aria-hidden="true"><path d="M5 12h14"/><path d="m13 6 6 6-6 6"/></svg>
+          </span>
+        </a>
+
+        <a class="tool-card" href="apps/referral-portal/index.html" data-tool-item data-category="recruitment">
+          <div class="card-topline">
+            <div style="display: flex; align-items: center; gap: 8px;">
+              <span class="tool-number">02</span>
+              <span class="hr-badge hr-badge--red" style="font-size: 10px; padding: 2px 7px;">Referral</span>
+            </div>
+            <svg class="card-arrow hr-icon hr-icon--lg" viewBox="0 0 24 24" aria-hidden="true">
+              <path d="M7 17 17 7"/><path d="M8 7h9v9"/>
+            </svg>
+          </div>
+          <div class="tool-icon icon-people" aria-hidden="true"><span></span><span></span></div>
+          <h2>Employee Referral Form</h2>
+          <p>Submit recommendations for qualified candidates and track referral status for eligible positions.</p>
+          <span class="card-link">Open form
+            <svg class="hr-icon hr-icon--sm" viewBox="0 0 24 24" aria-hidden="true"><path d="M5 12h14"/><path d="m13 6 6 6-6 6"/></svg>
+          </span>
+        </a>
+      </div>
+    </main>
+
+    <footer class="site-footer">
+      <nav class="footer-nav" aria-label="Footer navigation">
+        <a href="index.html">Home</a>
+        <a href="tools.html" class="auth-required-link">HR Tools</a>
+        <a href="forms.html">HR Forms</a>
+        <a href="careers.html">Careers</a>
+        <a href="support.html">Support</a>
+        <a href="mailto:starksonpackaginginc@gmail.com">Contact HR</a>
+      </nav>
+      <div class="footer-meta">
+        <span>© 2026 Starkson Packaging Inc.</span>
+        <span>·</span>
+        <span>People & Culture · Internal Operations Hub</span>
+        <span>·</span>
+        <span>Silang, Cavite, Philippines</span>
+      </div>
+    </footer>
+  </div>
+</body>
+</html>
