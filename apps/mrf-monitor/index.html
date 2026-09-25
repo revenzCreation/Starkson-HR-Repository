@@ -101,11 +101,11 @@
       <form id="mrfForm">
         <div class="upload-box" id="uploadBox">
           <label for="fileInput" class="sr-only">Upload request file</label>
-          <input type="file" id="fileInput" style="display:none;" aria-label="Upload request file">
+          <input type="file" id="fileInput" accept=".pdf,.doc,.docx,.jpg,.jpeg,.png,.webp,application/pdf,application/msword,application/vnd.openxmlformats-officedocument.wordprocessingml.document,image/jpeg,image/png,image/webp" style="display:none;" aria-label="Upload request file">
           <div id="uploadPlaceholder">
             <div class="icon">📂</div>
             <div><strong>Click to upload</strong> or drag hard-copy scan here</div>
-            <div class="hint">PDF, PNG, JPG, or DOC up to 5 MB. Automatically compressed and synced to Google Drive.</div>
+            <div class="hint">PDF, DOC, DOCX, JPG, PNG, or WebP up to 5 MB. Images are compressed automatically before syncing to Google Drive.</div>
           </div>
           <img id="previewImg" style="display:none;" alt="Scan preview">
         </div>
