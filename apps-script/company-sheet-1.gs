@@ -65,10 +65,6 @@ function doGet(e) {
     if (action === 'list' || action === 'referrals-list') return json({ ok: true, records: readRecords(CONFIG.referralSheet, REFERRAL_FIELDS, false) });
     if (action === 'job-list' || action === 'jobs-list') return json({ ok: true, records: listOpenJobs() });
     if (action === 'hr-accounts-list') return json({ ok: true, records: readHrAccountRecords() });
-    if (action === 'hr-login') {
-      var account = authenticateHrAccount({ username: parameter(e, 'username', ''), password: parameter(e, 'password', '') });
-      return account ? json({ ok: true, account: account }) : json({ ok: false, error: 'Invalid HR username or password.' });
-    }
     return json({ ok: false, error: 'Unknown action' });
   } catch (error) {
     return json({ ok: false, error: errorMessage(error) });

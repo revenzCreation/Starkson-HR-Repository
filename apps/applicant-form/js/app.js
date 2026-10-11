@@ -10,6 +10,16 @@ function getSheet1Url() {
   return apiUrl;
 }
 
+function escapeHtml(value) {
+  return String(value ?? '').replace(/[&<>"']/g, character => ({
+    '&': '&amp;',
+    '<': '&lt;',
+    '>': '&gt;',
+    '"': '&quot;',
+    "'": '&#39;'
+  })[character]);
+}
+
 const form = document.getElementById('applicantForm');
 const statusBox = document.getElementById('statusBox');
 const applicantList = document.getElementById('applicantList');
@@ -227,12 +237,12 @@ async function populateCurrentJobs() {
 
   currentJobsList.innerHTML = jobs.map(job => `
     <li>
-      <button type="button" class="job-list-btn ${selectedJob === job.title ? 'is-selected' : ''}" data-position="${job.title}">
+      <button type="button" class="job-list-btn ${selectedJob === job.title ? 'is-selected' : ''}" data-position="${escapeHtml(job.title)}">
         <span class="job-list-top">
-          <strong>${job.title}</strong>
+          <strong>${escapeHtml(job.title)}</strong>
           <span class="job-list-badge">Open</span>
         </span>
-        <span class="job-list-meta">${job.location || 'Silang Plant'} · ${job.type || 'Full-time'}</span>
+        <span class="job-list-meta">${escapeHtml(job.location || 'Silang Plant')} · ${escapeHtml(job.type || 'Full-time')}</span>
       </button>
     </li>
   `).join('');
@@ -260,8 +270,8 @@ async function renderApplicants() {
 
     applicantList.innerHTML = records.slice(0, 6).map(record => `
       <li>
-        <strong>${record.fullName || 'Applicant'}</strong>
-        <span>${record.positionApplied || 'Role pending'} · <span class="badge">${record.status || 'New'}</span></span>
+        <strong>${escapeHtml(record.fullName || 'Applicant')}</strong>
+        <span>${escapeHtml(record.positionApplied || 'Role pending')} · <span class="badge">${escapeHtml(record.status || 'New')}</span></span>
       </li>
     `).join('');
   } catch (error) {
@@ -274,7 +284,7 @@ function prefillSelectedJob() {
   const positionInput = document.getElementById('positionApplied');
   if (!selectedJob || !positionInput) return;
 
-  positionInput.value = decodeURIComponent(selectedJob);
+  positionInput.value = selectedJob;
 }
 
 async function loadApplicantOptions() {

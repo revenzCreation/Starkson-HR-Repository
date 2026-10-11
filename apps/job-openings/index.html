@@ -88,7 +88,7 @@
       });
       document.getElementById('resetJob').addEventListener('click', resetForm);
       document.getElementById('refreshJobs').addEventListener('click', loadJobs);
-      if (!isAuthenticated()) { window.location.href = '../../apps/201-files/login.html?next=apps/job-openings/index.html'; return; }
+      if (!isAuthenticated()) { window.location.replace('../../apps/201-files/login.html?next=apps/job-openings/index.html'); return; }
       loadJobs();
     })();
   </script>

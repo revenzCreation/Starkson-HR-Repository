@@ -65,9 +65,12 @@
 
     try {
       const apiUrl = getSheet1Url();
-      const encodeQueryValue = value => encodeURIComponent(value).replace(/[!'()*]/g, character => `%${character.charCodeAt(0).toString(16).toUpperCase()}`);
       const result = await window.HR_PORTAL_SHEETS.request(
-        `${apiUrl}?action=hr-login&username=${encodeQueryValue(trimmedUser)}&password=${encodeQueryValue(trimmedPass)}`
+        apiUrl,
+        {
+          method: 'POST',
+          body: JSON.stringify({ action: 'hr-login', username: trimmedUser, password: trimmedPass })
+        }
       );
 
       if (!result || !result.ok || !result.account) {
