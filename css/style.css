@@ -80,13 +80,9 @@ main,
 .page-view {
   flex: 1;
   width: 100%;
-  max-width: min(100% - (var(--gutter) * 2), var(--shell-max));
+  max-width: min(100%, var(--shell-max));
   margin: 0 auto;
   padding: 76px var(--gutter) 70px;
-}
-
-.page-tools .page-view {
-  max-width: min(100% - (var(--gutter) * 2), var(--shell-max));
 }
 
 /* ---- Page motion decor -------------------------------------------------- */
@@ -1226,6 +1222,46 @@ h1 em { color: var(--brand-red-bright); font-style: normal; }
 
 .support-panel .support-details strong { color: var(--ink); }
 
+/* ---- Support inquiry layout -------------------------------------------- */
+.support-content-grid {
+  display: grid;
+  grid-template-columns: minmax(0, 1.4fr) minmax(300px, 0.8fr);
+  gap: 24px;
+  position: relative;
+  z-index: var(--z-content);
+}
+
+.support-content-grid > * { min-width: 0; }
+.support-inquiry-card { padding: 32px 28px; }
+
+.support-inquiry-form__row {
+  display: grid;
+  grid-template-columns: repeat(2, minmax(0, 1fr));
+  gap: 16px;
+  margin-bottom: 16px;
+}
+
+.support-inquiry-form__control {
+  box-sizing: border-box;
+  width: 100%;
+  min-width: 0;
+  max-width: 100%;
+  padding: 11px 14px;
+  border: var(--border-glass);
+  border-radius: var(--radius-sm);
+  background: var(--surface-2);
+  color: var(--ink);
+}
+
+.support-inquiry-form textarea.support-inquiry-form__control {
+  min-height: 90px;
+  padding: 12px 14px;
+  resize: vertical;
+}
+
+.support-inquiry-form__message { margin-bottom: 22px; }
+.support-inquiry-form > .hr-btn--primary { width: 100%; }
+
 /* ---- Sections & Containers ---------------------------------------------- */
 .home-sections {
   position: relative;
@@ -1498,6 +1534,7 @@ h1 em { color: var(--brand-red-bright); font-style: normal; }
 
   .page-view { padding: 58px var(--gutter-sm) 55px; }
   .page-tools .page-view { padding-top: 48px; padding-bottom: 42px; }
+  .support-content-grid { grid-template-columns: minmax(0, 1fr); }
 
   .page-motion::before { top: 4%; right: -90px; width: 390px; height: 48%; }
   .page-motion::after { width: 145px; bottom: 8%; }
@@ -1593,6 +1630,9 @@ h1 em { color: var(--brand-red-bright); font-style: normal; }
   .job-card {
     padding: 18px 16px;
   }
+
+  .support-inquiry-card { padding: 24px 18px; }
+  .support-inquiry-form__row { grid-template-columns: minmax(0, 1fr); }
 
   .job-footer {
     flex-direction: column;

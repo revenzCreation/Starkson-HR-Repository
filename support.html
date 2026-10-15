@@ -32,7 +32,6 @@
         </div>
         <div class="hr-ops-bar__group">
           <span class="hr-ops-bar__clock" data-pht-clock>--:--:-- PHT</span>
-          <button class="theme-toggle" type="button" data-theme-toggle aria-pressed="false"><span data-theme-label>Light mode</span></button>
           <button class="hr-login-toggle" type="button" data-hr-login-toggle aria-label="HR Login">HR Login</button>
         </div>
       </div>
@@ -116,26 +115,24 @@
       </section>
 
       <!-- Interactive Inquiry Dispatcher & Plant Guide -->
-      <div style="display: grid; grid-template-columns: minmax(0, 1.4fr) minmax(300px, 0.8fr); gap: 24px; position: relative; z-index: var(--z-content);">
+      <div class="support-content-grid">
         <!-- Interactive Form Card -->
-        <div class="hr-card" style="padding: 32px 28px;">
+        <div class="hr-card support-inquiry-card">
           <span class="section-eyebrow"><span class="eyebrow-dot"></span> Quick Inquiry Builder</span>
           <h2 style="font-size: var(--step-3); font-weight: var(--weight-black); margin: 8px 0 16px;">Send an HR Request</h2>
           <p style="color: var(--ink-soft); font-size: var(--step-0); line-height: var(--leading-body); margin-bottom: 24px;">
             Fill out the form below. It will format your inquiry and prepare a structured email directly to the People & Culture team.
           </p>
 
-          <form id="supportInquiryForm" onsubmit="handleInquirySubmit(event)">
-            <div style="display: grid; grid-template-columns: 1fr 1fr; gap: 16px; margin-bottom: 16px;">
+          <form class="support-inquiry-form" id="supportInquiryForm" onsubmit="handleInquirySubmit(event)">
+            <div class="support-inquiry-form__row">
               <div class="hr-field">
                 <label for="inqName">Your Full Name</label>
-                <input id="inqName" type="text" placeholder="e.g. Juan Dela Cruz" required
-                       style="padding: 11px 14px; border: var(--border-glass); border-radius: var(--radius-sm); background: var(--surface-2); color: var(--ink);">
+                <input class="support-inquiry-form__control" id="inqName" type="text" placeholder="e.g. Juan Dela Cruz" required>
               </div>
               <div class="hr-field">
                 <label for="inqCategory">Inquiry Type</label>
-                <select id="inqCategory" required
-                        style="padding: 11px 14px; border: var(--border-glass); border-radius: var(--radius-sm); background: var(--surface-2); color: var(--ink);">
+                <select class="support-inquiry-form__control" id="inqCategory" required>
                   <option value="" disabled selected>Select category</option>
                   <option value="Referral Status">Referral Follow-up / Bonus</option>
                   <option value="Certificate of Employment">Certificate of Employment (COE)</option>
@@ -146,28 +143,25 @@
               </div>
             </div>
 
-            <div style="display: grid; grid-template-columns: 1fr 1fr; gap: 16px; margin-bottom: 16px;">
+            <div class="support-inquiry-form__row">
               <div class="hr-field">
                 <label for="inqDept">Your Department</label>
-                <select id="inqDept" required disabled
-                        style="padding: 11px 14px; border: var(--border-glass); border-radius: var(--radius-sm); background: var(--surface-2); color: var(--ink);">
+                <select class="support-inquiry-form__control" id="inqDept" required disabled>
                   <option value="">Select department</option>
                 </select>
               </div>
               <div class="hr-field">
                 <label for="inqPhone">Contact Number</label>
-                <input id="inqPhone" type="tel" placeholder="09XX XXX XXXX"
-                       style="padding: 11px 14px; border: var(--border-glass); border-radius: var(--radius-sm); background: var(--surface-2); color: var(--ink);">
+                <input class="support-inquiry-form__control" id="inqPhone" type="tel" placeholder="09XX XXX XXXX">
               </div>
             </div>
 
-            <div class="hr-field" style="margin-bottom: 22px;">
+            <div class="hr-field support-inquiry-form__message">
               <label for="inqMessage">Message / Request Details</label>
-              <textarea id="inqMessage" rows="4" placeholder="Describe your question or request..." required
-                        style="padding: 12px 14px; border: var(--border-glass); border-radius: var(--radius-sm); background: var(--surface-2); color: var(--ink); resize: vertical; min-height: 90px;"></textarea>
+              <textarea class="support-inquiry-form__control" id="inqMessage" rows="4" placeholder="Describe your question or request..." required></textarea>
             </div>
 
-            <button type="submit" class="hr-btn hr-btn--primary" style="width: 100%;">
+            <button type="submit" class="hr-btn hr-btn--primary">
               Send Inquiry to HR
               <svg class="hr-icon hr-icon--sm" viewBox="0 0 24 24" aria-hidden="true">
                 <line x1="22" y1="2" x2="11" y2="13"></line>
