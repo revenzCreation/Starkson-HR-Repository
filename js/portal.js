@@ -289,43 +289,6 @@
   }
 
   /* ------------------------------------------------------------------ *
-   * Animated Number Rollup for Statistics                              *
-   * ------------------------------------------------------------------ */
-  const counterEls = document.querySelectorAll("[data-counter-target]");
-  if (counterEls.length && "IntersectionObserver" in window) {
-    const counterObserver = new IntersectionObserver(
-      (entries, observer) => {
-        entries.forEach((entry) => {
-          if (!entry.isIntersecting) return;
-          const targetEl = entry.target;
-          const targetNum = parseFloat(targetEl.getAttribute("data-counter-target") || "0");
-          const duration = 1200; // ms
-          const startTime = performance.now();
-
-          function tick(currentTime) {
-            const progress = Math.min((currentTime - startTime) / duration, 1);
-            // Ease out cubic
-            const easeProgress = 1 - Math.pow(1 - progress, 3);
-            const currentVal = Math.round(easeProgress * targetNum);
-            targetEl.textContent = currentVal.toLocaleString();
-            if (progress < 1) {
-              requestAnimationFrame(tick);
-            } else {
-              targetEl.textContent = targetNum.toLocaleString();
-            }
-          }
-
-          requestAnimationFrame(tick);
-          observer.unobserve(targetEl);
-        });
-      },
-      { threshold: 0.2 }
-    );
-
-    counterEls.forEach((el) => counterObserver.observe(el));
-  }
-
-  /* ------------------------------------------------------------------ *
    * FAQ Accordion Controller                                           *
    * ------------------------------------------------------------------ */
   const accordionTriggers = document.querySelectorAll("[data-accordion-trigger]");
